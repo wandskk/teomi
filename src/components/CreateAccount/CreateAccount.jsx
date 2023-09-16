@@ -7,12 +7,26 @@ import { BsDot } from 'react-icons/bs';
 import './styles/CreateAccount.scss';
 
 const CreateAccount = () => {
-  const [step, setStep] = React.useState(1);
-  const [formData, setFormData] = React.useState({
-    stepOne: '',
-    stepTwo: '',
-    stepThree: '',
+  const [step, setStep] = React.useState(3);
+  const [stepOne, setStepOne] = React.useState({
+    email: 'wandersonkenedy@bne.com.br',
+    password: '123',
+    confirmPassword: '123',
+    telephone: '84994873510',
+    birthday: '11/01/1997',
+    gender: 'man',
   });
+  const [stepTwo, setStepTwo] = React.useState({
+    cep: '59695-000',
+    address: 'Rua Anselmo Leandro',
+    addressNumber: '108',
+    addressComplement: 'prox academia avanti',
+    neighborhood: 'centro',
+    city: 'Baraúna',
+    state: 'RN',
+  });
+
+  const [stepThree, setStepThree] = React.useState(null);
 
   const handleStep = (type) => {
     switch (type) {
@@ -44,7 +58,7 @@ const CreateAccount = () => {
 
   const handleSubmit = () => {
     console.log('form enviado');
-  };
+  };  
 
   return (
     <div className='createAccount'>
@@ -56,20 +70,31 @@ const CreateAccount = () => {
         </div>
       </div>
       <div className='createAccount__content'>
-        {step === 1 && <CreateAccountStepOne />}
-        {step === 2 && <CreateAccountStepTwo />}
-        {step === 3 && <CreateAccountStepThree />}
+        {step === 1 && (
+          <CreateAccountStepOne
+            stepValues={stepOne}
+            setStepValues={setStepOne}
+          />
+        )}
+        {step === 2 && (
+          <CreateAccountStepTwo
+            stepValues={stepTwo}
+            setStepValues={setStepTwo}
+          />
+        )}
+        {step === 3 && (
+          <CreateAccountStepThree
+            stepValues={stepThree}
+            setStepValues={setStepThree}
+          />
+        )}
       </div>
       <div className='createAccount__footer'>
         <button
           className={`createAccount__footer__button ${
             step === 3 && 'createAccount__footer__button--submit'
           }`}
-          disabled={
-            (step === 1 && formData.stepOne.length < 1) ||
-            (step === 2 && formData.stepTwo.length < 1) ||
-            (step === 3 && formData.stepThree.length < 1)
-          }
+          disabled={(step === 1 && !stepOne) || (step === 2 && !stepTwo)}
           onClick={() =>
             step === 3 ? handleStep('submit') : handleStep('next')
           }

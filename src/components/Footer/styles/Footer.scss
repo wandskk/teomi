@@ -9,11 +9,15 @@
   &__nav {
     &__list {
       display: flex;
+      align-items: center;
       justify-content: space-between;
       list-style: none;
       padding: 1rem;
 
       &__item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 2rem;
         color: #fff;
 

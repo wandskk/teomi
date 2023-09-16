@@ -14,7 +14,6 @@ const CreateAccountStepThree = ({ stepValues, setStepValues }) => {
       reader.readAsDataURL(file);
 
       setStepValues(file);
-      
     } else {
       setStepValues(null);
       setSelectedImage(null);

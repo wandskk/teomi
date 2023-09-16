@@ -1,0 +1,27 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  background-color: #64008e;
+  width: 100%;
+  overflow: hidden;
+
+  &__nav {
+    &__list {
+      display: flex;
+      justify-content: space-between;
+      list-style: none;
+      padding: 1rem;
+
+      &__item {
+        font-size: 2rem;
+        color: #fff;
+
+        &--marker {
+          position: absolute;
+          right: -1rem;
+          bottom: -0.4rem;
+        }
+      }
+    }
+  }
+}

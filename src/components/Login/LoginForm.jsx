@@ -5,8 +5,8 @@ import { UserContext } from '@/context/UserContext';
 import '@/styles/Login/LoginForm.scss';
 
 function LoginForm() {
-  const [email, setEmail] = React.useState('teste@teste.com');
-  const [password, setPassword] = React.useState('igor1231');
+  const [email, setEmail] = React.useState('wandersonkenedy13@gmail.com');
+  const [password, setPassword] = React.useState('wandsk13');
   const [errorLogin, setErrorLogin] = React.useState(null);
   const { userLogin, setLoading } = React.useContext(UserContext);
 
@@ -22,7 +22,6 @@ function LoginForm() {
       const login = await userLogin(email, password);
       if (login.message) {
         setErrorLogin(login.message);
-        setLoading(false);
       }
     } catch (error) {}
   }
@@ -31,7 +30,7 @@ function LoginForm() {
     <div className='loginForm'>
       <h1 className='loginForm__title'>Faça seu login</h1>
       <p className='loginForm__subtitle'>
-        Não tem uma conta? {' '}
+        Não tem uma conta?{' '}
         <Link href='/create-account' className='loginForm__subtitle__link'>
           Inscrever-se
         </Link>

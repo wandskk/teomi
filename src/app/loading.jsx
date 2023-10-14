@@ -1,5 +1,5 @@
-import CustomLoader from '@/components/Loader/CustomLoader';
+import Loader from '@/components/Loader/Loader';
 
 export default function Loading() {
-  return <CustomLoader pageLoading={true} />;
+  return <Loader />;
 }

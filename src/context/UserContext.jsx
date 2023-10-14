@@ -6,6 +6,7 @@ import { AuthServices } from '@/services/modules/auth';
 import { UsersServices } from '@/services/modules/users';
 import { getCookie } from '@/resources/helpers/cookies/getCookie';
 import { setCookie } from '@/resources/helpers/cookies/setCookie';
+import { redirect } from 'next/navigation';
 
 export const UserContext = React.createContext();
 
@@ -14,7 +15,6 @@ export const UserStorage = ({ children }) => {
   const [userToken, setUserToken] = React.useState(null);
   const [userData, setUserData] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
-  const [logged, setLogged] = React.useState(null);
   const [splashScreen, setSplashScreen] = React.useState(true);
   const tokenAuth = process.env.NEXT_PUBLIC_SECRET_KEY;
 
@@ -29,6 +29,7 @@ export const UserStorage = ({ children }) => {
         const { token, expiresIn } = login.data;
         setCookie('userLogin', token, expiresIn);
         setUserToken(token);
+        window.location.reload();
       } catch (error) {
         return error.response.data;
       }
@@ -46,8 +47,6 @@ export const UserStorage = ({ children }) => {
           setConnectID(token);
         } catch (error) {}
       else setConnectID(cookie);
-
-      setLoading(false);
     };
 
     fetchData();
@@ -63,10 +62,8 @@ export const UserStorage = ({ children }) => {
           useruniqueid
         );
         setLoading(true);
-        setLogged(true);
         setUserData(data.data);
       } catch (error) {
-        setLogged(false);
       } finally {
         setLoading(false);
       }
@@ -81,11 +78,9 @@ export const UserStorage = ({ children }) => {
   React.useEffect(() => {
     const cookie = getCookie('userLogin');
     cookie && setUserToken(cookie);
-    !cookie && setLogged(false);
   }, []);
 
   React.useEffect(() => setSplashScreen(false), []);
-  React.useEffect(() => setLoading(true), []);
 
   return (
     <UserContext.Provider
@@ -94,7 +89,6 @@ export const UserStorage = ({ children }) => {
         userData,
         loading,
         splashScreen,
-        logged,
         userLogin,
         setLoading,
       }}

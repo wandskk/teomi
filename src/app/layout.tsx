@@ -8,7 +8,6 @@ import Loading from '@/app/loading';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { UserStorage } from '../context/UserContext';
-import { Suspense } from 'react';
 import './globals.css';
 import 'normalize.css/normalize.css';
 
@@ -27,16 +26,14 @@ export default function RootLayout({
   return (
     <html lang='pt-br'>
       <UserStorage>
-        {/* <Suspense fallback={<Loading />}> */}
-          <body className={inter.className} suppressHydrationWarning={true}>
-            <Header />
-            <main>{children}</main>
-            <Flower />
-            <Footer />
-            <SplashScreen />
-            <CustomLoader />
-          </body>
-        {/* </Suspense> */}
+        <body className={inter.className} suppressHydrationWarning={true}>
+          <Header />
+          <main>{children}</main>
+          <Flower />
+          <Footer />
+          <SplashScreen />
+          <CustomLoader />
+        </body>
       </UserStorage>
     </html>
   );

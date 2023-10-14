@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang='pt-br'>
       <UserStorage>
-        <Suspense fallback={<Loading />}>
+        {/* <Suspense fallback={<Loading />}> */}
           <body className={inter.className} suppressHydrationWarning={true}>
             <Header />
             <main>{children}</main>
@@ -36,7 +36,7 @@ export default function RootLayout({
             <SplashScreen />
             <CustomLoader />
           </body>
-        </Suspense>
+        {/* </Suspense> */}
       </UserStorage>
     </html>
   );

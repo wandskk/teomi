@@ -1,12 +1,10 @@
 'use client';
 
-import Home from '@/components/Home/Home';
-import PrivateRoutes from '@/components/PrivateRoute/PrivateRoute';
+import React from 'react';
+import LoginForm from '@/components/Login/LoginForm';
 
-export default function Index() {
-  return (
-    <PrivateRoutes>
-      <Home />
-    </PrivateRoutes>
-  );
-}
+const Login = () => {
+  return <LoginForm />;
+};
+
+export default Login;

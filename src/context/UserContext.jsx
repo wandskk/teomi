@@ -28,7 +28,7 @@ export const UserStorage = ({ children }) => {
         );
         const { token, expiresIn } = login.data;
         setCookie('userLogin', token, expiresIn);
-        setUserToken(token)
+        setUserToken(token);
       } catch (error) {
         return error.response.data;
       }
@@ -62,14 +62,18 @@ export const UserStorage = ({ children }) => {
           { email, secretKey: connectID },
           useruniqueid
         );
-
-        setUserData(data);
-      } catch (error) {}
+        setLoading(true);
+        setLogged(true);
+        setUserData(data.data);
+      } catch (error) {
+        setLogged(false);
+      } finally {
+        setLoading(false);
+      }
     };
 
     if (cookie && userToken) {
       const { useremail } = decode(cookie);
-
       fetchData(useremail, cookie);
     }
   }, [userToken, connectID]);
@@ -80,11 +84,8 @@ export const UserStorage = ({ children }) => {
     !cookie && setLogged(false);
   }, []);
 
-  React.useEffect(() => {
-    userData && setLogged(true);
-  }, [userData]);
-
-  React.useEffect(() => setSplashScreen(false), []);  
+  React.useEffect(() => setSplashScreen(false), []);
+  React.useEffect(() => setLoading(true), []);
 
   return (
     <UserContext.Provider

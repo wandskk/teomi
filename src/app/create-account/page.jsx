@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client';
 
 import React from 'react';
@@ -13,3 +14,13 @@ const Index = () => {
 };
 
 export default Index;
+=======
+import React from 'react';
+import CreateAccount from '@/components/CreateAccount/CreateAccount';
+
+const index = () => {
+  return <CreateAccount />;
+};
+
+export default index;
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9

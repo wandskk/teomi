@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client';
 
 import React from 'react';
@@ -13,3 +14,13 @@ const Login = () => {
 };
 
 export default Login;
+=======
+import React from 'react';
+import LoginForm from '@/components/Login/LoginForm';
+
+const login = () => {
+  return <LoginForm />;
+};
+
+export default login;
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9

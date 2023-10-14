@@ -1,4 +1,5 @@
 import React from 'react';
+<<<<<<< HEAD
 import InputMask from 'react-input-mask';
 import { useFormik } from 'formik';
 import { schema } from './schemas/formStepOne';
@@ -22,6 +23,22 @@ const CreateAccountStepOne = ({ stepValues, setStepValues }) => {
       confirmPassword: stepValues?.confirmPassword ?? '',
       phone: stepValues?.phone ?? '',
       birthdate: stepValues?.birthdate ?? '',
+=======
+
+import { useFormik } from 'formik';
+import { schema } from './schemas/formStepOne';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import './styles/CreateAccountSteps.scss';
+
+const CreateAccountStepOne = ({ stepValues, setStepValues }) => {
+  const formik = useFormik({
+    initialValues: {
+      email: stepValues?.email ?? '',
+      password: stepValues?.password ?? '',
+      confirmPassword: stepValues?.confirmPassword ?? '',
+      telephone: stepValues?.telephone ?? '',
+      birthday: stepValues?.birthday ?? '',
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
       gender: stepValues?.gender ?? '',
     },
     validateOnMount: true,
@@ -29,6 +46,7 @@ const CreateAccountStepOne = ({ stepValues, setStepValues }) => {
     validationSchema: schema,
   });
 
+<<<<<<< HEAD
   const emailAlreadyExist = React.useCallback(async (email, connectID) => {
     setErrorEmail(null);
     try {
@@ -52,10 +70,22 @@ const CreateAccountStepOne = ({ stepValues, setStepValues }) => {
 
     isValidEmail && emailAlreadyExist(email, connectID);
   }, [formik.values.email]);
+=======
+  React.useEffect(() => {
+    if (formik.isValid) {
+      setStepValues(formik.values);
+    } else {
+      setStepValues(null);
+    }
+  }, [formik]);
+
+  const [showPassword, setShowPassword] = React.useState(false);
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
 
   return (
     <div className='createAccountSteps'>
       <div className='createAccountSteps__inputAndLabel'>
+<<<<<<< HEAD
         <label htmlFor='name'>Nome</label>
         <input
           type='text'
@@ -76,6 +106,8 @@ const CreateAccountStepOne = ({ stepValues, setStepValues }) => {
         )}
       </div>
       <div className='createAccountSteps__inputAndLabel'>
+=======
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
         <label htmlFor='email'>E-mail</label>
         <input
           type='text'
@@ -85,7 +117,12 @@ const CreateAccountStepOne = ({ stepValues, setStepValues }) => {
           onChange={formik.handleChange('email')}
           onBlur={formik.handleBlur('email')}
           className={
+<<<<<<< HEAD
             ((formik.touched.email && formik.errors.email) || errorEmail) &&
+=======
+            formik.touched.email &&
+            formik.errors.email &&
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
             'createAccountSteps__inputInvalid'
           }
           required
@@ -95,9 +132,12 @@ const CreateAccountStepOne = ({ stepValues, setStepValues }) => {
             {formik.errors.email}
           </p>
         )}
+<<<<<<< HEAD
         {errorEmail && (
           <p className='createAccountSteps__inputError'>{errorEmail}</p>
         )}
+=======
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
       </div>
 
       <div className='createAccountSteps__inputAndLabel'>
@@ -159,6 +199,7 @@ const CreateAccountStepOne = ({ stepValues, setStepValues }) => {
       </div>
 
       <div className='createAccountSteps__inputAndLabel'>
+<<<<<<< HEAD
         <label htmlFor='phone'>Telefone</label>
         <InputMask
           mask='(99) 99999-9999'
@@ -176,11 +217,32 @@ const CreateAccountStepOne = ({ stepValues, setStepValues }) => {
         {formik.touched.phone && formik.errors.phone && (
           <p className='createAccountSteps__inputError'>
             {formik.errors.phone}
+=======
+        <label htmlFor='telephone'>Telefone</label>
+        <input
+          type='text'
+          id='telephone'
+          name='telephone'
+          value={formik.values.telephone}
+          onChange={formik.handleChange('telephone')}
+          onBlur={formik.handleBlur('telephone')}
+          required
+          className={
+            formik.touched.telephone &&
+            formik.errors.telephone &&
+            'createAccountSteps__inputInvalid'
+          }
+        />
+        {formik.touched.telephone && formik.errors.telephone && (
+          <p className='createAccountSteps__inputError'>
+            {formik.errors.telephone}
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
           </p>
         )}
       </div>
 
       <div className='createAccountSteps__inputAndLabel'>
+<<<<<<< HEAD
         <label htmlFor='birthdate'>Data de nascimento</label>
         <input
           type='text'
@@ -199,12 +261,33 @@ const CreateAccountStepOne = ({ stepValues, setStepValues }) => {
         {formik.touched.birthdate && formik.errors.birthdate && (
           <p className='createAccountSteps__inputError'>
             {formik.errors.birthdate}
+=======
+        <label htmlFor='birthday'>Data de nascimento</label>
+        <input
+          type='text'
+          id='birthday'
+          name='birthday'
+          value={formik.values.birthday}
+          onChange={formik.handleChange('birthday')}
+          onBlur={formik.handleBlur('birthday')}
+          required
+          className={
+            formik.touched.birthday &&
+            formik.errors.birthday &&
+            'createAccountSteps__inputInvalid'
+          }
+        />
+        {formik.touched.birthday && formik.errors.birthday && (
+          <p className='createAccountSteps__inputError'>
+            {formik.errors.birthday}
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
           </p>
         )}
       </div>
 
       <div className='createAccountSteps__gender'>
         <p>Sexo</p>
+<<<<<<< HEAD
         {genderList &&
           genderList.map((gender) => (
             <label htmlFor={gender.id} key={gender.name}>
@@ -221,6 +304,47 @@ const CreateAccountStepOne = ({ stepValues, setStepValues }) => {
               {gender.name}
             </label>
           ))}
+=======
+        <label htmlFor='man'>
+          <input
+            type='radio'
+            name='gender'
+            id='man'
+            value='man'
+            onChange={formik.handleChange('gender')}
+            onBlur={formik.handleBlur('gender')}
+            checked={formik.values.gender === 'man'}
+            required
+          />
+          Masculino
+        </label>
+        <label htmlFor='woman'>
+          <input
+            type='radio'
+            name='gender'
+            id='woman'
+            value='woman'
+            onChange={formik.handleChange('gender')}
+            onBlur={formik.handleBlur('gender')}
+            checked={formik.values.gender === 'woman'}
+            required
+          />
+          Feminino
+        </label>
+        <label htmlFor='other'>
+          <input
+            type='radio'
+            name='gender'
+            id='other'
+            value='other'
+            onChange={formik.handleChange('gender')}
+            onBlur={formik.handleBlur('gender')}
+            checked={formik.values.gender === 'other'}
+            required
+          />
+          Prefiro não informar
+        </label>
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
         {formik.touched.gender && formik.errors.gender && (
           <p className='createAccountSteps__inputError'>
             {formik.errors.gender}

@@ -14,6 +14,7 @@ body {
   position: relative;
 }
 
+<<<<<<< HEAD
 .fade-enter {
   opacity: 0;
 }
@@ -48,4 +49,30 @@ body {
 .slide-exit-active {
   transform: translateX(-100%);
   transition: transform 0.5s ease-in-out;
+=======
+body::before {
+  display: flex;
+  position: fixed;
+  content: '';
+  top: -4.5rem;
+  left: -4.5rem;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  background-color: #9363a7;
+  z-index: 0 !important;
+}
+
+body::after {
+  display: flex;
+  position: fixed;
+  content: '';
+  bottom: -4.5rem;
+  right: -4.5rem;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  background-color: #9363a7;
+  z-index: 0 !important;
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
 }

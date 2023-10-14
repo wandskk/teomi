@@ -1,4 +1,5 @@
 'use client';
+<<<<<<< HEAD
 
 import React from 'react';
 import decode from 'jwt-decode';
@@ -6,10 +7,14 @@ import { AuthServices } from '@/services/modules/auth';
 import { UsersServices } from '@/services/modules/users';
 import { getCookie } from '@/resources/helpers/cookies/getCookie';
 import { setCookie } from '@/resources/helpers/cookies/setCookie';
+=======
+import React from 'react';
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
 
 export const UserContext = React.createContext();
 
 export const UserStorage = ({ children }) => {
+<<<<<<< HEAD
   const [connectID, setConnectID] = React.useState(null);
   const [userToken, setUserToken] = React.useState(null);
   const [userData, setUserData] = React.useState(null);
@@ -101,4 +106,54 @@ export const UserStorage = ({ children }) => {
       {children}
     </UserContext.Provider>
   );
+=======
+  const [nav, setNav] = React.useState('teste');  
+
+  //   const getToken = React.useCallback(() => {
+  //     const tokenOnQuery = router.query.token;
+  //     const tokenLocalStorage = localStorage.getItem('authToken');
+
+  //     if (router.route === '/' && tokenOnQuery && !tokenLocalStorage) {
+  //       localStorage.setItem('authToken', tokenOnQuery);
+  //       setToken(tokenOnQuery);
+  //     } else if (tokenLocalStorage) {
+  //       setToken(tokenLocalStorage);
+  //     } else {
+  //       setIsLogged(false);
+  //     }
+  //   }, [router]);
+
+  //   const authLogin = React.useCallback(async (token) => {
+  //     setIsLogged(null);
+  //     try {
+  //       setLoading(true);
+  //       const resToken = await AuthServices.getValidateToken(token);
+  //       setIsLogged(true);
+  //     } catch (error) {
+  //       setIsLogged(false);
+  //       localStorage.removeItem('authToken');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }, []);
+
+  //   React.useEffect(() => {
+  //     if (!isLogged) {
+  //       setNav(navegationApp[0]);
+  //     } else {
+  //       const navigation = navegationApp.filter(
+  //         (nav) => nav.url === router.pathname
+  //       )[0];
+
+  //       setNav(navigation);
+  //     }
+  //   }, [router, isLogged]);
+
+  //   React.useEffect(() => {
+  //     getToken();
+  //     if (token) authLogin(token);
+  //   }, [token, authLogin, getToken]);
+
+  return <UserContext.Provider value={{nav}}>{children}</UserContext.Provider>;
+>>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
 };

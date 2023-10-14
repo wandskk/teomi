@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-<<<<<<< HEAD
 import { UserContext } from '@/context/UserContext';
 import '@/styles/Login/LoginForm.scss';
 
@@ -27,37 +26,12 @@ function LoginForm() {
       }
     } catch (error) {}
   }
-=======
-import './styles/LoginForm.scss';
-
-function LoginForm() {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setEmail('');
-    setPassword('');
-  };
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
 
   return (
     <div className='loginForm'>
       <h1 className='loginForm__title'>Faça seu login</h1>
       <p className='loginForm__subtitle'>
-<<<<<<< HEAD
         Não tem uma conta? {' '}
-=======
-        Não tem uma conta?{' '}
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
         <Link href='/create-account' className='loginForm__subtitle__link'>
           Inscrever-se
         </Link>
@@ -87,11 +61,7 @@ function LoginForm() {
             required
           />
         </div>
-<<<<<<< HEAD
         <p className='loginForm__form__error'>{errorLogin}</p>
-=======
-
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
         <div className='loginForm__form__actions'>
           <label
             htmlFor='remember'

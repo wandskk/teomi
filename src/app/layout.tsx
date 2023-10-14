@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
@@ -10,13 +9,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { UserStorage } from '../context/UserContext';
 import { Suspense } from 'react';
-=======
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { UserStorage } from '../context/UserContext';
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
 import './globals.css';
 import 'normalize.css/normalize.css';
 
@@ -35,7 +27,6 @@ export default function RootLayout({
   return (
     <html lang='pt-br'>
       <UserStorage>
-<<<<<<< HEAD
         <Suspense fallback={<Loading />}>
           <body className={inter.className} suppressHydrationWarning={true}>
             <Header />
@@ -46,13 +37,6 @@ export default function RootLayout({
             <CustomLoader />
           </body>
         </Suspense>
-=======
-        <body className={inter.className} suppressHydrationWarning={true}>
-          <Header />
-          <main>{children}</main>
-          <Footer />
-        </body>
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
       </UserStorage>
     </html>
   );

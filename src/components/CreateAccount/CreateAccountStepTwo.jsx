@@ -1,5 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD
 import InputMask from 'react-input-mask';
 import { useFormik } from 'formik';
 import { schema } from './schemas/formStepTwo';
@@ -17,19 +16,6 @@ const CreateAccountStepTwo = ({ stepValues, setStepValues }) => {
       address: stepValues?.address ?? '',
       number: stepValues?.number ?? '',
       complement: stepValues?.complement ?? '',
-=======
-import { useFormik } from 'formik';
-import { schema } from './schemas/formStepTwo';
-import './styles/CreateAccountSteps.scss';
-
-const CreateAccountStepTwo = ({ stepValues, setStepValues }) => {
-  const formik = useFormik({
-    initialValues: {
-      cep: stepValues?.cep ?? '',
-      address: stepValues?.address ?? '',
-      addressNumber: stepValues?.addressNumber ?? '',
-      addressComplement: stepValues?.addressComplement ?? '',
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
       neighborhood: stepValues?.neighborhood ?? '',
       city: stepValues?.city ?? '',
       state: stepValues?.state ?? '',
@@ -39,7 +25,6 @@ const CreateAccountStepTwo = ({ stepValues, setStepValues }) => {
     validationSchema: schema,
   });
 
-<<<<<<< HEAD
   const placeFieldsWithCep = React.useCallback(
     async (postalCode, connectID) => {
       setLoading(true);
@@ -85,21 +70,10 @@ const CreateAccountStepTwo = ({ stepValues, setStepValues }) => {
     unmaskedCep.length === 8 && placeFieldsWithCep(unmaskedCep, connectID);
   }, [formik.values.postalCode]);
 
-=======
-  React.useEffect(() => {
-    if (formik.isValid) {
-      setStepValues(formik.values);
-    } else {
-      setStepValues(null);
-    }
-  }, [formik]);
-
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
   return (
     <div className='createAccountSteps'>
       <div className='createAccountSteps__inputAndLabel'>
         <label htmlFor='cep'>CEP</label>
-<<<<<<< HEAD
         <InputMask
           mask='99999-999'
           maskChar='_'
@@ -117,24 +91,6 @@ const CreateAccountStepTwo = ({ stepValues, setStepValues }) => {
           <p className='createAccountSteps__inputError'>
             {formik.errors.postalCode}
           </p>
-=======
-        <input
-          type='text'
-          id='cep'
-          name='cep'
-          value={formik.values.cep}
-          onChange={formik.handleChange('cep')}
-          onBlur={formik.handleBlur('cep')}
-          className={
-            formik.touched.cep &&
-            formik.errors.cep &&
-            'createAccountSteps__inputInvalid'
-          }
-          required
-        />
-        {formik.touched.cep && formik.errors.cep && (
-          <p className='createAccountSteps__inputError'>{formik.errors.cep}</p>
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
         )}
       </div>
 
@@ -163,7 +119,6 @@ const CreateAccountStepTwo = ({ stepValues, setStepValues }) => {
 
       <div className='createAccountSteps__twoInputs'>
         <div className='createAccountSteps__inputAndLabel'>
-<<<<<<< HEAD
           <label htmlFor='number'>Número</label>
           <input
             type='text'
@@ -175,38 +130,18 @@ const CreateAccountStepTwo = ({ stepValues, setStepValues }) => {
             className={
               formik.touched.number &&
               formik.errors.number &&
-=======
-          <label htmlFor='addressNumber'>Número</label>
-          <input
-            type='text'
-            id='addressNumber'
-            name='addressNumber'
-            value={formik.values.addressNumber}
-            onChange={formik.handleChange('addressNumber')}
-            onBlur={formik.handleBlur('addressNumber')}
-            className={
-              formik.touched.addressNumber &&
-              formik.errors.addressNumber &&
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
               'createAccountSteps__inputInvalid'
             }
             required
           />
-<<<<<<< HEAD
           {formik.touched.number && formik.errors.number && (
             <p className='createAccountSteps__inputError'>
               {formik.errors.number}
-=======
-          {formik.touched.addressNumber && formik.errors.addressNumber && (
-            <p className='createAccountSteps__inputError'>
-              {formik.errors.addressNumber}
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
             </p>
           )}
         </div>
 
         <div className='createAccountSteps__inputAndLabel'>
-<<<<<<< HEAD
           <label htmlFor='complement'>Complemento</label>
           <input
             type='text'
@@ -218,37 +153,15 @@ const CreateAccountStepTwo = ({ stepValues, setStepValues }) => {
             className={
               formik.touched.complement &&
               formik.errors.complement &&
-=======
-          <label htmlFor='addressComplement'>Complemento</label>
-          <input
-            type='text'
-            id='addressComplement'
-            name='addressComplement'
-            value={formik.values.addressComplement}
-            onChange={formik.handleChange('addressComplement')}
-            onBlur={formik.handleBlur('addressComplement')}
-            className={
-              formik.touched.addressComplement &&
-              formik.errors.addressComplement &&
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
               'createAccountSteps__inputInvalid'
             }
             required
           />
-<<<<<<< HEAD
           {formik.touched.complement && formik.errors.complement && (
             <p className='createAccountSteps__inputError'>
               {formik.errors.complement}
             </p>
           )}
-=======
-          {formik.touched.addressComplement &&
-            formik.errors.addressComplement && (
-              <p className='createAccountSteps__inputError'>
-                {formik.errors.addressComplement}
-              </p>
-            )}
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
         </div>
       </div>
 
@@ -284,10 +197,7 @@ const CreateAccountStepTwo = ({ stepValues, setStepValues }) => {
           value={formik.values.city}
           onChange={formik.handleChange('city')}
           onBlur={formik.handleBlur('city')}
-<<<<<<< HEAD
           disabled
-=======
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
           className={
             formik.touched.city &&
             formik.errors.city &&
@@ -309,10 +219,7 @@ const CreateAccountStepTwo = ({ stepValues, setStepValues }) => {
           value={formik.values.state}
           onChange={formik.handleChange('state')}
           onBlur={formik.handleBlur('state')}
-<<<<<<< HEAD
           disabled
-=======
->>>>>>> ac23fe29a783e194d0fae99c4b3ce166100b54d9
           className={
             formik.touched.state &&
             formik.errors.state &&

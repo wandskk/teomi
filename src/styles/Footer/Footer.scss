@@ -1,0 +1,59 @@
+@import '../vars';
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  background-color: $neutral;
+  max-width: 721px;
+  width: 100%;
+  overflow: hidden;
+
+  &__nav {
+    &__list {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      list-style: none;
+      padding: 1rem 1.5rem;
+
+      &__item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: #fff;
+
+        &__link {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+
+          & img {
+            z-index: 1;
+
+            &:last-child {
+              position: absolute;
+              top: -0.1rem;
+              right: -0.1rem;
+              z-index: -1;
+            }
+          }
+        }
+
+        &--marker {
+          position: absolute;
+          right: -1rem;
+          bottom: -0.4rem;
+        }
+      }
+    }
+  }
+
+  &__marker {
+    position: absolute;
+    top: 18%;
+    left: 50.5%;
+    transform: translate(-50%, -50%);
+  }
+}

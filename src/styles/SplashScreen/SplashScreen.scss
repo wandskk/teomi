@@ -1,0 +1,16 @@
+@import '../vars';
+
+.splashScreen {
+  background-color: $neutral;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  overflow-y: hidden;
+}

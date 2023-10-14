@@ -28,7 +28,7 @@ export const UserStorage = ({ children }) => {
         );
         const { token, expiresIn } = login.data;
         setCookie('userLogin', token, expiresIn);
-        setUserToken(token);
+        setUserToken(token)
       } catch (error) {
         return error.response.data;
       }

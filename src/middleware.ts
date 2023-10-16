@@ -9,7 +9,7 @@ export default function middleware(request: NextRequest) {
   const dashboardURL = new URL('/dashboard', url);
 
   if (!token) {
-    if (pathname === '/') return next();
+    if (pathname === '/' || pathname === '/create-account') return next();
     return redirect(signInURL);
   }
 

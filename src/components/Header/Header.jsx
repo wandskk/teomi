@@ -1,9 +1,10 @@
 'use client';
 import React from 'react';
+import SideBar from '@/components/SideBar/SideBar';
 import { AiOutlineLeft } from 'react-icons/ai';
-import { FiMenu } from 'react-icons/fi';
 import { usePathname } from 'next/navigation';
 import '@/styles/Header/Header.scss';
+import Link from 'next/link';
 
 const Header = () => {
   const [canSeeBackPage, setCanSeeBackPage] = React.useState(true);
@@ -12,6 +13,7 @@ const Header = () => {
 
   React.useEffect(() => {
     if (pathname === '/dashboard') setCanSeeBackPage(false);
+    else setCanSeeBackPage(true);
     if (pathname === '/' || pathname === '/create-account')
       setCanSeeSideMenu(false);
   }, [pathname]);
@@ -19,8 +21,16 @@ const Header = () => {
     <header className='header'>
       <nav>
         <ul>
-          <li>{canSeeBackPage && <AiOutlineLeft />}</li>
-          <li>{canSeeSideMenu && <FiMenu />}</li>
+          <li>
+            {canSeeBackPage ? (
+              <Link href='/dashboard'>
+                <AiOutlineLeft />
+              </Link>
+            ) : (
+              ' '
+            )}
+          </li>
+          <li>{canSeeSideMenu ? <SideBar /> : ' '}</li>
         </ul>
       </nav>
     </header>

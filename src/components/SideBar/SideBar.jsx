@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import profileMan from '@/assets/images/man.svg';
 import { FiMenu } from 'react-icons/fi';
+import { VscSignOut } from 'react-icons/vsc';
 import { AiOutlineClose } from 'react-icons/ai';
 import { UserContext } from '@/context/UserContext';
 import { convert64ToUrl } from '@/resources/helpers/image/convert64ToUrl';
@@ -13,7 +14,7 @@ import '@/styles/SideBar/SideBar.scss';
 const Sidebar = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [userPhoto, setUserPhoto] = React.useState(null);
-  const { userData } = React.useContext(UserContext);
+  const { userData, logout } = React.useContext(UserContext);
   const pathname = usePathname();
 
   React.useEffect(() => setMenuOpen(false), [pathname]);
@@ -42,12 +43,14 @@ const Sidebar = () => {
                 height={128}
               />
             ) : ( */}
-            <Image
-              src={profileMan}
-              width={64}
-              height={64}
-              alt='Foto do usuário'
-            />
+            {userData && (
+              <Image
+                src={profileMan}
+                width={64}
+                height={64}
+                alt='Foto do usuário'
+              />
+            )}
             {/* )} */}
             <p>{userData ? name.getFirstName(userData.name) : ''}</p>
           </div>
@@ -56,10 +59,24 @@ const Sidebar = () => {
           </div>
         </div>
         <div className='sidebar__menu'>
-          <Link href='/dashboard'>Configurações</Link>
-          <Link href='/dashboard'>Conta</Link>
+          {userData ? (
+            <>
+              <Link href='/'>Configurações</Link>
+              <Link href='/'>Conta</Link>
+            </>
+          ) : (
+            <>
+              <Link href='/login'>Login</Link>
+              <Link href='/create-account'>Cadastre-se</Link>
+            </>
+          )}
           <Link href='/about'>Sobre</Link>
         </div>
+        {userData && (
+          <div className='sidebar__exit' onClick={logout}>
+            Sair <VscSignOut />
+          </div>
+        )}
       </div>
     </>
   );

@@ -22,7 +22,7 @@
   &__header {
     background-color: $neutral;
     position: relative;
-    min-height: 5rem;
+    min-height: 3.5rem;
     box-shadow: 0 0 1rem 0 $neutral;
 
     &__profile {
@@ -83,5 +83,14 @@
         font-size: 1.2rem;
       }
     }
+  }
+
+  &__exit {
+    position: absolute;
+    bottom: 1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

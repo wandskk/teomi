@@ -12,10 +12,12 @@ const Header = () => {
   const pathname = usePathname();
 
   React.useEffect(() => {
-    if (pathname === '/dashboard') setCanSeeBackPage(false);
+    if (pathname === '/') setCanSeeBackPage(false);
     else setCanSeeBackPage(true);
-    if (pathname === '/' || pathname === '/create-account')
+
+    if (pathname === '/login' || pathname === '/create-account')
       setCanSeeSideMenu(false);
+    else setCanSeeSideMenu(true);
   }, [pathname]);
   return (
     <header className='header'>
@@ -23,7 +25,7 @@ const Header = () => {
         <ul>
           <li>
             {canSeeBackPage ? (
-              <Link href='/dashboard'>
+              <Link href='/'>
                 <AiOutlineLeft />
               </Link>
             ) : (

@@ -6,6 +6,7 @@ import { AuthServices } from '@/services/modules/auth';
 import { UsersServices } from '@/services/modules/users';
 import { getCookie } from '@/resources/helpers/cookies/getCookie';
 import { setCookie } from '@/resources/helpers/cookies/setCookie';
+import { removeCookie } from '@/resources/helpers/cookies/removeCookie';
 import { redirect } from 'next/navigation';
 
 export const UserContext = React.createContext();
@@ -34,6 +35,12 @@ export const UserStorage = ({ children }) => {
         return error.response.data;
       }
     else setUserToken(cookie);
+  }
+
+  async function logout() {
+    removeCookie('userLogin');
+    removeCookie('connectID');
+    window.location.reload();
   }
 
   React.useEffect(() => {
@@ -89,8 +96,9 @@ export const UserStorage = ({ children }) => {
         userData,
         loading,
         splashScreen,
-        userLogin,
         setLoading,
+        userLogin,
+        logout,
       }}
     >
       {children}

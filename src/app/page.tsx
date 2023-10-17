@@ -1,10 +1,7 @@
 'use client';
 
-import React from 'react';
-import LoginForm from '@/components/Login/LoginForm';
+import Home from '@/components/Home/Home';
 
-const Login = () => {
-  return <LoginForm />;
-};
-
-export default Login;
+export default function Index() {
+  return <Home />;
+}

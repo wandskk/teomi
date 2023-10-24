@@ -1,12 +1,14 @@
-import React from 'react';
-import profileMan from '@/assets/images/man.svg';
-import profileWoman from '@/assets/images/woman.svg';
-import Image from 'next/image';
-import { AiFillCamera } from 'react-icons/ai';
-import '@/styles/CreateAccount/CreateAccountSteps.scss';
+import React from "react";
+import profileMan from "@/assets/images/man.svg";
+import profileWoman from "@/assets/images/woman.svg";
+import Image from "next/image";
+import { AiFillCamera } from "react-icons/ai";
+import { UserContext } from "@/context/UserContext";
+import "@/styles/CreateAccount/CreateAccountSteps.scss";
 
 const CreateAccountStepThree = ({ gender, stepValues, setStepValues }) => {
-  const [selectedImage, setSelectedImage] = React.useState(null);
+  const { userData } = React.useContext(UserContext);
+  const [selectedImage, setSelectedImage] = React.useState(userData.userphoto);
 
   const handleImageChange = async (file) => {
     if (file) {
@@ -35,35 +37,35 @@ const CreateAccountStepThree = ({ gender, stepValues, setStepValues }) => {
   }, [selectedImage, setStepValues]);
 
   return (
-    <div className='createAccountSteps'>
-      <div className='createAccountSteps__profile'>
-        <div className='createAccountSteps__profile__container'>
-          <label htmlFor='profilePhoto'>
+    <div className="createAccountSteps">
+      <div className="createAccountSteps__profile">
+        <div className="createAccountSteps__profile__container">
+          <label htmlFor="profilePhoto">
             {selectedImage ? (
               <Image
-                className='createAccountSteps__profile__image'
+                className="createAccountSteps__profile__image"
                 src={selectedImage}
                 width={128}
                 height={128}
-                alt='Imagem de perfil'
+                alt="Imagem de perfil"
               />
             ) : (
               <Image
-                className='createAccountSteps__profile__image'
-                src={gender === '2' ? profileWoman : profileMan}
+                className="createAccountSteps__profile__image"
+                src={gender === "2" ? profileWoman : profileMan}
                 width={128}
                 height={128}
-                alt='Imagem de perfil'
+                alt="Imagem de perfil"
               />
             )}
             <input
-              type='file'
-              name='profilePhoto'
-              id='profilePhoto'
-              accept='image/*'
+              type="file"
+              name="profilePhoto"
+              id="profilePhoto"
+              accept="image/*"
               onChange={(e) => handleImageChange(e.target.files[0])}
             />
-            <span className='createAccountSteps__profile__change'>
+            <span className="createAccountSteps__profile__change">
               <AiFillCamera />
             </span>
           </label>

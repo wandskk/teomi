@@ -115,7 +115,7 @@ const CreateAccount = () => {
     <div className='createAccount'>
       <h1 className='createAccount__title'>Inscreva-se</h1>
       <div className='createAccount__stepsIndicator'>
-        <p className='createAccount__stepsIndicator__text'>Passo {step}</p>
+        <p className='createAccount__stepsIndicator__text --create-account'>Passo {step}</p>
         <div className='createAccount__stepsIndicator__dots'>
           {renderDots()}
         </div>

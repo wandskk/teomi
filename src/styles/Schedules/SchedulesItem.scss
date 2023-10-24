@@ -1,0 +1,89 @@
+@import "../vars";
+
+.schedulesItem {
+  display: flex;
+  flex-direction: column;
+  background-color: #eef4fe;
+  border-radius: 0.5rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    gap: 1.125rem;
+    border-bottom: 1px solid #0000001a;
+
+    // &__photo {
+    // }
+
+    &__details {
+      display: flex;
+      flex-direction: column;
+
+      &__name {
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+
+      &__type {
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+    }
+  }
+
+  &__content {
+    padding: 1.5rem;
+
+    &__agenda {
+      display: flex;
+      gap: 1.125rem;
+      font-size: 0.9rem;
+      font-weight: 400;
+
+      &__item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        & svg {
+          font-size: 1.4rem;
+          color: #00000080;
+          margin-bottom: 0.2rem;
+        }
+      }
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4rem;
+      margin-top: 1.125rem;
+
+      &__reschedule {
+        background-color: $orange;
+        border: none;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        color: #fff;
+      }
+
+      &__enter {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #5f7aff;
+        font-weight: 800;
+
+        & svg {
+          font-size: 1.4rem;
+          color: #00000080 !important;
+          margin-bottom: 0.2rem;
+        }
+      }
+    }
+  }
+}

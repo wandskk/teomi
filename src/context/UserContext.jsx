@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import React from 'react';
-import decode from 'jwt-decode';
-import { AuthServices } from '@/services/modules/auth';
-import { UsersServices } from '@/services/modules/users';
-import { getCookie } from '@/resources/helpers/cookies/getCookie';
-import { setCookie } from '@/resources/helpers/cookies/setCookie';
-import { removeCookie } from '@/resources/helpers/cookies/removeCookie';
-import { redirect } from 'next/navigation';
+import React from "react";
+import decode from "jwt-decode";
+import { AuthServices } from "@/services/modules/auth";
+import { UsersServices } from "@/services/modules/users";
+import { getCookie } from "@/resources/helpers/cookies/getCookie";
+import { setCookie } from "@/resources/helpers/cookies/setCookie";
+import { removeCookie } from "@/resources/helpers/cookies/removeCookie";
 
 export const UserContext = React.createContext();
 
@@ -20,7 +19,7 @@ export const UserStorage = ({ children }) => {
   const tokenAuth = process.env.NEXT_PUBLIC_SECRET_KEY;
 
   async function userLogin(email, password) {
-    const cookie = getCookie('userLogin');
+    const cookie = getCookie("userLogin");
     if (!cookie)
       try {
         const login = await UsersServices.userLogin(
@@ -28,7 +27,7 @@ export const UserStorage = ({ children }) => {
           connectID
         );
         const { token, expiresIn } = login.data;
-        setCookie('userLogin', token, expiresIn);
+        setCookie("userLogin", token, expiresIn);
         setUserToken(token);
         window.location.reload();
       } catch (error) {
@@ -38,19 +37,19 @@ export const UserStorage = ({ children }) => {
   }
 
   async function logout() {
-    removeCookie('userLogin');
-    removeCookie('connectID');
+    removeCookie("userLogin");
+    removeCookie("connectID");
     window.location.reload();
   }
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const cookie = getCookie('connectID');
+      const cookie = getCookie("connectID");
       if (!cookie)
         try {
           const tokenAutorization = await AuthServices.getAuthToken(tokenAuth);
           const { token, expiresIn } = tokenAutorization;
-          setCookie('connectID', token, expiresIn);
+          setCookie("connectID", token, expiresIn);
           setConnectID(token);
         } catch (error) {}
       else setConnectID(cookie);
@@ -60,16 +59,20 @@ export const UserStorage = ({ children }) => {
   }, [tokenAuth]);
 
   React.useEffect(() => {
-    const cookie = getCookie('userLogin');
+    const cookie = getCookie("userLogin");
 
     const fetchData = async (email, useruniqueid) => {
+      setLoading(true);
       try {
         const data = await UsersServices.getUserData(
           { email, secretKey: connectID },
           useruniqueid
         );
-        setLoading(true);
-        setUserData(data.data);
+        const location = await UsersServices.getUserLocation(
+          { email, secretKey: connectID },
+          useruniqueid
+        );
+        setUserData({ ...data, ...location });
       } catch (error) {
       } finally {
         setLoading(false);
@@ -83,7 +86,7 @@ export const UserStorage = ({ children }) => {
   }, [userToken, connectID]);
 
   React.useEffect(() => {
-    const cookie = getCookie('userLogin');
+    const cookie = getCookie("userLogin");
     cookie && setUserToken(cookie);
   }, []);
 
@@ -93,6 +96,7 @@ export const UserStorage = ({ children }) => {
     <UserContext.Provider
       value={{
         connectID,
+        userToken,
         userData,
         loading,
         splashScreen,

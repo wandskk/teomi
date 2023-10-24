@@ -91,12 +91,14 @@
       justify-content: flex-end;
       align-items: flex-start;
       position: relative;
-      min-height: 10.2rem;
+      height: 15rem;
       background-repeat: no-repeat;
-      background-size: contain;
+      background-position: center;
+      background-size: cover;
       color: #fff;
       overflow: hidden;
       border-radius: 2.5rem;
+      cursor: pointer;
 
       &::after {
         content: '';

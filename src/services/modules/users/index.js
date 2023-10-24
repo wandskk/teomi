@@ -1,21 +1,29 @@
-import { api } from '@/services';
-const basePath = '/users';
-const createPath = basePath + '/create';
-const updatePath = basePath + '/update';
+import { api } from "@/services";
+const basePath = "/users";
+const createPath = basePath + "/create";
+const updatePath = basePath + "/update";
 
 export const UsersServices = {
   getUserData: async (body, userToken) => {
     const result = await api.post(`${basePath}/info`, body, {
       headers: {
-        Authorization: 'Bearer ' + userToken,
+        Authorization: "Bearer " + userToken,
       },
     });
-    return result;
+    return result.data;
+  },
+  getUserLocation: async (body, userToken) => {
+    const result = await api.post(`${basePath}/location/info`, body, {
+      headers: {
+        Authorization: "Bearer " + userToken,
+      },
+    });
+    return result.data;
   },
   userLogin: async (body, authToken) => {
     const result = await api.post(`${basePath}/login`, body, {
       headers: {
-        Authorization: 'Bearer ' + authToken,
+        Authorization: "Bearer " + authToken,
       },
     });
     return result;
@@ -23,7 +31,15 @@ export const UsersServices = {
   createUser: async (body, authToken) => {
     const result = await api.put(createPath, body, {
       headers: {
-        Authorization: 'Bearer ' + authToken,
+        Authorization: "Bearer " + authToken,
+      },
+    });
+    return result;
+  },
+  updateUser: async (body, authToken) => {
+    const result = await api.patch(`${updatePath}`, body, {
+      headers: {
+        Authorization: "Bearer " + authToken,
       },
     });
     return result;
@@ -31,7 +47,7 @@ export const UsersServices = {
   updateUserLocation: async (body, authToken) => {
     const result = await api.patch(`${updatePath}/location`, body, {
       headers: {
-        Authorization: 'Bearer ' + authToken,
+        Authorization: "Bearer " + authToken,
       },
     });
     return result;
@@ -39,7 +55,7 @@ export const UsersServices = {
   updateUserPhoto: async (body, authToken) => {
     const result = await api.patch(`${updatePath}/userphoto`, body, {
       headers: {
-        Authorization: 'Bearer ' + authToken,
+        Authorization: "Bearer " + authToken,
       },
     });
     return result;

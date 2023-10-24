@@ -1,4 +1,4 @@
-@import '../vars';
+@import "../vars";
 
 .createAccount {
   padding: 0 1.5rem;
@@ -13,21 +13,40 @@
     font-weight: 800;
     text-align: center;
     margin: 0;
+
+    &.--account {
+      text-align: left;
+      color: #000;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
   }
 
   &__stepsIndicator {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     &__text {
-      max-width: fit-content;
-      width: 100%;
+      flex-grow: 1;
       background-color: $neutral;
-      padding: 0.5rem 2rem;
+      padding: 0.5rem 0;
       border-radius: 2rem;
       color: #fff;
       font-size: 0.875rem;
-      min-width: 7.2rem;
+      text-align: center;
+      font-weight: 700;
+
+      &.--create-account {
+        max-width: fit-content;
+        width: 100%;
+        min-width: 7.2rem;
+      }
+
+      &.--disabled {
+        background-color: transparent;
+        color: #000;
+      }
     }
 
     &__dots {

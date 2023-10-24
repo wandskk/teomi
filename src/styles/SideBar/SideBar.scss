@@ -1,15 +1,18 @@
-@import '../vars';
+@import "../vars";
 
 .sidebar {
   width: 250px;
   height: 100vh;
   background-color: #fff;
-  box-shadow: 0 0 0.5rem 0 #000;
-  position: fixed;
-  right: 110%;
+  box-shadow: -8rem 0 16rem 16rem #00000094;
+  position: absolute;
   top: 0;
+  display: none;
+  z-index: 2;
 
   &.open {
+    display: flex;
+    flex-direction: column;
     right: 0;
   }
 
@@ -23,7 +26,7 @@
     background-color: $neutral;
     position: relative;
     min-height: 3.5rem;
-    box-shadow: 0 0 1rem 0 $neutral;
+    box-shadow: 0.5rem 0 1rem 0 $neutral;
 
     &__profile {
       display: flex;
@@ -36,6 +39,10 @@
       justify-content: center;
       align-items: center;
       padding: 1rem;
+
+      & img {
+        border-radius: 50%;
+      }
     }
 
     &__close {
@@ -50,6 +57,7 @@
       right: 1rem;
       padding: 0.2rem;
       position: absolute;
+      cursor: pointer;
     }
   }
 
@@ -59,6 +67,7 @@
     text-align: center;
     list-style: none;
     padding: 0;
+    position: relative;
 
     a {
       display: flex;
@@ -76,7 +85,7 @@
       text-decoration: none;
 
       &::after {
-        content: '>';
+        content: ">";
         font-weight: bolder;
         position: absolute;
         right: 1rem;
@@ -92,5 +101,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
   }
 }

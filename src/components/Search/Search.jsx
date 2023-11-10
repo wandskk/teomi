@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { AiOutlineLeft } from "react-icons/ai";
 import { FiFilter } from "react-icons/fi";
 import "@/styles/Search/Search.scss";
-import Link from "next/link";
 
-const Search = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+const Search = ({ setSearch, setFilter }) => {
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [filterSearch, setFilterSearch] = React.useState(1);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -15,9 +14,17 @@ const Search = () => {
     event.preventDefault();
   };
 
+  React.useEffect(() => {
+    setSearch(searchTerm);
+  }, [searchTerm]);
+
+  React.useEffect(() => {
+    setFilter(filterSearch);
+  }, [filterSearch]);
+
   return (
     <div className="search">
-      <form className="search__form" onSubmit={handleSearchSubmit}>        
+      <form className="search__form" onSubmit={handleSearchSubmit}>
         <div className="search__field">
           <input
             className="search__input"
@@ -33,9 +40,24 @@ const Search = () => {
         </div>
       </form>
       <ul className="search__list">
-        <li className="search__list__item --active">Todos</li>
-        <li className="search__list__item">Offiline</li>
-        <li className="search__list__item">Online</li>
+        <li
+          className={`search__list__item ${filterSearch === 1 && "--active"}`}
+          onClick={() => setFilterSearch(1)}
+        >
+          Todos
+        </li>
+        <li
+          className={`search__list__item ${filterSearch === 2 && "--active"}`}
+          onClick={() => setFilterSearch(2)}
+        >
+          Offiline
+        </li>
+        <li
+          className={`search__list__item ${filterSearch === 3 && "--active"}`}
+          onClick={() => setFilterSearch(3)}
+        >
+          Online
+        </li>
       </ul>
     </div>
   );

@@ -1,9 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import SplashScreen from "@/components/SplashScreen/SplashScreen";
 import CustomLoader from "@/components/Loader/CustomLoader";
-import Flower from "@/components/Flower/Flower";
+import Loading from "@/app/loading";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { UserStorage } from "../context/UserContext";
@@ -26,12 +26,13 @@ export default function RootLayout({
     <html lang="pt-br">
       <UserStorage>
         <body className={inter.className} suppressHydrationWarning={true}>
-          <Header />
-          <main>{children}</main>
-          <Flower />
-          <Footer />
-          <SplashScreen />
-          <CustomLoader />
+          <Suspense fallback={<Loading />}>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+            <SplashScreen />
+            <CustomLoader />
+          </Suspense>
         </body>
       </UserStorage>
     </html>

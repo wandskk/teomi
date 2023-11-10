@@ -2,6 +2,7 @@
   padding: 1.5rem;
   padding-top: 0;
   margin-bottom: 10rem;
+  margin-top: 8rem;
 
   &__header {
     display: flex;
@@ -10,8 +11,8 @@
 
     &__flower {
       position: absolute;
-      z-index: 3;
-      top: -1rem;
+      z-index: 1;
+      top: -6rem;
       left: 0;
       transform: rotate(180deg);
     }

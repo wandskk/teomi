@@ -45,64 +45,7 @@ const Account = () => {
 
   const handleStep = (step) => setStep(step);
 
-  // const handleSubmit = async (values) => {
-  //   const { stepOne, stepTwo, stepThree } = values;
-
-  //   const createUserBody = {
-  //     ...stepOne,
-  //     birthdate: stepOne.birthdate.split("/").join(""),
-  //     gender: +stepOne.gender,
-  //   };
-
-  //   const getCityByName = await SystemServices.getCityIdByName(
-  //     stepTwo.city,
-  //     authToken
-  //   );
-
-  //   const stateId = statesList.find((state) => state.tag === stepTwo.state).id;
-  //   const cityId = getCityByName.data.results.find(
-  //     (city) => city.state_id === stateId
-  //   ).id;
-
-  //   const updateUserLocationBody = {
-  //     ...stepTwo,
-  //     cityId: cityId,
-  //     stateId: stateId,
-  //   };
-
-  //   const updateUserPhotoBody = {
-  //     pictureBlob: stepThree,
-  //   };
-
-  //   try {
-  //     const createUser = await UsersServices.createUser(
-  //       createUserBody,
-  //       authToken
-  //     );
-
-  //     const { email, password } = createUserBody;
-
-  //     const { userUniqueId } = createUser.data;
-
-  //     const updateUserLocation = await UsersServices.updateUserLocation(
-  //       { ...updateUserLocationBody, userUniqueId },
-  //       authToken
-  //     );
-
-  //     if (stepThree) {
-  //       const updateUserPhoto = await UsersServices.updateUserPhoto(
-  //         { ...updateUserPhotoBody, userUniqueId },
-  //         authToken
-  //       );
-  //     }
-
-  //     userLogin(email, password);
-  //   } catch (error) {}
-  // };
-
-  const updateUserData = async (values) => {
-    const cookie = getCookie("userLogin");
-    const { useruniqueid: userUniqueId } = decode(cookie);
+  const updateUserData = async (values, userUniqueId) => {
     const userBody = { ...values, userUniqueId };
     const isValid = !object.hasEmptyAttributes(userBody);
 
@@ -151,7 +94,6 @@ const Account = () => {
 
         setMessage({ text: success.updateLocation, type: "success" });
       } catch (err) {
-        console.log(err);
         const { message } = err.response.data;
         setMessage({ text: message ?? error.updateLocation, type: "error" });
       } finally {
@@ -184,11 +126,11 @@ const Account = () => {
   };
 
   function handleSubmit(step) {
-    const { useruniqueid } = decode(getCookie("userLogin"));
+    const { userUniqueId } = decode(getCookie("userLogin"));
 
-    step === 1 && updateUserData(stepOne, useruniqueid);
-    step === 2 && updateUserLocation(stepTwo, useruniqueid);
-    step === 3 && updateUserPhoto(stepThree, useruniqueid);
+    step === 1 && updateUserData(stepOne, userUniqueId);
+    step === 2 && updateUserLocation(stepTwo, userUniqueId);
+    step === 3 && updateUserPhoto(stepThree, userUniqueId);
   }
 
   return (

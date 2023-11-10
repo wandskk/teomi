@@ -2,6 +2,7 @@
 
 import React from "react";
 import decode from "jwt-decode";
+import { usePathname } from "next/navigation";
 import { AuthServices } from "@/services/modules/auth";
 import { UsersServices } from "@/services/modules/users";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";
@@ -17,6 +18,7 @@ export const UserStorage = ({ children }) => {
   const [loading, setLoading] = React.useState(false);
   const [splashScreen, setSplashScreen] = React.useState(true);
   const tokenAuth = process.env.NEXT_PUBLIC_SECRET_KEY;
+  const pathname = usePathname();
 
   async function userLogin(email, password) {
     const cookie = getCookie("userLogin");
@@ -61,16 +63,16 @@ export const UserStorage = ({ children }) => {
   React.useEffect(() => {
     const cookie = getCookie("userLogin");
 
-    const fetchData = async (email, useruniqueid) => {
+    const fetchData = async (email, userToken) => {
       setLoading(true);
       try {
         const data = await UsersServices.getUserData(
-          { email, secretKey: connectID },
-          useruniqueid
+          { email, userUniqueId: userToken },
+          connectID
         );
         const location = await UsersServices.getUserLocation(
-          { email, secretKey: connectID },
-          useruniqueid
+          { email, userUniqueId: userToken },
+          connectID
         );
         setUserData({ ...data, ...location });
       } catch (error) {
@@ -80,8 +82,8 @@ export const UserStorage = ({ children }) => {
     };
 
     if (cookie && userToken) {
-      const { useremail } = decode(cookie);
-      fetchData(useremail, cookie);
+      const { userEmail, userUniqueId } = decode(cookie);
+      fetchData(userEmail, userUniqueId);
     }
   }, [userToken, connectID]);
 

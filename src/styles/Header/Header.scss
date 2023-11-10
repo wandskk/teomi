@@ -1,7 +1,11 @@
 .header {
-  position: relative;
+  position: fixed;
   z-index: 2;
   padding: 1.5rem;
+  max-width: 721px;
+  width: 100%;
+  top: 0;
+  background-color: #fff;
 
   & ul {
     display: flex;

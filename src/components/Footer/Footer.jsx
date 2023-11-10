@@ -10,6 +10,7 @@ import calendarShadow from "@/assets/images/icons/calendarShadow.svg";
 import maps from "@/assets/images/icons/maps.svg";
 import mapsShadow from "@/assets/images/icons/mapsShadow.svg";
 import Link from "next/link";
+import Flower from "@/components/Flower/Flower";
 import { usePathname } from "next/navigation";
 import "@/styles/Footer/Footer.scss";
 
@@ -17,12 +18,15 @@ const Footer = () => {
   const [showFooter, setShowFooter] = React.useState(true);
   const pathname = usePathname();
   const noFooterRoutes = React.useMemo(() => {
-    return [{ name: "login", path: "/login" }];
+    return [
+      { name: "login", path: "login" },
+      { name: "chat", path: "chat" },
+    ];
   }, []);
 
   React.useEffect(() => {
-    const canShowFooter = noFooterRoutes.find(
-      (route) => route.path === pathname
+    const canShowFooter = noFooterRoutes.find((route) =>
+      pathname.includes(route.path)
     );
     if (canShowFooter) setShowFooter(false);
     else setShowFooter(true);
@@ -32,6 +36,7 @@ const Footer = () => {
     return (
       <footer className="footer">
         <nav className="footer__nav">
+          <Flower />
           <ul className="footer__nav__list">
             <li className="footer__nav__list__item">
               <Link className="footer__nav__list__item__link" href="/">

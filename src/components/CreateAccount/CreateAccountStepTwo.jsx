@@ -7,7 +7,6 @@ import { SystemServices } from "@/services/modules/system";
 import { UserContext } from "@/context/UserContext";
 import "@/styles/CreateAccount/CreateAccountSteps.scss";
 
-
 const CreateAccountStepTwo = ({ stepValues, setStepValues, edit }) => {
   const { connectID, setLoading, userData, userToken } =
     React.useContext(UserContext);
@@ -61,7 +60,7 @@ const CreateAccountStepTwo = ({ stepValues, setStepValues, edit }) => {
   );
 
   React.useEffect(() => {
-    formik.isValid && setStepValues(formik.values);
+    if (formik.isValid) setStepValues(formik.values);
   }, [formik]);
 
   React.useEffect(() => {

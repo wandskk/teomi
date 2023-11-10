@@ -1,0 +1,65 @@
+@import "../vars";
+
+.professionalCard {
+  background-color: $neutral;
+  padding: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  &.--offiline {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &__image {
+    position: relative;
+
+    & img {
+      border-radius: 100%;
+      border: 2px solid #fff;
+    }
+
+    &.--online {
+      &::after {
+        display: flex;
+        content: "";
+        width: 0.85rem;
+        height: 0.85rem;
+        background-color: #00d46c;
+        position: absolute;
+        bottom: 0.3rem;
+        right: 0.3rem;
+        border-radius: 100%;
+      }
+    }
+  }
+  &__text {
+    width: 100%;
+  }
+
+  &__button {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: #279600;
+    color: #fff;
+    max-width: 7.5rem;
+    width: 100%;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.875rem;
+
+    &.--offiline {
+      background-color: #eb2323;
+    }
+  }
+}

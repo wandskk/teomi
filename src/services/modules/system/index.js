@@ -1,11 +1,11 @@
-import { api } from '@/services';
-const basePath = '/system';
+import { api } from "@/services";
+const basePath = "/system";
 
 export const SystemServices = {
   getAddressByPostalCode: async (postalCode, tokenAuth) => {
     const result = await api.get(`${basePath}/cep/${postalCode}`, {
       headers: {
-        Authorization: 'Bearer ' + tokenAuth,
+        Authorization: "Bearer " + tokenAuth,
       },
     });
     return result;
@@ -13,7 +13,7 @@ export const SystemServices = {
   getCityIdByName: async (city, tokenAuth) => {
     const result = await api.get(`${basePath}/city/name/${city}`, {
       headers: {
-        Authorization: 'Bearer ' + tokenAuth,
+        Authorization: "Bearer " + tokenAuth,
       },
     });
     return result;
@@ -21,7 +21,7 @@ export const SystemServices = {
   getStateIdByName: async (state, tokenAuth) => {
     const result = await api.get(`${basePath}/state/name/${state}`, {
       headers: {
-        Authorization: 'Bearer ' + tokenAuth,
+        Authorization: "Bearer " + tokenAuth,
       },
     });
     return result;
@@ -32,7 +32,19 @@ export const SystemServices = {
       { email },
       {
         headers: {
-          Authorization: 'Bearer ' + tokenAuth,
+          Authorization: "Bearer " + tokenAuth,
+        },
+      }
+    );
+    return result;
+  },
+  verifyProfessionalStatus: async (attendantId, token) => {
+    const result = await api.post(
+      `${basePath}/verify/attendant`,
+      { attendantId },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
         },
       }
     );

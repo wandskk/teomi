@@ -1,10 +1,10 @@
-'use client';
-import React from 'react';
-import Link from 'next/link';
-import SideBar from '@/components/SideBar/SideBar';
-import { AiOutlineLeft } from 'react-icons/ai';
-import { usePathname } from 'next/navigation';
-import '@/styles/Header/Header.scss';
+"use client";
+import React from "react";
+import Link from "next/link";
+import SideBar from "@/components/SideBar/SideBar";
+import { AiOutlineLeft } from "react-icons/ai";
+import { usePathname } from "next/navigation";
+import "@/styles/Header/Header.scss";
 
 const Header = () => {
   const [canSeeBackPage, setCanSeeBackPage] = React.useState(true);
@@ -12,27 +12,29 @@ const Header = () => {
   const pathname = usePathname();
 
   React.useEffect(() => {
-    if (pathname === '/') setCanSeeBackPage(false);
+    if (pathname === "/") setCanSeeBackPage(false);
     else setCanSeeBackPage(true);
-
-    if (pathname === '/login' || pathname === '/create-account')
+    
+    if (pathname === "/login" || pathname === "/create-account")
       setCanSeeSideMenu(false);
     else setCanSeeSideMenu(true);
+    
   }, [pathname]);
+
   return (
-    <header className='header'>
+    <header className="header">
       <nav>
         <ul>
           <li>
             {canSeeBackPage ? (
-              <Link href='/'>
+              <Link href="/">
                 <AiOutlineLeft />
               </Link>
             ) : (
-              ' '
+              " "
             )}
           </li>
-          <li>{canSeeSideMenu ? <SideBar /> : ' '}</li>
+          <li>{canSeeSideMenu ? <SideBar /> : " "}</li>
         </ul>
       </nav>
     </header>

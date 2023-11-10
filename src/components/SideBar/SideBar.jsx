@@ -25,7 +25,7 @@ const Sidebar = () => {
   React.useEffect(() => setMenuOpen(false), [pathname]);
 
   React.useEffect(() => {
-    userData && setUserPhoto(userData.userphoto);
+    if (userData) setUserPhoto(userData.userphoto);
   }, [userData]);
 
   React.useEffect(() => {

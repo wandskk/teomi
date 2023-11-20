@@ -16,7 +16,7 @@ const Page = () => {
   const [errorLogin, setErrorLogin] = React.useState(null);
   const [remeberMe, setRemeberMe] = React.useState(false);
   const { userLogin, setLoading } = React.useContext(UserContext);
-  const existRememberEmail = localStorage.getItem("email");
+  const existRememberEmail = localStorage && localStorage.getItem("email");
   const searchParams = useSearchParams();
   const search = searchParams.get("backToLink");
 

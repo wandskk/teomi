@@ -7,7 +7,7 @@ import { validateEmail } from "@/resources/helpers/email/validateEmail";
 import { UsersServices } from "@/services/modules/users";
 import { UserContext } from "@/context/UserContext";
 
-const page = () => {
+const Page = () => {
   const { connectID, setLoading } = React.useContext(UserContext);
   const [isSenderedToken, setIsSenderedToken] = React.useState(false);
   const [email, setEmail] = React.useState("");
@@ -140,4 +140,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

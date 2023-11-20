@@ -10,7 +10,7 @@ const backToLink = {
   "scheduling-inPerson": "/scheduling/inPerson",
 };
 
-const page = () => {
+const Page = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [errorLogin, setErrorLogin] = React.useState(null);
@@ -146,4 +146,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

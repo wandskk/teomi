@@ -8,7 +8,7 @@ import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import { useSearchParams } from "next/navigation";
 import "./page.scss";
 
-const page = ({ params }) => {
+const Page = ({ params }) => {
   const connectID = getCookie("connectID");
   const userLogin = getCookie("userLogin");
   const searchParams = useSearchParams();
@@ -70,4 +70,4 @@ const page = ({ params }) => {
   );
 };
 
-export default page;
+export default Page;

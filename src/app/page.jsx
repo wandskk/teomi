@@ -21,7 +21,7 @@ import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import { usePathname } from "next/navigation";
 import "./page.scss";
 
-const page = () => {
+const Page = () => {
   const { userDataDecode, userData, loading, setLoading, setIntervalHome } =
     React.useContext(UserContext);
   const [categories, setCategories] = React.useState(null);
@@ -286,4 +286,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

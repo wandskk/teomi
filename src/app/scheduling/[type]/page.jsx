@@ -20,7 +20,7 @@ const pageType = {
   online: 2,
 };
 
-const page = ({ params }) => {
+const Page = ({ params }) => {
   const { userDataDecode, connectID, setLoading } =
     React.useContext(UserContext);
   const [selectCep, setSelectCep] = React.useState(
@@ -343,4 +343,4 @@ const page = ({ params }) => {
   );
 };
 
-export default page;
+export default Page;

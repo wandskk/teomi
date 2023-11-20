@@ -6,7 +6,7 @@ export const AttendantServices = {
     return await api.put(`${basePath}/users/create`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
+      }, 
     });
   },
   updateAttendantData: async (data: object, token: string) => {

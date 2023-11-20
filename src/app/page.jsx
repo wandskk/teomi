@@ -25,7 +25,6 @@ const Page = () => {
   const { userDataDecode, userData, loading, setLoading, setIntervalHome } =
     React.useContext(UserContext);
   const [categories, setCategories] = React.useState(null);
-  const [userType, setUserType] = React.useState("Paciente");
   const [queueList, setQueueList] = React.useState(null);
   const [queueListWithScheduled, setQueueListWithScheduled] =
     React.useState(null);
@@ -80,16 +79,7 @@ const Page = () => {
 
   React.useEffect(() => {
     if (connectID) getCategories(connectID);
-  }, [connectID, getCategories]);
-
-  React.useEffect(() => {
-    if (userData) {
-      const userType = userTypes.filter(
-        (type) => type.id === userData.usertype
-      )[0];
-      setUserType(userType.name);
-    }
-  }, [userData]);
+  }, [connectID, getCategories]);  
 
   React.useEffect(() => {
     if (isProfessionalOrAttedant) {

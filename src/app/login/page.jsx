@@ -16,7 +16,6 @@ const Page = () => {
   const [errorLogin, setErrorLogin] = React.useState(null);
   const [remeberMe, setRemeberMe] = React.useState(false);
   const { userLogin, setLoading } = React.useContext(UserContext);
-  const existRememberEmail = localStorage && localStorage.getItem("email");
   const searchParams = useSearchParams();
   const search = searchParams.get("backToLink");
 
@@ -44,9 +43,13 @@ const Page = () => {
   }, [remeberMe, email, existRememberEmail, localStorage]);
 
   React.useEffect(() => {
-    if (existRememberEmail) {
-      setEmail(existRememberEmail);
-      setRemeberMe(true);
+    if (typeof window !== "undefined") {
+      const existRememberEmail = localStorage.getItem("email");
+
+      if (existRememberEmail) {
+        setEmail(existRememberEmail);
+        setRemeberMe(true);
+      }
     }
   }, [existRememberEmail]);
 

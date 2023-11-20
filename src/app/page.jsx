@@ -32,8 +32,8 @@ const Page = () => {
   const connectID = getCookie("connectID");
   const userLogin = getCookie("userLogin");
   const isProfessionalOrAttedant =
-    userDataDecode.userType === 2 || userDataDecode.userType === 3;
-
+    userDataDecode &&
+    (userDataDecode.userType === 2 || userDataDecode.userType === 3);
   const getCategories = React.useCallback(async (token) => {
     try {
       const categories = await ChatServices.getCategories(token);

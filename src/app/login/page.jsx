@@ -37,10 +37,12 @@ const Page = () => {
   }
 
   React.useEffect(() => {
-    if (remeberMe && localStorage) {
-      localStorage.setItem("email", email);
+    if (typeof window !== "undefined") {
+      if (remeberMe && localStorage) {
+        localStorage.setItem("email", email);
+      }
     }
-  }, [remeberMe, email, existRememberEmail, localStorage]);
+  }, [remeberMe, email]);
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -51,7 +53,7 @@ const Page = () => {
         setRemeberMe(true);
       }
     }
-  }, [existRememberEmail]);
+  }, []);
 
   return (
     <div className="loginForm">

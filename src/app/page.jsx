@@ -14,7 +14,6 @@ import jwtDecode from "jwt-decode";
 import { UserContext } from "@/context/UserContext";
 import { name } from "@/resources/helpers/name/name";
 import { ChatServices } from "@/services/modules/chat";
-import { userTypes } from "@/resources/utils/userTypes/userTypes";
 import { AttendantServices } from "@/services/modules/attendant";
 import { io } from "socket.io-client";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";

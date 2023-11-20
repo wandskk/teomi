@@ -38,10 +38,10 @@ const Page = () => {
   }
 
   React.useEffect(() => {
-    if (remeberMe) {
+    if (remeberMe && localStorage) {
       localStorage.setItem("email", email);
     }
-  }, [remeberMe, email, existRememberEmail]);
+  }, [remeberMe, email, existRememberEmail, localStorage]);
 
   React.useEffect(() => {
     if (existRememberEmail) {
@@ -54,7 +54,7 @@ const Page = () => {
     <div className="loginForm">
       <h1 className="loginForm__title">Faça seu login</h1>
       <p className="loginForm__subtitle">
-        Não tem uma conta?{" "}
+        Não tem uma conta?
         <Link
           href={
             search ? `/create-account?backToLink=${search}` : "/create-account"

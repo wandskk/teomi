@@ -15,11 +15,7 @@ import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import "@/styles/CreateAccount/CreateAccount.scss";
 
 const Account = () => {
-  const {
-    connectID: authToken,
-    setLoading,
-    userLogin,
-  } = React.useContext(UserContext);
+  const { connectID: authToken, setLoading } = React.useContext(UserContext);
   const [message, setMessage] = React.useState(null);
   const [step, setStep] = React.useState(1);
 
@@ -112,7 +108,7 @@ const Account = () => {
 
       try {
         const updateUserPhoto = await UsersServices.updateUserPhoto(
-          { photoBody },
+          photoBody,
           authToken
         );
         setMessage({ text: success.updatePhoto, type: "success" });
@@ -144,7 +140,7 @@ const Account = () => {
       <div className="createAccount__stepsIndicator">
         <p
           className={`createAccount__stepsIndicator__text ${
-            step !== 1 && "--disabled"
+            step !== 1 ? "--disabled" : ""
           }`}
           onClick={() => handleStep(1)}
         >
@@ -152,7 +148,7 @@ const Account = () => {
         </p>
         <p
           className={`createAccount__stepsIndicator__text ${
-            step !== 2 && "--disabled"
+            step !== 2 ? "--disabled" : ""
           }`}
           onClick={() => handleStep(2)}
         >
@@ -160,7 +156,7 @@ const Account = () => {
         </p>
         <p
           className={`createAccount__stepsIndicator__text ${
-            step !== 3 && "--disabled"
+            step !== 3 ? "--disabled" : ""
           }`}
           onClick={() => handleStep(3)}
         >
@@ -194,7 +190,7 @@ const Account = () => {
       <div className="createAccount__footer">
         <button
           className={`createAccount__footer__button ${
-            step === 3 && "createAccount__footer__button--submit"
+            step === 3 ? "createAccount__footer__button--submit" : ""
           }`}
           disabled={
             (step === 1 && !stepOne) ||

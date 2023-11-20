@@ -2,60 +2,68 @@
 
 import React from "react";
 import SchedulesItem from "@/components/Schedules/SchedulesItem";
+import Link from "next/link";
 import { UserContext } from "@/context/UserContext";
+import { SchedulesServices } from "@/services/modules/schedules";
 import "@/styles/Schedules/Schedules.scss";
 
-const userSchedules = [
-  {
-    id: 1,
-    professionalName: "Dr. Silva",
-    professionalType: "Médico",
-    date: "24/10/2023",
-    startTime: "09:30",
-    endTime: "10:30",
-    link: "https://example.com/meeting/12345",
-    professionalPhoto: "https://example.com/photos/dr_silva.jpg",
-  },
-  {
-    id: 2,
-    professionalName: "Joana Ferreira",
-    professionalType: "Dentista",
-    date: "25/10/2023",
-    startTime: "14:00",
-    endTime: "15:00",
-    link: "https://example.com/meeting/67890",
-    professionalPhoto: "https://example.com/photos/joana_ferreira.jpg",
-  },
-  {
-    id: 3,
-    professionalName: "Ana Sousa",
-    professionalType: "Terapeuta",
-    date: "26/10/2023",
-    startTime: "16:00",
-    endTime: "17:30",
-    link: "https://example.com/meeting/54321",
-    professionalPhoto: "https://example.com/photos/ana_sousa.jpg",
-  },
-];
-
 const Schedules = () => {
-  const { userData } = React.useContext(UserContext);
-  return (
-    <div className="schedules">
-      <div className="schedules__header">
-        <h1 className="schedules__header__title">Olá, {userData?.name}</h1>
-        <p className="schedules__header__subtitle">Seus agendamentos futuros</p>
+  const { userData, connectID, setLoading } = React.useContext(UserContext);
+  const [userSchedules, setUserSchedules] = React.useState(null);
+
+  const getUserSchedules = React.useCallback(async (patientId) => {
+    setLoading(true);
+    try {
+      const getSchedules = await SchedulesServices.getPatientSchedulesById(
+        { patientId },
+        connectID
+      );
+      setUserSchedules(getSchedules);
+    } catch (error) {
+      setUserSchedules(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (userData) getUserSchedules(userData.id);
+  }, [userData]);
+
+  if (userData)
+    return (
+      <div className="schedules">
+        <div className="schedules__header">
+          <h1 className="schedules__header__title">
+            Olá, {userData?.name.split(" ")[0]}
+          </h1>
+          <p className="schedules__header__subtitle">
+            Seus agendamentos futuros
+          </p>
+        </div>
+        <div className="schedules__actions">
+          <Link href="/scheduling/inPerson">+ Agendamento presencial</Link>
+          <Link href="/scheduling/inPerson">+ Agendamento online</Link>
+        </div>
+        {!userSchedules && (
+          <p className="schedules__noSchedules">
+            Sem agendamentos cadastrados no momento, clique em um dois botões
+            acima e crie seu próximo agendamento!
+          </p>
+        )}
+        <ul className="schedules__list">
+          {userSchedules &&
+            userSchedules.map((userSchedule) => (
+              <li
+                key={userSchedule.scheduleId}
+                className="schedules__list__item"
+              >
+                <SchedulesItem schedule={userSchedule} />
+              </li>
+            ))}
+        </ul>
       </div>
-      <ul className="schedules__list">
-        {userSchedules &&
-          userSchedules.map((userSchedule) => (
-            <li key={userSchedule.id} className="schedules__list__item">
-              <SchedulesItem schedule={userSchedule} />
-            </li>
-          ))}
-      </ul>
-    </div>
-  );
+    );
 };
 
 export default Schedules;

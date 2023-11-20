@@ -16,7 +16,10 @@ const Page = ({ params }) => {
   const getProfessionals = React.useCallback(async (token) => {
     setLoading(true);
     try {
-      const professionals = await ChatServices.getAttendant(token);
+      const professionals = await ChatServices.getAttendantListByCategory(
+        +params.category,
+        token
+      );
       setProfessionals(professionals);
     } catch (error) {
     } finally {
@@ -33,7 +36,6 @@ const Page = ({ params }) => {
       <Search setSearch={setSearch} setFilter={setFilter} />
 
       <h1 className="professionals__title">Profissionais nesta categoria</h1>
-
       <ul className="professionals__list">
         {professionals &&
           professionals

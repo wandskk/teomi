@@ -20,7 +20,6 @@ const CreateAccountStepThree = ({ gender, stepValues, setStepValues }) => {
         const blob = new Blob([reader.result], { type: file.type });
         setStepValues(blob);
       };
-
       setStepValues(file);
     } else {
       setStepValues(null);

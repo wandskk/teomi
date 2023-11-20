@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import person from "@/assets/images/icons/person.png";
 import { FiMenu } from "react-icons/fi";
 import { VscSignOut } from "react-icons/vsc";
 import { AiOutlineClose } from "react-icons/ai";
@@ -11,10 +12,12 @@ import { usePathname } from "next/navigation";
 import "@/styles/SideBar/SideBar.scss";
 
 const Sidebar = () => {
-  const { userData, logout } = React.useContext(UserContext);
+  const { userData, userDataDecode, logout } = React.useContext(UserContext);
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [userPhoto, setUserPhoto] = React.useState(null);
   const pathname = usePathname();
+  const isProfessionalOrAttedant =
+    userDataDecode?.userType === 2 || userDataDecode?.userType === 3;
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -59,9 +62,9 @@ const Sidebar = () => {
         <div className={`sidebar ${menuOpen ? "open" : ""} fade-content`}>
           <div className="sidebar__header">
             <div className="sidebar__header__profile">
-              {userData && userPhoto && (
+              {userData && (
                 <Image
-                  src={userPhoto}
+                  src={userPhoto === null ? person : userPhoto}
                   width={64}
                   height={64}
                   alt="Foto do usuário"
@@ -76,8 +79,15 @@ const Sidebar = () => {
           <div className="sidebar__menu">
             {userData ? (
               <>
-                <Link href="/">Configurações</Link>
-                <Link href="/account">Conta</Link>
+                {/* <Link href="/">Configurações</Link> */}
+                {/* <Link href="/account">Conta</Link> */}
+                <Link
+                  href={
+                    isProfessionalOrAttedant ? "/attendant-account" : "/account"
+                  }
+                >
+                  Conta
+                </Link>
               </>
             ) : (
               <>

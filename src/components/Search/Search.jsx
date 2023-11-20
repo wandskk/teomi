@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FiFilter } from "react-icons/fi";
 import "@/styles/Search/Search.scss";
 
-const Search = ({ setSearch, setFilter }) => {
+const Search = ({ setSearch, setFilter = undefined, noFilter = false }) => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [filterSearch, setFilterSearch] = React.useState(1);
 
@@ -19,7 +19,7 @@ const Search = ({ setSearch, setFilter }) => {
   }, [searchTerm]);
 
   React.useEffect(() => {
-    setFilter(filterSearch);
+    setFilter && setFilter(filterSearch);
   }, [filterSearch]);
 
   return (
@@ -39,26 +39,28 @@ const Search = ({ setSearch, setFilter }) => {
           </button>
         </div>
       </form>
-      <ul className="search__list">
-        <li
-          className={`search__list__item ${filterSearch === 1 && "--active"}`}
-          onClick={() => setFilterSearch(1)}
-        >
-          Todos
-        </li>
-        <li
-          className={`search__list__item ${filterSearch === 2 && "--active"}`}
-          onClick={() => setFilterSearch(2)}
-        >
-          Offiline
-        </li>
-        <li
-          className={`search__list__item ${filterSearch === 3 && "--active"}`}
-          onClick={() => setFilterSearch(3)}
-        >
-          Online
-        </li>
-      </ul>
+      {!noFilter && (
+        <ul className="search__list">
+          <li
+            className={`search__list__item ${filterSearch === 1 && "--active"}`}
+            onClick={() => setFilterSearch(1)}
+          >
+            Todos
+          </li>
+          <li
+            className={`search__list__item ${filterSearch === 2 && "--active"}`}
+            onClick={() => setFilterSearch(2)}
+          >
+            Offiline
+          </li>
+          <li
+            className={`search__list__item ${filterSearch === 3 && "--active"}`}
+            onClick={() => setFilterSearch(3)}
+          >
+            Online
+          </li>
+        </ul>
+      )}
     </div>
   );
 };

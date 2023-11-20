@@ -1,0 +1,94 @@
+@import "../vars";
+
+.quiz {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 12.5rem;
+  padding: 0 1rem;
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+    min-height: 5rem;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    margin: 0 auto;
+  }
+
+  &__rainbow {
+    width: 1rem;
+    height: auto;
+    background: linear-gradient(180deg, #05ff00 0%, #ffb800 50%, #ff0000 100%);
+    border-radius: 1rem;
+  }
+
+  &__fields {
+    height: 100%;
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  &__input {
+    display: none;
+  }
+
+  &__label {
+    display: flex;
+    position: relative;
+    padding-left: 2rem;
+    margin-left: -1rem;
+    font-weight: 400;
+    font-size: 1rem;
+
+    &.--checked::before {
+      position: absolute;
+      content: "";
+      width: 1.2rem;
+      height: 1.2rem;
+      left: -0.15rem;
+      display: flex;
+      border-radius: 1rem;
+      background-color: #fff;
+      border: 1px solid #d5d5d5;
+      box-shadow: 0 0 0.4rem 0 #000;
+    }
+  }
+
+  &__footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    height: 68.18px;
+    width: 100%;
+    background-color: $neutral;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  &__action {
+    background-color: $neutral-darker;
+    color: #fff;
+    border: none;
+    max-width: 279px;
+    width: 100%;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}

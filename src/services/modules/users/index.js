@@ -20,6 +20,26 @@ export const UsersServices = {
     });
     return result.data;
   },
+  getTokenForgotPassword: async (body, userToken) => {
+    const result = await api.post(`${basePath}/update/token/password`, body, {
+      headers: {
+        Authorization: "Bearer " + userToken,
+      },
+    });
+    return result.data;
+  },
+  verifyTokenForgotPassword: async (token, userToken) => {
+    const result = await api.patch(
+      `${basePath}/update/password`,
+      { token },
+      {
+        headers: {
+          Authorization: "Bearer " + userToken,
+        },
+      }
+    );
+    return result.data;
+  },
   userLogin: async (body, authToken) => {
     const result = await api.post(`${basePath}/login`, body, {
       headers: {

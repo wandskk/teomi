@@ -1,0 +1,148 @@
+@import "../../../styles/vars";
+
+.chat {
+  position: relative;
+
+  &__info {
+    position: fixed;
+    top: 5.2rem;
+    max-width: 721px;
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    justify-content: end;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #a3a3a3;
+    background-color: #fff;
+    z-index: 1000;
+    padding: 1rem;
+
+    &__text {
+      text-align: right;
+
+      & p {
+        font-weight: 600;
+      }
+    }
+
+    &__photo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #cccccc;
+      border-radius: 50%;
+      width: 72px;
+      height: 72px;
+
+      & img {
+        border-radius: 50%;
+      }
+    }
+  }
+
+  &__messages {
+    padding: 1rem;
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+    margin: 12rem 0;
+  }
+
+  &__box {
+    display: flex;
+    gap: 1rem;
+
+    &.--right {
+      flex-direction: row-reverse;
+    }
+  }
+
+  &__message {
+    border: 1px solid #f6e5da;
+    list-style: none;
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 0.875rem;
+    border-radius: 1rem;
+    background-color: #fff7f2;
+    font-size: 0.875rem;
+    line-height: 1rem;
+
+    &.--left {
+      border-top-left-radius: 0;
+      margin-right: 4rem;
+    }
+
+    &.--right {
+      text-align: right;
+      border-top-right-radius: 0;
+      margin-left: 4rem;
+    }
+  }
+
+  &__photo {
+    border-radius: 50%;
+  }
+
+  &__form {
+    display: flex;
+    max-width: 721px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: $neutral;
+    padding: 1rem;
+    gap: 1rem;
+
+    &__menu {
+      position: absolute;
+      border-top-left-radius: 2rem;
+      border-top-right-radius: 2rem;
+      top: -4.6rem;
+      left: 0;
+      min-height: 2rem;
+      background-color: $neutral;
+      width: 100%;
+
+      & ul {
+        display: flex;
+        list-style: none;
+        gap: 1rem;
+        padding: 1rem;
+
+        & li {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: .5rem;
+          align-items: center;
+          color: #fff;
+          cursor: pointer;
+
+          & svg {
+            background-color: $neutral-darker;
+            color: #fff;
+            font-size: 2rem;
+            border-radius: 50%;
+            padding: .3rem;
+          }
+        }
+      }
+    }
+
+    &__input {
+      width: 100%;
+      background-color: transparent;
+      border: 1.5px solid #000;
+      border-radius: 2rem;
+      padding: 0.5rem 1rem;
+    }
+
+    &__button {
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+  }
+}

@@ -13,8 +13,10 @@
     gap: 1.125rem;
     border-bottom: 1px solid #0000001a;
 
-    // &__photo {
-    // }
+    &__photo {
+      border-radius: 50%;
+      overflow: hidden;
+    }
 
     &__details {
       display: flex;
@@ -61,13 +63,14 @@
       gap: 4rem;
       margin-top: 1.125rem;
 
-      &__reschedule {
+      &__cancel {
         background-color: $orange;
         border: none;
         border-radius: 0.5rem;
         padding: 0.5rem 1rem;
         font-weight: 600;
         color: #fff;
+        cursor: pointer;
       }
 
       &__enter {

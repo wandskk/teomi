@@ -1,7 +1,7 @@
 @import "../../../styles/vars";
 
 .chat {
-  position: relative;
+  position: relative;  
 
   &__info {
     position: fixed;
@@ -16,6 +16,7 @@
     border-bottom: 1px solid #a3a3a3;
     background-color: #fff;
     z-index: 1000;
+    padding: 1rem;
 
     &__text {
       text-align: right;
@@ -82,6 +83,64 @@
 
   &__photo {
     border-radius: 50%;
+  }
+
+  &__finished {
+    position: fixed;
+    background-color: $neutral;
+    z-index: 10000;
+    width: 100%;
+    height: 30rem;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    padding: 2rem;
+    color: #fff;
+
+    &__marker {
+      width: 3rem;
+      background-color: #fff;
+      border-radius: 0.5rem;
+      height: 0.2rem;
+    }
+
+    &__actions {
+      display: flex;
+      gap: 1rem;
+
+      & a {
+        background-color: $neutral-darker;
+        text-decoration: none;
+        color: #fff;
+        padding: 1rem;
+        flex-grow: 1;
+        min-width: 10rem;
+        width: 100% !important;
+        text-align: center;
+        border-radius: 1.5rem;
+      }
+    }
+
+    &__quit {
+      background-color: $neutral-darker;
+        text-decoration: none;
+        color: #fff;
+        padding: 1rem;
+        flex-grow: 1;
+        min-width: 10rem;
+        width: 100% !important;
+        text-align: center;
+        border-radius: 1.5rem;
+    }
+
+    & svg {
+      font-size: 10rem;
+    }
   }
 
   &__form {

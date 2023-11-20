@@ -12,17 +12,18 @@ import mapsShadow from "@/assets/images/icons/mapsShadow.svg";
 import Link from "next/link";
 import Flower from "@/components/Flower/Flower";
 import { usePathname } from "next/navigation";
+import { UserContext } from "@/context/UserContext";
 import "@/styles/Footer/Footer.scss";
+
+const noFooterRoutes = [
+  { name: "login", path: "login" },
+  { name: "chat", path: "chat" },
+];
 
 const Footer = () => {
   const [showFooter, setShowFooter] = React.useState(true);
-  const pathname = usePathname();
-  const noFooterRoutes = React.useMemo(() => {
-    return [
-      { name: "login", path: "login" },
-      { name: "chat", path: "chat" },
-    ];
-  }, []);
+  const { userData } = React.useContext(UserContext);
+  const pathname = usePathname();  
 
   React.useEffect(() => {
     const canShowFooter = noFooterRoutes.find((route) =>
@@ -45,17 +46,31 @@ const Footer = () => {
               </Link>
             </li>
             <li className="footer__nav__list__item">
-              <Link className="footer__nav__list__item__link" href="/schedules">
+              <Link
+                className="footer__nav__list__item__link"
+                href={
+                  userData?.usertype === 3 || userData?.usertype === 2
+                    ? "/schedules-attendant/scheduled"
+                    : "/schedules"
+                }
+              >
                 <Image src={calendar} alt="" />
                 <Image src={calendarShadow} alt="" />
               </Link>
             </li>
-            <li className="footer__nav__list__item">
-              <Link className="footer__nav__list__item__link" href="/">
-                <Image src={maps} alt="" />
-                <Image src={mapsShadow} alt="" />
-              </Link>
-            </li>
+            {userData?.usertype === 3 || userData?.usertype === 2 ? (
+              ""
+            ) : (
+              <li className="footer__nav__list__item">
+                <Link
+                  className="footer__nav__list__item__link"
+                  href="/scheduling/inPerson"
+                >
+                  <Image src={maps} alt="" />
+                  <Image src={mapsShadow} alt="" />
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
         <div className="footer__marker">

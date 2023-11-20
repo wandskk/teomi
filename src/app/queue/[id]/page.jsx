@@ -5,18 +5,21 @@ import io from "socket.io-client";
 import jwtDecode from "jwt-decode";
 import { ChatServices } from "@/services/modules/chat";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";
+import { useSearchParams } from "next/navigation";
 import "./page.scss";
 
 const page = ({ params }) => {
-  const [socket, setSocket] = React.useState();
   const connectID = getCookie("connectID");
   const userLogin = getCookie("userLogin");
+  const searchParams = useSearchParams();
+  const search = searchParams.get("isScheduled");
 
   const postUserInQueue = React.useCallback(
     async (data, attendantId, connectID) => {
       try {
+        const isScheduled = search ? 1 : null;
         const queue = await ChatServices.postUserInQueue(
-          { ...data, attendantId: +attendantId },
+          { ...data, attendantId: +attendantId, isScheduled },
           connectID
         );
       } catch (error) {}

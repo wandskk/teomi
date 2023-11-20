@@ -5,15 +5,28 @@ import Image from "next/image";
 import flower from "@/assets/images/flower.svg";
 import homeBanner from "@/assets/images/homeBanner.svg";
 import homeBallon from "@/assets/images/homeBallon.svg";
+import teomi from "@/assets/images/teomi.png";
+import person from "@/assets/images/icons/person.png";
+import schedulesBanner from "@/assets/images/schedulesBanner.png";
+import scheduledBanner from "@/assets/images/scheduledBanner.png";
 import Link from "next/link";
+import jwtDecode from "jwt-decode";
 import { UserContext } from "@/context/UserContext";
 import { name } from "@/resources/helpers/name/name";
 import { ChatServices } from "@/services/modules/chat";
+import { userTypes } from "@/resources/utils/userTypes/userTypes";
+import { AttendantServices } from "@/services/modules/attendant";
+import { io } from "socket.io-client";
+import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import "@/styles/Home/Home.scss";
 
 const Home = () => {
   const [categories, setCategories] = React.useState(null);
-  const { userData, connectID } = React.useContext(UserContext);
+  const { userData, loading, setLoading } = React.useContext(UserContext);
+  const [userType, setUserType] = React.useState("Paciente");
+  const [queueList, setQueueList] = React.useState(null);
+  const connectID = getCookie("connectID");
+  const userLogin = getCookie("userLogin");
 
   const getCategories = React.useCallback(async (token) => {
     try {
@@ -22,67 +35,202 @@ const Home = () => {
     } catch (error) {}
   }, []);
 
+  async function getQueueList(attendantId, token) {
+    try {
+      const queueList = await AttendantServices.getQueueList(
+        attendantId,
+        token
+      );
+      setQueueList(queueList);
+    } catch (error) {}
+  }
+
+  async function goToChat(attendantId, patientId) {
+    setLoading(true);
+    try {
+      const acceptChat = await AttendantServices.acceptChat(
+        { attendantId, patientId },
+        connectID
+      );
+    } catch (error) {
+      if (error.response.status === 409) {
+        const { chatId } = error.response.data;
+        window.location.href = `/chat-attendant/${chatId}/${patientId}`;
+      } else setLoading(false);
+    }
+  }
+
   React.useEffect(() => {
     if (connectID) getCategories(connectID);
   }, [connectID, getCategories]);
 
-  return (
-    <div className="home">
-      <div className="home__header">
-        <Image src={flower} alt="flower" className="home__header__flower" />
-        <h2 className="home__header__title">
-          {userData ? `Olá, ${name.getFirstName(userData?.name)}` : "Olá"}
-        </h2>
-        <p className="home__header__subtitle">Como podemos te apoiar?</p>
-        <div className="home__header__banner">
-          <div className="home__header__banner__text">
-            <p>Ajuda</p>
-            <p>IMEDIATA</p>
-          </div>
-          <Image
-            className="home__header__banner__bnner"
-            src={homeBanner.src}
-            alt="banner"
-            width={673}
-            height={320}
-            style={{ objectFit: "contain" }}
-          />
-          <Image
-            src={homeBallon}
-            alt="Ballon"
-            className="home__header__banner__image"
-          />
-        </div>
-      </div>
-      <h3 className="home__text">
-        Por favor, selecione a opção que melhor representa sua identidade.
-      </h3>
-      <div className="home__cards">
-        {categories &&
-          categories.map((category) => (
-            <Link
-              key={category.id}
-              href={`/professionals/${category.id}`}
-              className="home__cards__card"
-              style={{ backgroundImage: `url(${category.imageURL})` }}
-            >
-              <div className="home__cards__card__text">
-                <p className="home__cards__card__title">{category.name}</p>
-                <small>
-                  {category.attendantsAvailable > 0
-                    ? `${category.attendantsAvailable} ${
-                        category.attendantsAvailable > 1
-                          ? "disponíveis"
-                          : "disponível"
-                      }`
-                    : "Nenhum atendende disponível"}
-                </small>
+  React.useEffect(() => {
+    if (userData) {
+      const userType = userTypes.filter(
+        (type) => type.id === userData.usertype
+      )[0];
+      setUserType(userType.name);
+    }
+  }, [userData]);
+
+  React.useEffect(() => {
+    if (userType === "Profissional") {
+      getQueueList(userData.id, connectID);
+
+      setInterval(() => {
+        getQueueList(userData.id, connectID);
+      }, 5000);
+    }
+  }, [userType]);
+
+  React.useEffect(() => {
+    const socket = io("http://142.4.192.167:3001");
+
+    socket.on("chatReadyAttendant", (data) => {
+      let decodeUser = { id: null };
+      if (userLogin) decodeUser = jwtDecode(userLogin);
+
+      if (data.attendantId == decodeUser.userId) {
+        window.location.href = `/chat-attendant/${data.chatId}/${data.patientId}`;
+      }
+    });
+
+    return () => socket.disconnect();
+  }, []);
+
+  if (userData != null && !loading)
+    return (
+      <div className="home">
+        <div className="home__header">
+          <Image src={flower} alt="flower" className="home__header__flower" />
+          <h2 className="home__header__title">
+            {userData ? `Olá, ${name.getFirstName(userData?.name)}` : "Olá"}
+          </h2>
+          {userType === "Profissional" ? (
+            <>
+              <p className="home__header__subtitle">
+                Como podemos ajudar hoje?
+              </p>
+              <div className="home__header__banner">
+                <div className="home__header__banner__text">
+                  <Image src={teomi} alt="teomi" />
+                </div>
+                <Image
+                  className="home__header__banner__bnner"
+                  src={homeBanner.src}
+                  alt="banner"
+                  width={673}
+                  height={320}
+                  style={{ objectFit: "contain" }}
+                />
               </div>
-            </Link>
-          ))}
+            </>
+          ) : (
+            <>
+              <p className="home__header__subtitle">Como podemos te apoiar?</p>
+              <div className="home__header__banner">
+                <div className="home__header__banner__text">
+                  <p>Ajuda</p>
+                  <p>IMEDIATA</p>
+                </div>
+                <Image
+                  className="home__header__banner__bnner"
+                  src={homeBanner.src}
+                  alt="banner"
+                  width={673}
+                  height={320}
+                  style={{ objectFit: "contain" }}
+                />
+                <Image
+                  src={homeBallon}
+                  alt="Ballon"
+                  className="home__header__banner__image"
+                />
+              </div>
+            </>
+          )}
+        </div>
+
+        {userType === "Profissional" ? (
+          <>
+            <h3 className="home__text">Atendimento imediato</h3>
+            <div className="home__pacientsQueueList">
+              <ul className="home__pacientsQueueList__container">
+                {queueList &&
+                  queueList.map((queue) => {
+                    return (
+                      <li
+                        key={queue.userId}
+                        className="home__pacientsQueueList__item"
+                        onClick={() => goToChat(userData.id, queue.userId)}
+                      >
+                        <Image
+                          src={queue.userphoto ?? person}
+                          width={75}
+                          height={75}
+                          alt="paciente da fila"
+                        />
+                      </li>
+                    );
+                  })}
+              </ul>
+            </div>
+            <div className="home__professionalCards">
+              <Link href="/attendant-schedules">
+                <div
+                  className="home__professionalCards__card"
+                  style={{ backgroundImage: `url(${schedulesBanner.src})` }}
+                >
+                  <p>Agendamentos</p>
+                  <small>9 disponíveis</small>
+                </div>
+              </Link>
+              <Link href="/attendant-scheduled">
+                <div
+                  className="home__professionalCards__card"
+                  style={{ backgroundImage: `url(${scheduledBanner.src})` }}
+                >
+                  <p>Agendados</p>
+                  <small>15 disponíveis</small>
+                </div>
+              </Link>
+            </div>
+          </>
+        ) : (
+          <>
+            <h3 className="home__text">
+              Por favor, selecione a opção que melhor representa sua identidade.
+            </h3>
+            <div className="home__cards">
+              {categories &&
+                categories.map((category) => (
+                  <Link
+                    key={category.id}
+                    href={`/professionals/${category.id}`}
+                    className="home__cards__card"
+                    style={{ backgroundImage: `url(${category.imageURL})` }}
+                  >
+                    <div className="home__cards__card__text">
+                      <p className="home__cards__card__title">
+                        {category.name}
+                      </p>
+                      <small>
+                        {category.attendantsAvailable > 0
+                          ? `${category.attendantsAvailable} ${
+                              category.attendantsAvailable > 1
+                                ? "disponíveis"
+                                : "disponível"
+                            }`
+                          : "Nenhum atendende disponível"}
+                      </small>
+                    </div>
+                  </Link>
+                ))}
+            </div>
+          </>
+        )}
       </div>
-    </div>
-  );
+    );
 };
 
 export default Home;

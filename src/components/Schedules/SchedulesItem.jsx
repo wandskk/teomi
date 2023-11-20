@@ -1,58 +1,70 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import professionalPhoto from "@/assets/images/professional.svg";
 import { formatDate } from "@/resources/helpers/date/formatDate";
+import { isDateInRange } from "@/resources/helpers/date/isDateInRange";
 import { AiOutlineSchedule } from "react-icons/ai";
 import { MdOutlineSchedule } from "react-icons/md";
-import { BsFillCameraVideoFill } from "react-icons/bs";
+import { IoIosChatbubbles } from "react-icons/io";
 import "@/styles/Schedules/SchedulesItem.scss";
 
 const SchedulesItem = ({ schedule }) => {
-  const {
-    id,
-    professionalName,
-    professionalType,
-    date,
-    startTime,
-    endTime,
-    link,
-    // professionalPhoto,
-  } = schedule;
+  const [canEnterChat, setCanEnterChat] = React.useState(false);
+
+  React.useEffect(() => {
+    if (schedule) {
+      setCanEnterChat(
+        isDateInRange(
+          schedule.scheduleDate,
+          schedule.scheduleStartTime,
+          schedule.scheduleEndTime
+        )
+      );
+    }
+  }, [schedule]);
 
   return (
     <div className="schedulesItem">
       <div className="schedulesItem__header">
-        <div className="schedulesItem__header__photo">
-          <Image src={professionalPhoto} alt="Foto do profissional" />
-        </div>
+        <Image
+          className="schedulesItem__header__photo"
+          src={schedule.professionalPhoto}
+          alt="Foto do profissional"
+          width={45}
+          height={45}
+        />
         <div className="schedulesItem__header__details">
           <h2 className="schedulesItem__header__details__name">
-            {professionalName}
+            {schedule.professionalName}
           </h2>
           <p className="schedulesItem__header__details__type">
-            {professionalType}
+            {schedule.professionalRole}
           </p>
         </div>
       </div>
       <div className="schedulesItem__content">
         <div className="schedulesItem__content__agenda">
           <p className="schedulesItem__content__agenda__item">
-            <AiOutlineSchedule /> {formatDate(date)}
+            <AiOutlineSchedule /> {formatDate(schedule.scheduleDate)}
           </p>
           <p className="schedulesItem__content__agenda__item">
             <MdOutlineSchedule />
-            {startTime} - {endTime}
+            {schedule.scheduleStartTime} - {schedule.scheduleEndTime}
           </p>
         </div>
         <div className="schedulesItem__content__actions">
-          <button className="schedulesItem__content__actions__reschedule">
-            Reagendar
+          <button className="schedulesItem__content__actions__cancel">
+            Cancelar
           </button>
-          <Link href="/" className="schedulesItem__content__actions__enter">
-            <BsFillCameraVideoFill />
-            Entrar
-          </Link>
+          {canEnterChat && (
+            <Link
+              href={`/queue/${schedule.professionalId}?isScheduled=1`}
+              className="schedulesItem__content__actions__enter"
+            >
+              <IoIosChatbubbles />
+              Entrar
+            </Link>
+          )}
         </div>
       </div>
     </div>

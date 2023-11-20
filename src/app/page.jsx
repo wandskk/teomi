@@ -79,7 +79,7 @@ const Page = () => {
 
   React.useEffect(() => {
     if (connectID) getCategories(connectID);
-  }, [connectID, getCategories]);  
+  }, [connectID, getCategories]);
 
   React.useEffect(() => {
     if (isProfessionalOrAttedant) {
@@ -92,7 +92,7 @@ const Page = () => {
       }, 5000);
       setIntervalHome(interval);
     }
-  }, [userType, pathname]);
+  }, [pathname]);
 
   React.useEffect(() => {
     const socket = io("http://142.4.192.167:3001");

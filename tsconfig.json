@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/services/modules/auth/index.js", "src/components/CreateAccount/CreateAccount.jsx", "src/app/professionals/[category]/page.jsx", "src/services/modules/chat/index.js", "src/services/modules/patient/index.js", "src/app/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/services/modules/auth/index.js", "src/components/CreateAccount/CreateAccount.jsx", "src/app/professionals/[category]/page.jsx", "src/services/modules/chat/index.js", "src/services/modules/patient/index.js", "src/app/page.jsx", "src/services/modules/attendant/index.js"],
   "exclude": ["node_modules"]
 }

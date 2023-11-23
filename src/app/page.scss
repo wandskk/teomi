@@ -26,6 +26,14 @@
       font-weight: 500;
     }
 
+    &__status {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      position: absolute;
+      right: 2rem;
+    }
+
     &__banner {
       display: flex;
       flex-direction: column;

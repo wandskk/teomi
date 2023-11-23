@@ -25,6 +25,7 @@ const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 const Page = () => {
   const { userDataDecode, userData, loading, setLoading, setIntervalHome } =
     React.useContext(UserContext);
+  const [professionalStatus, setProfessionalStatus] = React.useState(null);
   const [schedulesAttendant, setSchedulesAttendant] = React.useState(null);
   const [categories, setCategories] = React.useState(null);
   const [queueList, setQueueList] = React.useState(null);
@@ -99,6 +100,31 @@ const Page = () => {
     } catch (error) {}
   }
 
+  async function getAttendantStatus() {
+    try {
+      const attendantId = userDataDecode.userId;
+      const attendantStatus = await AttendantServices.getAttendantStatus(
+        attendantId,
+        connectID
+      );
+      if (attendantStatus.isAvailable === 1) setProfessionalStatus(true);
+      else setProfessionalStatus(false);
+    } catch (error) {}
+  }
+
+  async function handleChangeAttendantStatus() {
+    try {
+      const attendantId = userDataDecode.userId;
+      const status = professionalStatus === true ? 1 : 0;
+      const changeAttendantStatus =
+        await AttendantServices.changeAttendantStatus(
+          attendantId,
+          status,
+          connectID
+        );
+    } catch (error) {}
+  }
+
   React.useEffect(() => {
     if (connectID) getCategories(connectID);
   }, [connectID, getCategories]);
@@ -139,6 +165,16 @@ const Page = () => {
     }
   }, [userDataDecode]);
 
+  React.useEffect(() => {
+    if (professionalStatus !== null) handleChangeAttendantStatus();
+  }, [professionalStatus]);
+
+  React.useEffect(() => {
+    if (isProfessionalOrAttedant) {
+      getAttendantStatus();
+    }
+  }, [userDataDecode]);  
+
   if (userData != null && !loading)
     return (
       <div className="home">
@@ -147,11 +183,23 @@ const Page = () => {
           <h2 className="home__header__title">
             {userData ? `Olá, ${name.getFirstName(userData?.name)}` : "Olá"}
           </h2>
+
           {isProfessionalOrAttedant ? (
             <>
               <p className="home__header__subtitle">
                 Como podemos ajudar hoje?
               </p>
+              <div className="home__header__status">
+                <p>{professionalStatus ? "Online" : "Offline"}</p>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={professionalStatus}
+                    onChange={() => setProfessionalStatus(!professionalStatus)}
+                  />
+                  <span className="slider round"></span>
+                </label>
+              </div>
               <div className="home__header__banner">
                 <div className="home__header__banner__text">
                   <Image src={teomi} alt="teomi" />

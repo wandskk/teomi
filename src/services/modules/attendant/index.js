@@ -88,6 +88,30 @@ export const AttendantServices = {
     );
     return result.data;
   },
+  getAttendantStatus: async (attendantId, token) => {
+    const result = await api.post(
+      `${basePath}/status/get`,
+      { attendantId },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return result.data;
+  },
+  changeAttendantStatus: async (attendantId, status, token) => {
+    const result = await api.post(
+      `${basePath}/status`,
+      { attendantId, status },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return result.data;
+  },
   acceptPendingSchedule: async (body, token) => {
     const result = await api.post(`${basePath}/schedules/accept`, body, {
       headers: {

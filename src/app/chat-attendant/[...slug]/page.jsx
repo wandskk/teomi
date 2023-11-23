@@ -75,7 +75,7 @@ const Chat = ({ params }) => {
   }, [getAllMessages]);
 
   React.useEffect(() => {
-    const newSocket = io("http://142.4.192.167:3001");
+    const newSocket = io("https://api.dvelopers.com.br/socket/teomi/socket.io");
     setSocket(newSocket);
 
     newSocket.on("chatMessages", (message) => {

@@ -94,7 +94,7 @@ const Page = () => {
   }, [pathname, isProfessionalOrAttedant]);
 
   React.useEffect(() => {
-    const socket = io("http://142.4.192.167:3001");
+    const socket = io("https://api.dvelopers.com.br/socket/teomi/socket.io");
 
     socket.on("chatReadyAttendant", (data) => {
       let decodeUser = { id: null };

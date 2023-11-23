@@ -28,7 +28,7 @@ const Page = ({ params }) => {
   );
 
   React.useEffect(() => {
-    const socket = io("http://142.4.192.167:3001");
+    const socket = io("https://api.dvelopers.com.br/socket.io/");
 
     socket.on("chatReady", (data) => {
       let decodeUser = { id: null };

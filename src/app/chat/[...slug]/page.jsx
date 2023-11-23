@@ -107,7 +107,7 @@ const Chat = ({ params }) => {
     let decodeUser = { id: null };
     if (userLogin) decodeUser = jwtDecode(userLogin);
 
-    const newSocket = io("https://api.dvelopers.com.br/socket/teomi/socket.io");
+    const newSocket = io("https://api.dvelopers.com.br/socket.io/teomi/");
     setSocket(newSocket);
 
     newSocket.on("chatMessages", (message) => {

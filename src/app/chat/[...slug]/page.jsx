@@ -16,6 +16,8 @@ import { AttendantServices } from "@/services/modules/attendant";
 import { UserContext } from "@/context/UserContext";
 import "./page.scss";
 
+const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
+
 const Chat = ({ params }) => {
   const { userData, userDataDecode } = React.useContext(UserContext);
   const [socket, setSocket] = React.useState();
@@ -107,7 +109,7 @@ const Chat = ({ params }) => {
     let decodeUser = { id: null };
     if (userLogin) decodeUser = jwtDecode(userLogin);
 
-    const newSocket = io("http://142.4.192.167:3001");
+    const newSocket = io(SOCKET_API_URL);
     setSocket(newSocket);
 
     newSocket.on("chatMessages", (message) => {

@@ -8,6 +8,8 @@ import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import { useSearchParams } from "next/navigation";
 import "./page.scss";
 
+const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
+
 const Page = ({ params }) => {
   const connectID = getCookie("connectID");
   const userLogin = getCookie("userLogin");
@@ -28,7 +30,7 @@ const Page = ({ params }) => {
   );
 
   React.useEffect(() => {
-    const socket = io("http://142.4.192.167:3001");
+    const socket = io(SOCKET_API_URL);
 
     socket.on("chatReady", (data) => {
       let decodeUser = { id: null };

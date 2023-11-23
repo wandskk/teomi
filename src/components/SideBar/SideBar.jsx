@@ -58,7 +58,7 @@ const Sidebar = () => {
         timeout={300}
         classNames="fade"
         unmountOnExit
-      >
+      >        
         <div className={`sidebar ${menuOpen ? "open" : ""} fade-content`}>
           <div className="sidebar__header">
             <div className="sidebar__header__profile">

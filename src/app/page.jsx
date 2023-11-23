@@ -20,26 +20,29 @@ import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import { usePathname } from "next/navigation";
 import "./page.scss";
 
+const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
+
 const Page = () => {
   const { userDataDecode, userData, loading, setLoading, setIntervalHome } =
-    React.useContext(UserContext);
+  React.useContext(UserContext);
   const [categories, setCategories] = React.useState(null);
   const [queueList, setQueueList] = React.useState(null);
   const [queueListWithScheduled, setQueueListWithScheduled] =
-    React.useState(null);
+  React.useState(null);
   const pathname = usePathname();
   const connectID = getCookie("connectID");
   const userLogin = getCookie("userLogin");
   const isProfessionalOrAttedant =
-    userDataDecode &&
-    (userDataDecode.userType === 2 || userDataDecode.userType === 3);
+  userDataDecode &&
+  (userDataDecode.userType === 2 || userDataDecode.userType === 3);
+
   const getCategories = React.useCallback(async (token) => {
     try {
       const categories = await ChatServices.getCategories(token);
       setCategories(categories);
     } catch (error) {}
   }, []);
-
+  
   async function getQueueList(attendantId, token) {
     try {
       const queueList = await AttendantServices.getQueueList(
@@ -82,19 +85,21 @@ const Page = () => {
 
   React.useEffect(() => {
     if (isProfessionalOrAttedant) {
-      getQueueList(userData.id, connectID);
-      getQueueListWithScheduled(userData.id, connectID);
+      getQueueList(userDataDecode.userId, connectID);
+      getQueueListWithScheduled(userDataDecode.userId, connectID);
 
       const interval = setInterval(() => {
-        getQueueList(userData.id, connectID);
-        getQueueListWithScheduled(userData.id, connectID);
+        getQueueList(userDataDecode.userId, connectID);
+        getQueueListWithScheduled(userDataDecode.userId, connectID);
       }, 5000);
       setIntervalHome(interval);
     }
   }, [pathname, isProfessionalOrAttedant]);
 
   React.useEffect(() => {
-    const socket = io("http://142.4.192.167:3001");
+    const socket = io(SOCKET_API_URL, {
+      rejectUnauthorized: false,
+    });
 
     socket.on("chatReadyAttendant", (data) => {
       let decodeUser = { id: null };

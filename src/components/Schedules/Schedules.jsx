@@ -11,7 +11,7 @@ const Schedules = () => {
   const { userData, connectID, setLoading } = React.useContext(UserContext);
   const [userSchedules, setUserSchedules] = React.useState(null);
 
-  const getUserSchedules = React.useCallback(async (patientId) => {
+  async function getUserSchedules(patientId) {
     setLoading(true);
     try {
       const getSchedules = await SchedulesServices.getPatientSchedulesById(
@@ -24,7 +24,7 @@ const Schedules = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }
 
   React.useEffect(() => {
     if (userData) getUserSchedules(userData.id);
@@ -43,7 +43,7 @@ const Schedules = () => {
         </div>
         <div className="schedules__actions">
           <Link href="/scheduling/inPerson">+ Agendamento presencial</Link>
-          <Link href="/scheduling/inPerson">+ Agendamento online</Link>
+          <Link href="/scheduling/online">+ Agendamento online</Link>
         </div>
         {!userSchedules && (
           <p className="schedules__noSchedules">
@@ -58,7 +58,10 @@ const Schedules = () => {
                 key={userSchedule.scheduleId}
                 className="schedules__list__item"
               >
-                <SchedulesItem schedule={userSchedule} />
+                <SchedulesItem
+                  schedule={userSchedule}
+                  getSchedules={getUserSchedules}
+                />
               </li>
             ))}
         </ul>

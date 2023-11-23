@@ -9,6 +9,7 @@ import { ChatServices } from "@/services/modules/chat";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import { LuSendHorizonal } from "react-icons/lu";
 import { GrAdd } from "react-icons/gr";
+import { GoDiscussionOutdated } from "react-icons/go";
 import { SlChemistry } from "react-icons/sl";
 import { IoMdClose } from "react-icons/io";
 import { UserContext } from "@/context/UserContext";
@@ -82,14 +83,14 @@ const Chat = ({ params }) => {
 
     newSocket.on("chatMessages", (message) => {
       setMessages((messages) => [...messages, message]);
-    });
-
-    // newSocket.on("quizToPatientSession", (data) => {
-    //   console.log(data);
-    // });
+    });   
 
     newSocket.on("finishedChat", (data) => {
       window.location.href = "/";
+    });
+
+    newSocket.on("finishedService", () => {
+      window.location.href = "/"
     });
 
     return () => {
@@ -123,10 +124,18 @@ const Chat = ({ params }) => {
       patientId: receiverId,
       chatId,
     });
+
+    setShowMenu(false);
   };
 
   const finishChat = () => {
     socket.emit("finishChat", {
+      chatId,
+    });
+  };
+
+  const sendPatientToHome = () => {
+    socket.emit("finishService", {
       chatId,
     });
   };
@@ -222,8 +231,13 @@ const Chat = ({ params }) => {
                 </li>
 
                 <li onClick={finishChat}>
+                  <GoDiscussionOutdated />
+                  Atendimento
+                </li>
+
+                <li onClick={sendPatientToHome}>
                   <IoMdClose />
-                  Finalizar chat
+                  Finalizar
                 </li>
               </ul>
             </div>

@@ -259,7 +259,7 @@ const Page = () => {
                 >
                   <p>Agendamentos</p>
                   <small>
-                    {schedulesAttendant.waitingConfirmationCount > 0
+                    {schedulesAttendant?.waitingConfirmationCount > 0
                       ? `${schedulesAttendant.waitingConfirmationCount} disponíveis`
                       : "Nenhum disponível"}
                   </small>
@@ -272,7 +272,7 @@ const Page = () => {
                 >
                   <p>Agendados</p>
                   <small>
-                    {schedulesAttendant.confirmedCount > 0
+                    {schedulesAttendant?.confirmedCount > 0
                       ? `${schedulesAttendant.confirmedCount} disponíveis`
                       : "Nenhum disponível"}
                   </small>

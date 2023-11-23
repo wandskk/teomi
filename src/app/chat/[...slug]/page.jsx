@@ -120,6 +120,8 @@ const Chat = ({ params }) => {
       setCanShowQuiz(true);
     });
 
+    
+
     newSocket.on("quizResultCallback", (data) => {
       newSocket.emit("chatMessage", {
         sender_id: decodeUser.userId ? decodeUser.userId : connectID,
@@ -137,6 +139,10 @@ const Chat = ({ params }) => {
 
     newSocket.on("finishedChat", (data) => {
       setFinishChat(true);
+    });
+
+    newSocket.on("finishedService", () => {
+      window.location.href = "/"
     });
 
     return () => {

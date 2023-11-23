@@ -6,10 +6,33 @@ import { isDateInRange } from "@/resources/helpers/date/isDateInRange";
 import { AiOutlineSchedule } from "react-icons/ai";
 import { MdOutlineSchedule } from "react-icons/md";
 import { IoIosChatbubbles } from "react-icons/io";
+import { UserContext } from "@/context/UserContext";
 import "@/styles/Schedules/SchedulesItem.scss";
+import { PatientServices } from "@/services/modules/patient";
 
-const SchedulesItem = ({ schedule }) => {
+const SchedulesItem = ({ schedule, getSchedules }) => {
+  const { userDataDecode, setLoading, connectID } =
+    React.useContext(UserContext);
   const [canEnterChat, setCanEnterChat] = React.useState(false);
+  const [disableButton, setDisableButton] = React.useState(false);
+
+  async function handleCancelSchedule() {
+    setDisableButton(true);
+    setLoading(true);
+    try {
+      const patientId = userDataDecode.userId;
+      const { scheduleId } = schedule;
+      const cancelSchedule = await PatientServices.cancelPatientSchedule(
+        scheduleId,
+        patientId,
+        connectID
+      );
+      getSchedules(patientId);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  }
 
   React.useEffect(() => {
     if (schedule) {
@@ -53,7 +76,11 @@ const SchedulesItem = ({ schedule }) => {
           </p>
         </div>
         <div className="schedulesItem__content__actions">
-          <button className="schedulesItem__content__actions__cancel">
+          <button
+            className="schedulesItem__content__actions__cancel"
+            disabled={disableButton}
+            onClick={handleCancelSchedule}
+          >
             Cancelar
           </button>
           {canEnterChat && (

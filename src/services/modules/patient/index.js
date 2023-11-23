@@ -14,4 +14,16 @@ export const PatientServices = {
     );
     return result.data;
   },
+  cancelPatientSchedule: async (scheduleId, patientId, token) => {
+    const result = await api.post(
+      `${basePath}/schedules/cancel`,
+      { scheduleId, patientId },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return result.data;
+  },
 };

@@ -75,7 +75,7 @@ const Chat = ({ params }) => {
   }, [getAllMessages]);
 
   React.useEffect(() => {
-    const newSocket = io("https://api.dvelopers.com.br/socket/teomi/socket.io");
+    const newSocket = io("https://api.dvelopers.com.br/socket.io/teomi/");
     setSocket(newSocket);
 
     newSocket.on("chatMessages", (message) => {

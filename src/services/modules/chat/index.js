@@ -54,6 +54,14 @@ export const ChatServices = {
     );
     return result.data;
   },
+  getRandomAttendantChat: async (token) => {
+    const result = await api.get(`${basePath}/attendant/random`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    return result.data;
+  },
   postUserInQueue: async (body, token) => {
     const result = await api.post(`${basePath}/queue/enter`, body, {
       headers: {

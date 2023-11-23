@@ -24,17 +24,18 @@ const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 
 const Page = () => {
   const { userDataDecode, userData, loading, setLoading, setIntervalHome } =
-  React.useContext(UserContext);
+    React.useContext(UserContext);
+  const [schedulesAttendant, setSchedulesAttendant] = React.useState(null);
   const [categories, setCategories] = React.useState(null);
   const [queueList, setQueueList] = React.useState(null);
   const [queueListWithScheduled, setQueueListWithScheduled] =
-  React.useState(null);
+    React.useState(null);
   const pathname = usePathname();
   const connectID = getCookie("connectID");
   const userLogin = getCookie("userLogin");
   const isProfessionalOrAttedant =
-  userDataDecode &&
-  (userDataDecode.userType === 2 || userDataDecode.userType === 3);
+    userDataDecode &&
+    (userDataDecode.userType === 2 || userDataDecode.userType === 3);
 
   const getCategories = React.useCallback(async (token) => {
     try {
@@ -42,7 +43,7 @@ const Page = () => {
       setCategories(categories);
     } catch (error) {}
   }, []);
-  
+
   async function getQueueList(attendantId, token) {
     try {
       const queueList = await AttendantServices.getQueueList(
@@ -64,6 +65,16 @@ const Page = () => {
     } catch (error) {}
   }
 
+  async function getHomeDataAttendantSchedules(attendantId, token) {
+    try {
+      const schedules = await AttendantServices.getQtdHomeAttendantSchedules(
+        attendantId,
+        token
+      );
+      setSchedulesAttendant(schedules);
+    } catch (error) {}
+  }
+
   async function goToChat(attendantId, patientId) {
     setLoading(true);
     try {
@@ -77,6 +88,15 @@ const Page = () => {
         window.location.href = `/chat-attendant/${chatId}/${patientId}`;
       } else setLoading(false);
     }
+  }
+
+  async function getRandomAttendantChat() {
+    try {
+      const randomAttendantId = await ChatServices.getRandomAttendantChat(
+        connectID
+      );
+      window.location.href = `/queue/${randomAttendantId.attendantId}`;
+    } catch (error) {}
   }
 
   React.useEffect(() => {
@@ -113,6 +133,12 @@ const Page = () => {
     return () => socket.disconnect();
   }, []);
 
+  React.useEffect(() => {
+    if (isProfessionalOrAttedant) {
+      getHomeDataAttendantSchedules(userDataDecode.userId, connectID);
+    }
+  }, [userDataDecode]);
+
   if (userData != null && !loading)
     return (
       <div className="home">
@@ -143,7 +169,10 @@ const Page = () => {
           ) : (
             <>
               <p className="home__header__subtitle">Como podemos te apoiar?</p>
-              <div className="home__header__banner">
+              <div
+                className="home__header__banner"
+                onClick={getRandomAttendantChat}
+              >
                 <div className="home__header__banner__text">
                   <p>Ajuda</p>
                   <p>IMEDIATA</p>
@@ -229,7 +258,11 @@ const Page = () => {
                   style={{ backgroundImage: `url(${schedulesBanner.src})` }}
                 >
                   <p>Agendamentos</p>
-                  <small>9 disponíveis</small>
+                  <small>
+                    {schedulesAttendant.waitingConfirmationCount > 0
+                      ? `${schedulesAttendant.waitingConfirmationCount} disponíveis`
+                      : "Nenhum disponível"}
+                  </small>
                 </div>
               </Link>
               <Link href="/schedules-attendant/scheduled">
@@ -238,7 +271,11 @@ const Page = () => {
                   style={{ backgroundImage: `url(${scheduledBanner.src})` }}
                 >
                   <p>Agendados</p>
-                  <small>15 disponíveis</small>
+                  <small>
+                    {schedulesAttendant.confirmedCount > 0
+                      ? `${schedulesAttendant.confirmedCount} disponíveis`
+                      : "Nenhum disponível"}
+                  </small>
                 </div>
               </Link>
             </div>

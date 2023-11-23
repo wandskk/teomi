@@ -76,6 +76,18 @@ export const AttendantServices = {
     );
     return result.data;
   },
+  getQtdHomeAttendantSchedules: async (attendantId, token) => {
+    const result = await api.post(
+      `${basePath}/schedules/get`,
+      { attendantId },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return result.data;
+  },
   acceptPendingSchedule: async (body, token) => {
     const result = await api.post(`${basePath}/schedules/accept`, body, {
       headers: {

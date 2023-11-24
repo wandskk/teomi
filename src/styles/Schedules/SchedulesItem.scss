@@ -34,6 +34,24 @@
     }
   }
 
+  &__status {
+    position: absolute;
+    right: 3rem;
+    background: gray;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+
+    &.--inPerson {
+      background-color: #774372;
+    }
+
+    &.--online {
+      background-color: #c49cc0;
+    }
+  }
+
   &__content {
     padding: 1.5rem;
 
@@ -53,6 +71,25 @@
           color: #00000080;
           margin-bottom: 0.2rem;
         }
+      }
+    }
+
+    &__place {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      font-size: 0.875rem;
+
+      &__item {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      & svg {
+        font-size: 1.2rem;
+        color: rgba(0, 0, 0, 0.5019607843);
       }
     }
 

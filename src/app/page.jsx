@@ -9,6 +9,7 @@ import teomi from "@/assets/images/teomi.png";
 import person from "@/assets/images/icons/person.png";
 import schedulesBanner from "@/assets/images/schedulesBanner.png";
 import scheduledBanner from "@/assets/images/scheduledBanner.png";
+import Message from "@/components/Message/Message";
 import Link from "next/link";
 import jwtDecode from "jwt-decode";
 import { UserContext } from "@/context/UserContext";
@@ -16,6 +17,7 @@ import { name } from "@/resources/helpers/name/name";
 import { ChatServices } from "@/services/modules/chat";
 import { AttendantServices } from "@/services/modules/attendant";
 import { io } from "socket.io-client";
+import { useSearchParams } from "next/navigation";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import { usePathname } from "next/navigation";
 import "./page.scss";
@@ -27,6 +29,7 @@ const Page = () => {
     React.useContext(UserContext);
   const [professionalStatus, setProfessionalStatus] = React.useState(null);
   const [schedulesAttendant, setSchedulesAttendant] = React.useState(null);
+  const [message, setMessage] = React.useState(null);
   const [categories, setCategories] = React.useState(null);
   const [queueList, setQueueList] = React.useState(null);
   const [queueListWithScheduled, setQueueListWithScheduled] =
@@ -37,6 +40,8 @@ const Page = () => {
   const isProfessionalOrAttedant =
     userDataDecode &&
     (userDataDecode.userType === 2 || userDataDecode.userType === 3);
+  const searchParams = useSearchParams();
+  const search = searchParams.get("queueEnd");
 
   const getCategories = React.useCallback(async (token) => {
     try {
@@ -96,8 +101,14 @@ const Page = () => {
       const randomAttendantId = await ChatServices.getRandomAttendantChat(
         connectID
       );
-      window.location.href = `/queue/${randomAttendantId.attendantId}`;
-    } catch (error) {}
+      console.log(randomAttendantId);
+      // window.location.href = `/queue/${randomAttendantId.attendantId}`;
+    } catch (error) {
+      setMessage({
+        text: "Não há atendentes disponíveis no momento, tente novamente mais tarde!",
+        type: "error",
+      });
+    }
   }
 
   async function getAttendantStatus() {
@@ -173,11 +184,28 @@ const Page = () => {
     if (isProfessionalOrAttedant) {
       getAttendantStatus();
     }
-  }, [userDataDecode]);  
+  }, [userDataDecode]);
+
+  React.useEffect(() => {
+    if (search === "true") {
+      setMessage({
+        text: "O tempo na fila de espera esgotou, tente novamente mais tarde!",
+        type: "error",
+      });
+    }
+  }, [search]);
 
   if (userData != null && !loading)
     return (
       <div className="home">
+        {message && (
+          <Message
+            message={message?.text}
+            type={message?.type}
+            resetMessage={setMessage}
+          />
+        )}
+
         <div className="home__header">
           <Image src={flower} alt="flower" className="home__header__flower" />
           <h2 className="home__header__title">

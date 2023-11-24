@@ -5,6 +5,7 @@ import React from "react";
 import io from "socket.io-client";
 import person from "@/assets/images/icons/person.png";
 import Image from "next/image";
+import Message from "@/components/Message/Message";
 import { ChatServices } from "@/services/modules/chat";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import { LuSendHorizonal } from "react-icons/lu";
@@ -21,6 +22,8 @@ const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 const Chat = ({ params }) => {
   const { userData, setLoading } = React.useContext(UserContext);
   const [socket, setSocket] = React.useState();
+  const [canShowQuizButton, setCanShowQuizButton] = React.useState(true);
+  const [alertMessage, setAlertMessage] = React.useState(null);
   const [messages, setMessages] = React.useState([]);
   const [messagesGroup, setMessagesGroup] = React.useState([]);
   const [message, setMessage] = React.useState("");
@@ -82,15 +85,27 @@ const Chat = ({ params }) => {
     setSocket(newSocket);
 
     newSocket.on("chatMessages", (message) => {
-      setMessages((messages) => [...messages, message]);
-    });   
-
-    newSocket.on("finishedChat", (data) => {
-      window.location.href = "/";
+      if (message.chatId == chatId)
+        setMessages((messages) => [...messages, message]);
     });
 
-    newSocket.on("finishedService", () => {
-      window.location.href = "/"
+    newSocket.on("finishedChat", (data) => {
+      if (data.chatId == chatId) window.location.href = "/";
+    });
+
+    newSocket.on("finishedService", (data) => {
+      if (data.chatId == chatId) window.location.href = "/";
+    });
+
+    newSocket.on("quizResultCallback", (data) => {
+      if (data.chatId == chatId) {
+        setAlertMessage({
+          text: `Quiz finalizado. A pontuação foi de ${data.finalPoints} pontos`,
+          type: "success",
+        });
+      }
+
+      setCanShowQuizButton(true);
     });
 
     return () => {
@@ -124,6 +139,7 @@ const Chat = ({ params }) => {
       patientId: receiverId,
       chatId,
     });
+    setCanShowQuizButton(false);
 
     setShowMenu(false);
   };
@@ -150,6 +166,13 @@ const Chat = ({ params }) => {
 
   return (
     <div className="container">
+      {alertMessage && (
+        <Message
+          message={alertMessage.text}
+          type={alertMessage.type}
+          resetMessage={setAlertMessage}
+        />
+      )}
       <div className="chat">
         {patientData != null && (
           <div className="chat__info">

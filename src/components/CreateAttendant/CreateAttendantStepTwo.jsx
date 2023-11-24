@@ -1,9 +1,9 @@
 import React from "react";
+import ReactInputMask from "react-input-mask";
 import { useFormik } from "formik";
 import { schema } from "./schemas/formStepTwo";
 import { UserContext } from "@/context/UserContext";
 import "@/styles/CreateAttendant/CreateAttendantSteps.scss";
-import ReactInputMask from "react-input-mask";
 
 const CreateAttendantStepTwo = ({ stepValues, setStepValues, edit }) => {
   const { connectID, setLoading, userData, userToken } =
@@ -28,6 +28,7 @@ const CreateAttendantStepTwo = ({ stepValues, setStepValues, edit }) => {
 
   React.useEffect(() => {
     if (edit && userData) {
+      console.log(userData)
       formik.setFieldValue("cpf", userData.cpf);
       formik.setFieldValue("rg", userData.rg);
       formik.setFieldValue("role", userData.role);

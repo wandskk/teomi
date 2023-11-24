@@ -113,36 +113,27 @@ const Chat = ({ params }) => {
     setSocket(newSocket);
 
     newSocket.on("chatMessages", (message) => {
-      setMessages((messages) => [...messages, message]);
+      if (message.chatId == chatId)
+        setMessages((messages) => [...messages, message]);
     });
 
-    newSocket.on("quizToPatientSession", () => {
-      setCanShowQuiz(true);
+    newSocket.on("quizToPatientSession", (data) => {
+      if (data.chatId == chatId) setCanShowQuiz(true);
     });
-
-    
 
     newSocket.on("quizResultCallback", (data) => {
-      newSocket.emit("chatMessage", {
-        sender_id: decodeUser.userId ? decodeUser.userId : connectID,
-        receiver_id: receiverId,
-        chatId,
-        message: `Quiz finalizado, a pontuação foi de: ${data.finalPoints}`,
-      });
-      setCanShowQuiz(false);
-      setQuizResult(null);
+      if (data.chatId == chatId) {
+        setCanShowQuiz(false);
+        setQuizResult(null);
+      }
     });
-
-    // newSocket.on("quizError", (data) => {
-    //   console.log(data);
-    // });
 
     newSocket.on("finishedChat", (data) => {
-      setFinishChat(true);
+      if (data.chatId == chatId) setFinishChat(true);
     });
 
-    newSocket.on("finishedService", () => {
-      window.location.href = "/"
+    newSocket.on("finishedService", (data) => {
+      if (data.chatId == chatId) window.location.href = "/";
     });
 
     return () => {
@@ -259,9 +250,11 @@ const Chat = ({ params }) => {
                 }
               >
                 Presencial
-              </Link>              
+              </Link>
             </div>
-            <Link href="/" className="chat__finished__quit">Desejo sair</Link>
+            <Link href="/" className="chat__finished__quit">
+              Desejo sair
+            </Link>
           </div>
         )}
 

@@ -6,15 +6,16 @@ import jwtDecode from "jwt-decode";
 import { ChatServices } from "@/services/modules/chat";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import { useSearchParams } from "next/navigation";
+import { UserContext } from "@/context/UserContext";
 import "./page.scss";
 
 const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 
 const Page = ({ params }) => {
-  const connectID = getCookie("connectID");
   const userLogin = getCookie("userLogin");
   const searchParams = useSearchParams();
   const search = searchParams.get("isScheduled");
+  const { userDataDecoded, connectID } = React.useContext(UserContext);
 
   const postUserInQueue = React.useCallback(
     async (data, attendantId, connectID) => {
@@ -41,6 +42,16 @@ const Page = ({ params }) => {
         (data.patientId === decodeUser.userId || data.patientId == connectID)
       ) {
         window.location.href = `/chat/${data.chatId}/${data.attendantId}`;
+      }
+    });
+
+    socket.on("deletedUserFromQueue", (data) => {
+      const currentPatientId = userDataDecoded
+        ? userDataDecoded.userId
+        : connectID;
+
+      if (data.attendantId == params.id && data.patientId == currentPatientId) {
+        window.location.href = "/?queueEnd=true";
       }
     });
 

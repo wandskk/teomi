@@ -5,16 +5,20 @@ import { formatDate } from "@/resources/helpers/date/formatDate";
 import { isDateInRange } from "@/resources/helpers/date/isDateInRange";
 import { AiOutlineSchedule } from "react-icons/ai";
 import { MdOutlineSchedule } from "react-icons/md";
-import { IoIosChatbubbles } from "react-icons/io";
+import { IoIosChatbubbles, IoLocationOutline } from "react-icons/io";
 import { UserContext } from "@/context/UserContext";
-import "@/styles/Schedules/SchedulesItem.scss";
 import { PatientServices } from "@/services/modules/patient";
+import "@/styles/Schedules/SchedulesItem.scss";
+import { FaRegBuilding } from "react-icons/fa";
+import { SlLocationPin } from "react-icons/sl";
 
 const SchedulesItem = ({ schedule, getSchedules }) => {
   const { userDataDecode, setLoading, connectID } =
     React.useContext(UserContext);
   const [canEnterChat, setCanEnterChat] = React.useState(false);
   const [disableButton, setDisableButton] = React.useState(false);
+  const isInPerson = schedule.locationInfo?.length > 0;
+  console.log(schedule);
 
   async function handleCancelSchedule() {
     setDisableButton(true);
@@ -49,6 +53,13 @@ const SchedulesItem = ({ schedule, getSchedules }) => {
   return (
     <div className="schedulesItem">
       <div className="schedulesItem__header">
+        <div
+          className={`schedulesItem__status ${
+            isInPerson ? "--inPerson" : "--online"
+          }`}
+        >
+          {isInPerson ? "Presencial" : "Online"}
+        </div>
         <Image
           className="schedulesItem__header__photo"
           src={schedule.professionalPhoto}
@@ -75,6 +86,20 @@ const SchedulesItem = ({ schedule, getSchedules }) => {
             {schedule.scheduleStartTime} - {schedule.scheduleEndTime}
           </p>
         </div>
+        {isInPerson && (
+          <div className="schedulesItem__content__place">
+            <p className="schedulesItem__content__place__item">
+              <FaRegBuilding />
+              {schedule.locationInfo[0].locationAddress} -{" "}
+              {schedule.locationInfo[0].locationNumber}
+            </p>
+            <p className="schedulesItem__content__place__item">
+              <SlLocationPin />
+              {schedule.locationInfo[0].locationCity} -{" "}
+              {schedule.locationInfo[0].locationState}
+            </p>
+          </div>
+        )}
         <div className="schedulesItem__content__actions">
           <button
             className="schedulesItem__content__actions__cancel"
@@ -83,7 +108,7 @@ const SchedulesItem = ({ schedule, getSchedules }) => {
           >
             Cancelar
           </button>
-          {canEnterChat && (
+          {!isInPerson && canEnterChat && (
             <Link
               href={`/queue/${schedule.professionalId}?isScheduled=1`}
               className="schedulesItem__content__actions__enter"

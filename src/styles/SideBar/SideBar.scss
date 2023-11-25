@@ -28,6 +28,26 @@
     min-height: 3.5rem;
     box-shadow: 0.5rem 0 1rem 0 $neutral;
 
+    &__exit {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      justify-content: center;
+      cursor: pointer;
+      background-color: gray;
+      width: 100%;
+      font-size: 1rem;
+      background-color: $neutral-darker;
+      padding: .5rem;
+      border-radius: 2rem;
+      color: #fff;
+      text-shadow: none;
+
+      & svg {
+        color: #fff !important;
+      }
+    }
+
     &__profile {
       display: flex;
       flex-direction: column;
@@ -92,15 +112,5 @@
         font-size: 1.2rem;
       }
     }
-  }
-
-  &__exit {
-    position: absolute;
-    bottom: 1rem;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
+  }  
 }

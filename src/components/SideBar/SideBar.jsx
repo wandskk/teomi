@@ -58,7 +58,7 @@ const Sidebar = () => {
         timeout={300}
         classNames="fade"
         unmountOnExit
-      >        
+      >
         <div className={`sidebar ${menuOpen ? "open" : ""} fade-content`}>
           <div className="sidebar__header">
             <div className="sidebar__header__profile">
@@ -71,6 +71,12 @@ const Sidebar = () => {
                 />
               )}
               <p>{userData ? name.getFirstName(userData.name) : ""}</p>
+
+              {userData && (
+                <div className="sidebar__header__exit" onClick={logout}>
+                  Sair <VscSignOut />
+                </div>
+              )}
             </div>
             <div className="sidebar__header__close" onClick={toggleMenu}>
               <AiOutlineClose />
@@ -79,8 +85,6 @@ const Sidebar = () => {
           <div className="sidebar__menu">
             {userData ? (
               <>
-                {/* <Link href="/">Configurações</Link> */}
-                {/* <Link href="/account">Conta</Link> */}
                 <Link
                   href={
                     isProfessionalOrAttedant ? "/attendant-account" : "/account"
@@ -97,11 +101,6 @@ const Sidebar = () => {
             )}
             <Link href="/about">Sobre</Link>
           </div>
-          {userData && (
-            <div className="sidebar__exit" onClick={logout}>
-              Sair <VscSignOut />
-            </div>
-          )}
         </div>
       </CSSTransition>
     </>

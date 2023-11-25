@@ -34,13 +34,22 @@ const Page = ({ params }) => {
     const socket = io(SOCKET_API_URL);
 
     socket.on("chatReady", (data) => {
-      let decodeUser = { id: null };
-      if (userLogin) decodeUser = jwtDecode(userLogin);
+      console.log(data)
+      const userId = userDataDecoded ? userDataDecoded.userId : connectID;
 
-      if (
-        data.attendantId == params.id &&
-        (data.patientId === decodeUser.userId || data.patientId == connectID)
-      ) {
+      if (data.attendantId == params.id && data.patientId === userId) {
+        const messageContent = "Chat iniciado com sucesso!";
+        
+        socket.emit("chatMessageWithService", {
+          messageReceiver: data.attendantId,
+          messageContent,
+          chatId: data.chatId,
+        });
+        socket.emit("chatMessageWithService", {
+          messageReceiver: data.patientId,
+          messageContent,
+          chatId: data.chatId,
+        });
         window.location.href = `/chat/${data.chatId}/${data.attendantId}`;
       }
     });

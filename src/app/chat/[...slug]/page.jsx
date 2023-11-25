@@ -11,6 +11,7 @@ import { ChatServices } from "@/services/modules/chat";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import { LuSendHorizonal } from "react-icons/lu";
 import { GrAdd } from "react-icons/gr";
+import { FiAlertOctagon } from "react-icons/fi";
 import { MdOutlineCalendarMonth } from "react-icons/md";
 import { AttendantServices } from "@/services/modules/attendant";
 import { UserContext } from "@/context/UserContext";
@@ -189,8 +190,26 @@ const Chat = ({ params }) => {
           <div className="chat__messages">
             {messagesGroup &&
               messagesGroup.map((msg, index) => {
-                const messageClass =
-                  msg[0]?.sender_id == receiverId ? "--left" : "--right";
+                const isReciver = msg[0].receiver_id === receiverId;
+                const messageClass = isReciver ? "--left" : "--right";
+                const isChatService = msg[0].sender_id == 93;
+                const userId = userData ? userData.id : connectID;
+                if (isChatService) {
+                  return (
+                    <div key={index} className="chat__box --chatService">
+                      <ul>
+                        {msg.map((message, index) => {                          
+                          if (userId === message.receiver_id)
+                            return (
+                              <li key={index}>
+                                <FiAlertOctagon /> {message.message}
+                              </li>
+                            );
+                        })}
+                      </ul>
+                    </div>
+                  );
+                }
                 return (
                   <div key={index} className={`chat__box ${messageClass}`}>
                     {msg[0]?.sender_id == receiverId ? (

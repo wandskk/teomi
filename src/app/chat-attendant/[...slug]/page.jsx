@@ -10,6 +10,7 @@ import { ChatServices } from "@/services/modules/chat";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import { LuSendHorizonal } from "react-icons/lu";
 import { GrAdd } from "react-icons/gr";
+import { FiAlertOctagon } from "react-icons/fi";
 import { GoDiscussionOutdated } from "react-icons/go";
 import { SlChemistry } from "react-icons/sl";
 import { IoMdClose } from "react-icons/io";
@@ -20,6 +21,7 @@ import "./page.scss";
 const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 
 const Chat = ({ params }) => {
+  const [chatStarted, setChatStarted] = React.useState(false);
   const { userData, setLoading } = React.useContext(UserContext);
   const [socket, setSocket] = React.useState();
   const [canShowQuizButton, setCanShowQuizButton] = React.useState(true);
@@ -83,6 +85,8 @@ const Chat = ({ params }) => {
   React.useEffect(() => {
     const newSocket = io(SOCKET_API_URL);
     setSocket(newSocket);
+    let decodeUser = { id: null };
+    if (userLogin) decodeUser = jwtDecode(userLogin);
 
     newSocket.on("chatMessages", (message) => {
       if (message.chatId == chatId)
@@ -99,10 +103,18 @@ const Chat = ({ params }) => {
 
     newSocket.on("quizResultCallback", (data) => {
       if (data.chatId == chatId) {
-        setAlertMessage({
-          text: `Quiz finalizado. A pontuação foi de ${data.finalPoints} pontos`,
-          type: "success",
+
+        newSocket.emit("chatMessageWithService", {
+          messageReceiver: decodeUser.userId,
+          messageContent: `Quiz finalizado! A pontuação foi de ${data.finalPoints} pontos`,
+          chatId,
         });
+    
+        newSocket.emit("chatMessageWithService", {
+          messageReceiver: receiverId,
+          messageContent: "Quiz finalizado!",
+          chatId,
+        });        
       }
 
       setCanShowQuizButton(true);
@@ -133,12 +145,26 @@ const Chat = ({ params }) => {
   const sendQuiz = () => {
     let decodeUser = { id: null };
     if (userLogin) decodeUser = jwtDecode(userLogin);
+    const messageContent = "O quiz foi iniciado!";
 
     socket.emit("attendantSendQuiz", {
       attendantId: decodeUser.userId,
       patientId: receiverId,
       chatId,
     });
+
+    socket.emit("chatMessageWithService", {
+      messageReceiver: decodeUser.userId,
+      messageContent,
+      chatId,
+    });
+
+    socket.emit("chatMessageWithService", {
+      messageReceiver: receiverId,
+      messageContent,
+      chatId,
+    });
+
     setCanShowQuizButton(false);
 
     setShowMenu(false);
@@ -200,8 +226,26 @@ const Chat = ({ params }) => {
           <div className="chat__messages">
             {messagesGroup &&
               messagesGroup.map((msg, index) => {
-                const messageClass =
-                  msg[0]?.sender_id == receiverId ? "--left" : "--right";
+                const isReciver = msg[0].receiver_id === receiverId;
+                const messageClass = isReciver ? "--left" : "--right";
+                const isChatService = msg[0].sender_id == 93;
+                const userId = userData ? userData.id : connectID;
+                if (isChatService) {
+                  return (
+                    <div key={index} className="chat__box --chatService">
+                      <ul>
+                        {msg.map((message, index) => {
+                          if (userId === message.receiver_id)
+                            return (
+                              <li key={index}>
+                                <FiAlertOctagon /> {message.message}
+                              </li>
+                            );
+                        })}
+                      </ul>
+                    </div>
+                  );
+                }
                 return (
                   <div key={index} className={`chat__box ${messageClass}`}>
                     {msg[0]?.sender_id == receiverId ? (

@@ -64,7 +64,7 @@ const Sidebar = () => {
             <div className="sidebar__header__profile">
               {userData && (
                 <Image
-                  src={userPhoto === null ? person : userPhoto}
+                  src={userData.userphoto === null ? person : userData.userphoto}
                   width={64}
                   height={64}
                   alt="Foto do usuário"

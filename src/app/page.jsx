@@ -101,8 +101,7 @@ const Page = () => {
       const randomAttendantId = await ChatServices.getRandomAttendantChat(
         connectID
       );
-      console.log(randomAttendantId);
-      // window.location.href = `/queue/${randomAttendantId.attendantId}`;
+      window.location.href = `/queue/${randomAttendantId.attendantId}`;
     } catch (error) {
       setMessage({
         text: "Não há atendentes disponíveis no momento, tente novamente mais tarde!",

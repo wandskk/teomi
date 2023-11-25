@@ -34,7 +34,6 @@ const Page = ({ params }) => {
     const socket = io(SOCKET_API_URL);
 
     socket.on("chatReady", (data) => {
-      console.log(data)
       const userId = userDataDecoded ? userDataDecoded.userId : connectID;
 
       if (data.attendantId == params.id && data.patientId === userId) {

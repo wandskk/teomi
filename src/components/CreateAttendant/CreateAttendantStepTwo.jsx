@@ -28,7 +28,6 @@ const CreateAttendantStepTwo = ({ stepValues, setStepValues, edit }) => {
 
   React.useEffect(() => {
     if (edit && userData) {
-      console.log(userData)
       formik.setFieldValue("cpf", userData.cpf);
       formik.setFieldValue("rg", userData.rg);
       formik.setFieldValue("role", userData.role);

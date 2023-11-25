@@ -18,7 +18,6 @@ const SchedulesItem = ({ schedule, getSchedules }) => {
   const [canEnterChat, setCanEnterChat] = React.useState(false);
   const [disableButton, setDisableButton] = React.useState(false);
   const isInPerson = schedule.locationInfo?.length > 0;
-  console.log(schedule);
 
   async function handleCancelSchedule() {
     setDisableButton(true);

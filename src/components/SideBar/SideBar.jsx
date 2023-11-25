@@ -21,9 +21,9 @@ const Sidebar = () => {
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  const handleBlockScroll = (handle) => {
-    document.body.style.overflow = handle ? "hidden" : "";
-  };
+  // const handleBlockScroll = (handle) => {
+  //   document.body.style.overflow = handle ? "hidden" : "";
+  // };
 
   React.useEffect(() => setMenuOpen(false), [pathname]);
 
@@ -31,9 +31,9 @@ const Sidebar = () => {
     if (userData) setUserPhoto(userData.userphoto);
   }, [userData]);
 
-  React.useEffect(() => {
-    handleBlockScroll(menuOpen);
-  }, [menuOpen]);
+  // React.useEffect(() => {
+  //   handleBlockScroll(menuOpen);
+  // }, [menuOpen]);
 
   React.useEffect(() => {
     const handleClickOutside = (event) => {

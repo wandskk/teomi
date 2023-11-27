@@ -11,6 +11,7 @@ import { statesList } from "@/resources/utils/states/statesList";
 import { BsDot } from "react-icons/bs";
 import { useSearchParams } from "next/navigation";
 import "@/styles/CreateAccount/CreateAccount.scss";
+import { object } from "@/resources/helpers/object/object";
 
 const CreateAccount = () => {
   const searchParams = useSearchParams();
@@ -158,8 +159,8 @@ const CreateAccount = () => {
             step === 3 && "createAccount__footer__button--submit"
           }`}
           disabled={
-            (step === 1 && !stepOne) ||
-            (step === 2 && !stepTwo)
+            (step === 1 && object.hasEmptyAttributes(stepOne)) ||
+            (step === 2 && object.hasEmptyAttributes(stepTwo))
           }
           onClick={() => (step === 3 ? handleStep.submit() : handleStep.next())}
         >

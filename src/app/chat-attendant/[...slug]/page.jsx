@@ -210,14 +210,14 @@ const Chat = ({ params }) => {
                 </small>
               )}
             </div>
-            <div className="chat__info__photo">
-              <Image
-                src={patientData ? patientData.patientPhoto : person}
-                alt="atendente"
-                width={64}
-                height={64}
-              />
-            </div>
+            <div
+              style={{
+                backgroundImage: `url(${
+                  patientData ? patientData.patientPhoto : person.src
+                })`,
+              }}
+              className="chat__info__photo"
+            />
           </div>
         )}
 
@@ -258,7 +258,7 @@ const Chat = ({ params }) => {
                       ) : (
                         <div
                           className="chat__photo"
-                          style={{ backgroundImage: `url(${person})` }}
+                          style={{ backgroundImage: `url(${person.src})` }}
                         />
                       )
                     ) : (

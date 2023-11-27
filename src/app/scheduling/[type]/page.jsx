@@ -6,7 +6,7 @@ import ReactInputMask from "react-input-mask";
 import SuccessScreen from "@/components/SuccessScreen/SuccessScreen";
 import Link from "next/link";
 import { SchedulesServices } from "@/services/modules/schedules/";
-import { isDateBeforeCurrent } from "@/resources/helpers/date/isDateBeforeCurrent";
+// import { isDateBeforeCurrent } from "@/resources/helpers/date/isDateBeforeCurrent";
 import { getNext10DaysFromDate } from "@/resources/helpers/date/getNext10DaysFromDate";
 import { currentDate } from "@/resources/helpers/date/currentDate";
 import { times } from "@/resources/utils/times/times";
@@ -166,7 +166,9 @@ const Page = ({ params }) => {
       <header className="scheduling__header">
         <div className="scheduling__header__change">
           {params.type === "online" && step === 2 && (
-            <Link href="/scheduling/inPerson">Mudar para agendamento presencial</Link>
+            <Link href="/scheduling/inPerson">
+              Mudar para agendamento presencial
+            </Link>
           )}
           {params.type === "inPerson" && step === 1 && (
             <Link href="/scheduling/online">Mudar para agendamento online</Link>
@@ -256,7 +258,9 @@ const Page = ({ params }) => {
                 times &&
                 times.map((hour) => {
                   const { id, time } = hour;
-                  const isOldTime = !isParameterTimeGreaterThanCurrent(time);
+                  const isOldTime =
+                    !isParameterTimeGreaterThanCurrent(time) &&
+                    selectedDate === currentDate();
                   const disabledTime =
                     indisponiblesTimes.indexOf(time) !== -1 || isOldTime;
                   const isSelected = selectedTime === time && "--selected";
@@ -264,6 +268,7 @@ const Page = ({ params }) => {
                   return (
                     <li
                       key={id}
+                      style={{display: isDisabled? "none" : "block"}}
                       className={`scheduling__time ${isSelected} ${isDisabled}`}
                       onClick={() => handleSelectTime(time)}
                     >

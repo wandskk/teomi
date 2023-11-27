@@ -24,23 +24,23 @@ const CreateAccount = () => {
   const [step, setStep] = React.useState(1);
 
   const [stepOne, setStepOne] = React.useState({
-    name: "Wanderson Kenedy Soares de Oliveira",
-    email: randomEmail(),
-    password: "wandsk13",
-    confirmPassword: "wandsk13",
-    phone: "84994873510",
-    birthdate: "11/01/1997",
-    gender: 1,
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    phone: "",
+    birthdate: "",
+    gender: "",
   });
 
   const [stepTwo, setStepTwo] = React.useState({
-    postalCode: "59695000",
-    address: "Rua Anselmo Leandro",
-    number: "108",
-    complement: "Prox avanti",
-    neighborhood: "CENTRO",
-    city: "Baraúna",
-    state: "RN",
+    postalCode: "",
+    address: "",
+    number: "",
+    complement: "",
+    neighborhood: "",
+    city: "",
+    state: "",
   });
   const [stepThree, setStepThree] = React.useState(null);
 

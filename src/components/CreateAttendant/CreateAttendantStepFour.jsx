@@ -7,7 +7,7 @@ import { UserContext } from "@/context/UserContext";
 import "@/styles/CreateAttendant/CreateAttendantSteps.scss";
 
 const CreateAttendantStepFour = ({ gender, stepValues, setStepValues }) => {
-  const { userData } = React.useContext(UserContext);
+  const { userData, setLoading } = React.useContext(UserContext);
   const [selectedImage, setSelectedImage] = React.useState(userData?.userphoto);
 
   const handleImageChange = async (file) => {
@@ -30,11 +30,14 @@ const CreateAttendantStepFour = ({ gender, stepValues, setStepValues }) => {
   async function handleUploadToImgur(file) {
     const formData = new FormData();
     formData.append("image", file.split(",").pop());
-
+    setLoading(true)
     try {
       const uploadPhotoResponse = await ImageBBServices.uploadImage(formData);
       setStepValues(uploadPhotoResponse.data.display_url);
     } catch (error) {}
+    finally {
+      setLoading(false);
+    }
   }
 
   React.useState(() => {

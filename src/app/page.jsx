@@ -298,10 +298,9 @@ const Page = () => {
                           >
                             <div
                             className="home__pacientsQueueList__item__photo"
-                              src={queue.userphoto ?? person}
                               style={{
                                 backgroundImage: `url(${
-                                  queue.userphoto ?? person
+                                  queue.userphoto ?? person.src
                                 })`,
                               }}                              
                             />

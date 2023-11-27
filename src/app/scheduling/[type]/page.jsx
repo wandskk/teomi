@@ -7,7 +7,7 @@ import SuccessScreen from "@/components/SuccessScreen/SuccessScreen";
 import Link from "next/link";
 import { SchedulesServices } from "@/services/modules/schedules/";
 import { isDateBeforeCurrent } from "@/resources/helpers/date/isDateBeforeCurrent";
-import { getWeekdaysAroundDate } from "@/resources/helpers/date/getWeekdaysAroundDate";
+import { getNext10DaysFromDate } from "@/resources/helpers/date/getNext10DaysFromDate";
 import { currentDate } from "@/resources/helpers/date/currentDate";
 import { times } from "@/resources/utils/times/times";
 import { UserContext } from "@/context/UserContext";
@@ -36,7 +36,7 @@ const Page = ({ params }) => {
   const [indisponiblesTimes, setIndiponiblesTimes] = React.useState(null);
   const [currentAttedantIndex, setCurrentAttendantIndex] = React.useState(0);
   const [step, setStep] = React.useState(pageType[params.type]);
-  const weekdays = getWeekdaysAroundDate(currentDate());
+  const weekdays = getNext10DaysFromDate(currentDate());
 
   const getAttendantList = React.useCallback(async (date, time, connectID) => {
     setLoading(true);
@@ -234,19 +234,17 @@ const Page = ({ params }) => {
             <ul className="scheduling__days">
               {weekdays &&
                 weekdays.map((day) => {
-                  const { name, date } = day;
+                  const { dayOfWeek, date } = day;
                   const isSelected = selectedDate === date && "--selected";
-                  const isOldDate = isDateBeforeCurrent(date);
-                  const isDisabled = isOldDate && "--disabled";
                   const currentDay = date.split("/")[0];
 
                   return (
                     <li
                       onClick={() => handleSelectDate(date)}
-                      key={name}
-                      className={`scheduling__day ${isSelected} ${isDisabled}`}
+                      key={date}
+                      className={`scheduling__day ${isSelected}`}
                     >
-                      <p className="scheduling__day__text">{name}</p>
+                      <p className="scheduling__day__text">{dayOfWeek}</p>
                       <p className="scheduling__day__number">{currentDay}</p>
                     </li>
                   );

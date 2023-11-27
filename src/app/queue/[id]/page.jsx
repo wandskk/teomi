@@ -56,7 +56,6 @@ const Page = ({ params }) => {
           messageContent,
           chatId: data.chatId,
         });
-        console.log("entrou aqui");
         window.location.href = `/chat/${data.chatId}/${data.attendantId}`;
       }
     });

@@ -227,7 +227,7 @@ const Chat = ({ params }) => {
             {messagesGroup &&
               messagesGroup.map((msg, index) => {
                 const isReciver = msg[0].receiver_id == receiverId;
-                const messageClass = isReciver ? "--left" : "--right";
+                const messageClass = !isReciver ? "--left" : "--right";
                 const isChatService = msg[0].sender_id == 93;
                 const userId = userData ? userData.id : connectID;
                 if (isChatService) {

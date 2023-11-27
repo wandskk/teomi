@@ -296,11 +296,14 @@ const Page = () => {
                             className="home__pacientsQueueList__item"
                             onClick={() => goToChat(userData.id, queue.userId)}
                           >
-                            <Image
+                            <div
+                            className="home__pacientsQueueList__item__photo"
                               src={queue.userphoto ?? person}
-                              width={75}
-                              height={75}
-                              alt="paciente da fila"
+                              style={{
+                                backgroundImage: `url(${
+                                  queue.userphoto ?? person
+                                })`,
+                              }}                              
                             />
                           </li>
                         );

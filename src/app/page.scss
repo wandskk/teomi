@@ -109,9 +109,19 @@
       position: relative;
       cursor: pointer;
 
-      & img {
-        border-radius: 50%;
-        box-shadow: 0 0 0.5rem 0 #000;
+      &__photo {
+        border-radius: 15rem;
+        width: 6rem;
+        height: 6rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-start;
+        position: relative;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        overflow: hidden;
       }
 
       &::after {
@@ -124,6 +134,7 @@
         bottom: 0.5rem;
         right: 0.5rem;
         border-radius: 1rem;
+        z-index: 10000;
       }
     }
   }

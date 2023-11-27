@@ -4,6 +4,7 @@ import CreateAccountStepOne from "./CreateAccountStepOne";
 import CreateAccountStepTwo from "./CreateAccountStepTwo";
 import CreateAccountStepThree from "./CreateAccountStepThree";
 import { SystemServices } from "@/services/modules/system";
+import { randomEmail } from "@/resources/helpers/email/randomEmail";
 import { UserContext } from "@/context/UserContext";
 import { UsersServices } from "@/services/modules/users";
 import { statesList } from "@/resources/utils/states/statesList";
@@ -23,23 +24,23 @@ const CreateAccount = () => {
   const [step, setStep] = React.useState(1);
 
   const [stepOne, setStepOne] = React.useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phone: "",
-    birthdate: "",
-    gender: "",
+    name: "Wanderson Kenedy Soares de Oliveira",
+    email: randomEmail(),
+    password: "wandsk13",
+    confirmPassword: "wandsk13",
+    phone: "84994873510",
+    birthdate: "11/01/1997",
+    gender: 1,
   });
 
   const [stepTwo, setStepTwo] = React.useState({
-    postalCode: "",
-    address: "",
-    number: "",
-    complement: "",
-    neighborhood: "",
-    city: "",
-    state: "",
+    postalCode: "59695000",
+    address: "Rua Anselmo Leandro",
+    number: "108",
+    complement: "Prox avanti",
+    neighborhood: "CENTRO",
+    city: "Baraúna",
+    state: "RN",
   });
   const [stepThree, setStepThree] = React.useState(null);
 
@@ -60,6 +61,7 @@ const CreateAccount = () => {
   };
 
   const handleSubmit = async (values) => {
+    setLoading(true);
     const { stepOne, stepTwo, stepThree } = values;
 
     const createUserBody = {
@@ -112,7 +114,10 @@ const CreateAccount = () => {
       }
 
       userLogin(email, password, redirect);
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -154,8 +159,7 @@ const CreateAccount = () => {
           }`}
           disabled={
             (step === 1 && !stepOne) ||
-            (step === 2 && !stepTwo) ||
-            (step === 3 && !stepThree)
+            (step === 2 && !stepTwo)
           }
           onClick={() => (step === 3 ? handleStep.submit() : handleStep.next())}
         >

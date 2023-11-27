@@ -97,6 +97,7 @@ const Page = () => {
   }
 
   async function getRandomAttendantChat() {
+    setLoading(true)
     try {
       const randomAttendantId = await ChatServices.getRandomAttendantChat(
         connectID
@@ -107,6 +108,7 @@ const Page = () => {
         text: "Não há atendentes disponíveis no momento, tente novamente mais tarde!",
         type: "error",
       });
+      setLoading(false);
     }
   }
 

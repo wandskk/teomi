@@ -59,20 +59,20 @@ const CreateAccountStepThree = ({ gender, stepValues, setStepValues }) => {
         <div className="createAccountSteps__profile__container">
           <label htmlFor="profilePhoto">
             {selectedImage ? (
-              <Image
+              <div
                 className="createAccountSteps__profile__image"
-                src={selectedImage}
-                width={128}
-                height={128}
-                alt="Imagem de perfil"
+                style={{
+                  backgroundImage: `url(${selectedImage})`,
+                }}
               />
             ) : (
-              <Image
+              <div
                 className="createAccountSteps__profile__image"
-                src={gender === "2" ? profileWoman : profileMan}
-                width={128}
-                height={128}
-                alt="Imagem de perfil"
+                style={{
+                  backgroundImage: `url(${
+                    gender === "2" ? profileWoman : profileMan
+                  })`,
+                }}
               />
             )}
             <input

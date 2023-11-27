@@ -69,8 +69,8 @@ const Chat = ({ params }) => {
 
     if (message) {
       socket.emit("chatMessage", {
-        sender_id: decodeUser.userId ? decodeUser.userId : connectID,
-        receiver_id: receiverId,
+        sender_id: decodeUser ? +decodeUser.userId : connectID,
+        receiver_id: +receiverId,
         chatId,
         message: message,
       });
@@ -190,7 +190,7 @@ const Chat = ({ params }) => {
           <div className="chat__messages">
             {messagesGroup &&
               messagesGroup.map((msg, index) => {
-                const isReciver = msg[0].receiver_id === receiverId;
+                const isReciver = msg[0].receiver_id == receiverId;
                 const messageClass = isReciver ? "--left" : "--right";
                 const isChatService = msg[0].sender_id == 93;
                 const userId = userData ? userData.id : connectID;

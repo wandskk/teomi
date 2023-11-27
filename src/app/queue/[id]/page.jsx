@@ -15,7 +15,7 @@ const Page = ({ params }) => {
   const userLogin = getCookie("userLogin");
   const searchParams = useSearchParams();
   const search = searchParams.get("isScheduled");
-  const { userDataDecoded, connectID } = React.useContext(UserContext);
+  const { userDataDecode ,userData, connectID } = React.useContext(UserContext);  
 
   const postUserInQueue = React.useCallback(
     async (data, attendantId, connectID) => {
@@ -39,10 +39,10 @@ const Page = ({ params }) => {
 
   React.useEffect(() => {
     const socket = io(SOCKET_API_URL);
-
-    socket.on("chatReady", (data) => {
-      const userId = userDataDecoded ? userDataDecoded.userId : connectID;
-
+    
+    socket.on("chatReady", (data) => {      
+      const userId = userDataDecode ? userDataDecode.userId : connectID;
+      
       if (data.attendantId == params.id && data.patientId === userId) {
         const messageContent = "Chat iniciado com sucesso!";
 
@@ -56,13 +56,14 @@ const Page = ({ params }) => {
           messageContent,
           chatId: data.chatId,
         });
+        console.log("entrou aqui");
         window.location.href = `/chat/${data.chatId}/${data.attendantId}`;
       }
     });
 
     socket.on("deletedUserFromQueue", (data) => {
-      const currentPatientId = userDataDecoded
-        ? userDataDecoded.userId
+      const currentPatientId = userDataDecode
+        ? userDataDecode.userId
         : connectID;
 
       if (data.attendantId == params.id && data.patientId == currentPatientId) {

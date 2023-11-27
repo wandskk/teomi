@@ -63,11 +63,13 @@ const Sidebar = () => {
           <div className="sidebar__header">
             <div className="sidebar__header__profile">
               {userData && (
-                <Image
-                  src={userData.userphoto === null ? person : userData.userphoto}
-                  width={64}
-                  height={64}
-                  alt="Foto do usuário"
+                <div
+                  className="sidebar__header__profile__photo"                  
+                  style={{
+                    backgroundImage: `url(${
+                      userData.userphoto === null ? person : userData.userphoto
+                    })`,
+                  }}
                 />
               )}
               <p>{userData ? name.getFirstName(userData.name) : ""}</p>

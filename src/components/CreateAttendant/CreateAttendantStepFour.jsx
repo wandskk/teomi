@@ -30,12 +30,12 @@ const CreateAttendantStepFour = ({ gender, stepValues, setStepValues }) => {
   async function handleUploadToImgur(file) {
     const formData = new FormData();
     formData.append("image", file.split(",").pop());
-    setLoading(true)
+    setLoading(true);
     try {
       const uploadPhotoResponse = await ImageBBServices.uploadImage(formData);
       setStepValues(uploadPhotoResponse.data.display_url);
-    } catch (error) {}
-    finally {
+    } catch (error) {
+    } finally {
       setLoading(false);
     }
   }
@@ -54,20 +54,20 @@ const CreateAttendantStepFour = ({ gender, stepValues, setStepValues }) => {
         <div className="createAttendantSteps__profile__container">
           <label htmlFor="profilePhoto">
             {selectedImage ? (
-              <Image
-                className="createAttendantSteps__profile__image"
-                src={selectedImage}
-                width={128}
-                height={128}
-                alt="Imagem de perfil"
+              <div
+                className="createAccountSteps__profile__image"
+                style={{
+                  backgroundImage: `url(${selectedImage})`,
+                }}
               />
             ) : (
-              <Image
-                className="createAttendantSteps__profile__image"
-                src={gender === "2" ? profileWoman : profileMan}
-                width={128}
-                height={128}
-                alt="Imagem de perfil"
+              <div
+                className="createAccountSteps__profile__image"
+                style={{
+                  backgroundImage: `url(${
+                    gender === "2" ? profileWoman : profileMan
+                  })`,
+                }}
               />
             )}
             <input

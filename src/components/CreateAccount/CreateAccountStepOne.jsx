@@ -215,7 +215,7 @@ const CreateAccountStepOne = ({ stepValues, setStepValues, edit = false }) => {
         <label htmlFor="birthdate">Data de nascimento</label>
         <input
           type="text"
-          value={inputValue}
+          value={formik.values.birthdate}
           required
           onChange={handleInputChange}
         />

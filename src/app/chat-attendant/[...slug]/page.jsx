@@ -105,13 +105,13 @@ const Chat = ({ params }) => {
       if (data.chatId == chatId) {
 
         newSocket.emit("chatMessageWithService", {
-          messageReceiver: decodeUser.userId,
+          messageReceiver: +decodeUser.userId,
           messageContent: `Quiz finalizado! A pontuação foi de ${data.finalPoints} pontos`,
           chatId,
         });
     
         newSocket.emit("chatMessageWithService", {
-          messageReceiver: receiverId,
+          messageReceiver: +receiverId,
           messageContent: "Quiz finalizado!",
           chatId,
         });        
@@ -148,19 +148,19 @@ const Chat = ({ params }) => {
     const messageContent = "O quiz foi iniciado!";
 
     socket.emit("attendantSendQuiz", {
-      attendantId: decodeUser.userId,
-      patientId: receiverId,
+      attendantId: +decodeUser.userId,
+      patientId: +receiverId,
       chatId,
     });
 
     socket.emit("chatMessageWithService", {
-      messageReceiver: decodeUser.userId,
+      messageReceiver: +decodeUser.userId,
       messageContent,
       chatId,
     });
 
     socket.emit("chatMessageWithService", {
-      messageReceiver: receiverId,
+      messageReceiver: +receiverId,
       messageContent,
       chatId,
     });
@@ -226,7 +226,7 @@ const Chat = ({ params }) => {
           <div className="chat__messages">
             {messagesGroup &&
               messagesGroup.map((msg, index) => {
-                const isReciver = msg[0].receiver_id === receiverId;
+                const isReciver = msg[0].receiver_id == receiverId;
                 const messageClass = isReciver ? "--left" : "--right";
                 const isChatService = msg[0].sender_id == 93;
                 const userId = userData ? userData.id : connectID;

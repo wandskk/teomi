@@ -107,7 +107,18 @@
   }
 
   &__photo {
-    border-radius: 50%;
+    border-radius: 15rem;
+    width: 4rem;
+    height: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
   }
 
   &__form {

@@ -192,13 +192,14 @@ const Chat = ({ params }) => {
               messagesGroup.map((msg, index) => {
                 const isReciver = msg[0].receiver_id == receiverId;
                 const messageClass = !isReciver ? "--left" : "--right";
-                const isChatService = msg[0].sender_id == "93";
+                const isChatService =
+                  msg[0].sender_id === "93" || msg[0].sender_id === 93;
                 const userId = userData ? userData.id : connectID;
                 if (isChatService) {
                   return (
                     <div key={index} className="chat__box --chatService">
                       <ul>
-                        {msg.map((message, index) => {                          
+                        {msg.map((message, index) => {
                           if (userId === message.receiver_id)
                             return (
                               <li key={index}>
@@ -214,21 +215,21 @@ const Chat = ({ params }) => {
                   <div key={index} className={`chat__box ${messageClass}`}>
                     {msg[0]?.sender_id == receiverId ? (
                       attendantData && (
-                        <Image
+                        <div
                           className="chat__photo"
-                          src={attendantData?.attendantPhoto}
-                          alt="profile"
-                          width={42}
-                          height={42}
+                          style={{
+                            backgroundImage: `url(${attendantData.attendantPhoto})`,
+                          }}
                         />
                       )
                     ) : (
-                      <Image
-                        src={userData ? userData.userphoto : person}
+                      <div
+                        style={{
+                          backgroundImage: `url(${
+                            userData ? userData.userphoto : person
+                          })`,
+                        }}
                         className="chat__photo"
-                        width={42}
-                        height={42}
-                        alt="profile"
                       />
                     )}
                     <ul className={`chat__message ${messageClass}`}>

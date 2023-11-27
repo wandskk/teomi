@@ -103,18 +103,17 @@ const Chat = ({ params }) => {
 
     newSocket.on("quizResultCallback", (data) => {
       if (data.chatId == chatId) {
-
         newSocket.emit("chatMessageWithService", {
           messageReceiver: +decodeUser.userId,
           messageContent: `Quiz finalizado! A pontuação foi de ${data.finalPoints} pontos`,
           chatId,
         });
-    
+
         newSocket.emit("chatMessageWithService", {
           messageReceiver: +receiverId,
           messageContent: "Quiz finalizado!",
           chatId,
-        });        
+        });
       }
 
       setCanShowQuizButton(true);
@@ -250,20 +249,16 @@ const Chat = ({ params }) => {
                   <div key={index} className={`chat__box ${messageClass}`}>
                     {msg[0]?.sender_id == receiverId ? (
                       patientData ? (
-                        <Image
+                        <div
                           className="chat__photo"
-                          src={patientData.patientPhoto}
-                          alt="profile patient"
-                          width={42}
-                          height={42}
+                          style={{
+                            backgroundImage: `url(${patientData.patientPhoto})`,
+                          }}
                         />
                       ) : (
-                        <Image
+                        <div
                           className="chat__photo"
-                          src={person}
-                          alt="profile patient"
-                          width={42}
-                          height={42}
+                          style={{ backgroundImage: `url(${person})` }}
                         />
                       )
                     ) : (

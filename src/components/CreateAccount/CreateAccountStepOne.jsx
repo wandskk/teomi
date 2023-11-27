@@ -11,6 +11,7 @@ import "@/styles/CreateAccount/CreateAccountSteps.scss";
 
 const CreateAccountStepOne = ({ stepValues, setStepValues, edit = false }) => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [inputValue, setInputValue] = React.useState("");
   const [errorEmail, setErrorEmail] = React.useState(null);
   const { connectID, userData } = React.useContext(UserContext);
 
@@ -41,6 +42,22 @@ const CreateAccountStepOne = ({ stepValues, setStepValues, edit = false }) => {
     }
   }, []);
 
+  const handleInputChange = (e) => {
+    const numericValue = e.target.value.replace(/\D/g, "");
+
+    let formattedValue = "";
+    if (numericValue.length >= 1) formattedValue = numericValue.substring(0, 2);
+
+    if (numericValue.length >= 3)
+      formattedValue += "/" + numericValue.substring(2, 4);
+
+    if (numericValue.length >= 5)
+      formattedValue += "/" + numericValue.substring(4, 8);
+
+    setInputValue(formattedValue);
+    formik.setFieldValue("birthdate", formattedValue);
+  };
+
   React.useEffect(() => {
     if (formik.isValid) setStepValues(formik.values);
   }, [formik]);
@@ -50,8 +67,8 @@ const CreateAccountStepOne = ({ stepValues, setStepValues, edit = false }) => {
     const isValidEmail = validateEmail(email);
     setErrorEmail("");
 
-    if (edit && email !== userData?.email) {
-      isValidEmail && emailAlreadyExist(email, connectID);
+    if (edit && email !== userData?.email && isValidEmail) {
+      emailAlreadyExist(email, connectID);
     }
   }, [formik.values.email, edit, userData]);
 
@@ -196,19 +213,12 @@ const CreateAccountStepOne = ({ stepValues, setStepValues, edit = false }) => {
 
       <div className="createAccountSteps__inputAndLabel">
         <label htmlFor="birthdate">Data de nascimento</label>
-        <InputMask
-          mask="99/99/9999"
-          maskChar="_"
-          value={formik.values.birthdate}
-          onChange={formik.handleChange("birthdate")}
-          onBlur={formik.handleBlur("birthdate")}
+        <input
+          type="text"
+          value={inputValue}
           required
-          className={
-            formik.touched.birthdate &&
-            formik.errors.birthdate &&
-            "createAccountSteps__inputInvalid"
-          }
-        />        
+          onChange={handleInputChange}
+        />
         {formik.touched.birthdate && formik.errors.birthdate && (
           <p className="createAccountSteps__inputError">
             {formik.errors.birthdate}

@@ -25,7 +25,14 @@ const Page = ({ params }) => {
           { ...data, attendantId: +attendantId, isScheduled },
           connectID
         );
-      } catch (error) {}
+      } catch (error) {
+        const { status } = error.response;
+
+        if (status === 400) {
+          const { chatData } = error.response.data;
+          window.location.href = `/chat/${chatData.chatId}/${chatData.attendantId}`;
+        }
+      }
     },
     []
   );
@@ -38,7 +45,7 @@ const Page = ({ params }) => {
 
       if (data.attendantId == params.id && data.patientId === userId) {
         const messageContent = "Chat iniciado com sucesso!";
-        
+
         socket.emit("chatMessageWithService", {
           messageReceiver: data.attendantId,
           messageContent,

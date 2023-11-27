@@ -17,6 +17,8 @@ export const schema = Yup.object().shape({
       return true;
     })
     .required("Preencha o campo de telefone"),
-  birthdate: Yup.string().required("Preencha o campo de data de nascimento"),
+  birthdate: Yup.string()
+    .min(10, "Insira uma data válida")
+    .required("Preencha o campo de data de nascimento"),
   gender: Yup.string().required("Selecione o campo de sexo"),
 });

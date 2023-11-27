@@ -2,13 +2,14 @@ import React from "react";
 import profileMan from "@/assets/images/man.svg";
 import profileWoman from "@/assets/images/woman.svg";
 import Image from "next/image";
+import { ImageBBServices } from "@/services/modules/imagebb";
 import { AiFillCamera } from "react-icons/ai";
 import { UserContext } from "@/context/UserContext";
 import "@/styles/CreateAccount/CreateAccountSteps.scss";
 
 const CreateAccountStepThree = ({ gender, stepValues, setStepValues }) => {
   const { userData } = React.useContext(UserContext);
-  const [selectedImage, setSelectedImage] = React.useState(userData.userphoto);
+  const [selectedImage, setSelectedImage] = React.useState(userData?.userphoto);
 
   const handleImageChange = async (file) => {
     if (file) {
@@ -18,14 +19,24 @@ const CreateAccountStepThree = ({ gender, stepValues, setStepValues }) => {
 
       reader.onloadend = () => {
         const blob = new Blob([reader.result], { type: file.type });
-        setStepValues(blob);
+        // setStepValues(blob);
       };
-      setStepValues(file);
+      // setStepValues(file);
     } else {
       setStepValues(null);
       setSelectedImage(null);
     }
   };
+
+  async function handleUploadToImgur(file) {
+    const formData = new FormData();
+    formData.append("image", file.split(",").pop());
+
+    try {
+      const uploadPhotoResponse = await ImageBBServices.uploadImage(formData);
+      setStepValues(uploadPhotoResponse.data.display_url);
+    } catch (error) {}
+  }
 
   React.useState(() => {
     stepValues && handleImageChange(stepValues);
@@ -34,6 +45,10 @@ const CreateAccountStepThree = ({ gender, stepValues, setStepValues }) => {
   React.useEffect(() => {
     selectedImage && setStepValues(selectedImage);
   }, [selectedImage, setStepValues]);
+
+  React.useEffect(() => {
+    selectedImage && handleUploadToImgur(selectedImage);
+  }, [selectedImage]);
 
   return (
     <div className="createAccountSteps">

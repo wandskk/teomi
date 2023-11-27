@@ -8,7 +8,7 @@ import "@/styles/CreateAttendant/CreateAttendantSteps.scss";
 
 const CreateAttendantStepFour = ({ gender, stepValues, setStepValues }) => {
   const { userData } = React.useContext(UserContext);
-  const [selectedImage, setSelectedImage] = React.useState(userData.userphoto);
+  const [selectedImage, setSelectedImage] = React.useState(userData?.userphoto);
 
   const handleImageChange = async (file) => {
     if (file) {
@@ -18,22 +18,32 @@ const CreateAttendantStepFour = ({ gender, stepValues, setStepValues }) => {
 
       reader.onloadend = () => {
         const blob = new Blob([reader.result], { type: file.type });
-        setStepValues(blob);
+        // setStepValues(blob);
       };
-      setStepValues(file);
+      // setStepValues(file);
     } else {
       setStepValues(null);
       setSelectedImage(null);
     }
   };
 
+  async function handleUploadToImgur(file) {
+    const formData = new FormData();
+    formData.append("image", file.split(",").pop());
+
+    try {
+      const uploadPhotoResponse = await ImageBBServices.uploadImage(formData);
+      setStepValues(uploadPhotoResponse.data.display_url);
+    } catch (error) {}
+  }
+
   React.useState(() => {
     stepValues && handleImageChange(stepValues);
   }, [stepValues]);
 
   React.useEffect(() => {
-    selectedImage && setStepValues(selectedImage);
-  }, [selectedImage, setStepValues]);
+    selectedImage && handleUploadToImgur(selectedImage);
+  }, [selectedImage]);
 
   return (
     <div className="createAttendantSteps">

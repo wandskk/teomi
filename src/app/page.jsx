@@ -97,18 +97,27 @@ const Page = () => {
   }
 
   async function getRandomAttendantChat() {
-    setLoading(true)
+    setLoading(true);
+    const patientId = userDataDecode ? userDataDecode.userId : connectID;
     try {
       const randomAttendantId = await ChatServices.getRandomAttendantChat(
+        patientId,
         connectID
       );
       window.location.href = `/queue/${randomAttendantId.attendantId}`;
     } catch (error) {
-      setMessage({
-        text: "Não há atendentes disponíveis no momento, tente novamente mais tarde!",
-        type: "error",
-      });
-      setLoading(false);
+      const { status } = error.response;
+
+      if (status === 400) {
+        const { chatData } = error.response.data;
+        window.location.href = `/chat/${chatData.chatId}/${chatData.attendantId}`;
+      } else {
+        setMessage({
+          text: "Não há atendentes disponíveis no momento, tente novamente mais tarde!",
+          type: "error",
+        });
+        setLoading(false);
+      }
     }
   }
 

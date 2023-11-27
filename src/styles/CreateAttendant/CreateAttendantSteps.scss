@@ -1,4 +1,4 @@
-@import '../vars';
+@import "../vars";
 
 .createAttendantSteps {
   display: flex;
@@ -63,7 +63,18 @@
     margin: 2rem 0;
 
     &__image {
-      border-radius: 50%;  
+      border-radius: 15rem;
+      width: 15rem;
+      height: 15rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+      position: relative;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      overflow: hidden;
     }
 
     &__change {
@@ -95,7 +106,7 @@
   }
 
   &__inputError {
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     color: red;
     font-size: 0.75rem;
   }

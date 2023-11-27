@@ -55,14 +55,14 @@ const CreateAttendantStepFour = ({ gender, stepValues, setStepValues }) => {
           <label htmlFor="profilePhoto">
             {selectedImage ? (
               <div
-                className="createAccountSteps__profile__image"
+                className="createAttendantSteps__profile__image"
                 style={{
                   backgroundImage: `url(${selectedImage})`,
                 }}
               />
             ) : (
               <div
-                className="createAccountSteps__profile__image"
+                className="createAttendantSteps__profile__image"
                 style={{
                   backgroundImage: `url(${
                     gender === "2" ? profileWoman : profileMan

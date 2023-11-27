@@ -99,7 +99,9 @@ export const UserStorage = ({ children }) => {
     cookie && setUserToken(cookie);
   }, []);
 
-  React.useEffect(() => setSplashScreen(false), []);
+  React.useEffect(() => {
+    if (pathname) setSplashScreen(false);
+  }, [pathname]);
 
   React.useEffect(() => {
     if (pathname !== "/" && intervalHome) clearInterval(intervalHome);

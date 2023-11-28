@@ -167,11 +167,11 @@ const Chat = ({ params }) => {
         {attendantData && (
           <div className="chat__info">
             <div className="chat__info__text">
-              <small>{attendantData?.attendantRole}</small>
-              <p>{attendantData?.attendantName}</p>
+              <small>{attendantData.attendantRole}</small>
+              <p>{attendantData.attendantName}</p>
               <small>
-                {attendantData?.attendantCity} /{" "}
-                {attendantData?.attendantStateTag}
+                {attendantData.attendantCity} /{" "}
+                {attendantData.attendantStateTag}
               </small>
             </div>
             <div className="chat__info__photo">
@@ -179,7 +179,7 @@ const Chat = ({ params }) => {
                 className="chat__info__photo"
                 style={{
                   backgroundImage: `url(${
-                    patientData ? patientData.patientPhoto : person.src
+                    attendantData ? attendantData.attendantPhoto : person.src
                   })`,
                 }}
               />

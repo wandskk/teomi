@@ -70,7 +70,7 @@ const CreateAccountStepThree = ({ gender, stepValues, setStepValues }) => {
                 className="createAccountSteps__profile__image"
                 style={{
                   backgroundImage: `url(${
-                    gender === "2" ? profileWoman : profileMan
+                    gender === "2" ? profileWoman.src : profileMan.src
                   })`,
                 }}
               />

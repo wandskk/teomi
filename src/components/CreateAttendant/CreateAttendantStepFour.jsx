@@ -66,7 +66,7 @@ const CreateAttendantStepFour = ({ gender, stepValues, setStepValues }) => {
                 className="createAttendantSteps__profile__image"
                 style={{
                   backgroundImage: `url(${
-                    gender === "2" ? profileWoman : profileMan
+                    gender === "2" ? profileWoman.src : profileMan.src
                   })`,
                 }}
               />

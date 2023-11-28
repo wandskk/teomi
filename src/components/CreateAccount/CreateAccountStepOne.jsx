@@ -37,7 +37,9 @@ const CreateAccountStepOne = ({ stepValues, setStepValues, edit = false }) => {
         email,
         connectID
       );
+      setErrorEmail("");
     } catch (error) {
+      formik.setFieldValue("email", "");
       setErrorEmail("E-mail informado já existe.");
     }
   }, []);
@@ -65,9 +67,10 @@ const CreateAccountStepOne = ({ stepValues, setStepValues, edit = false }) => {
   React.useEffect(() => {
     const { email } = formik.values;
     const isValidEmail = validateEmail(email);
-    setErrorEmail("");
 
     if (edit && email !== userData?.email && isValidEmail) {
+      emailAlreadyExist(email, connectID);
+    } else if (isValidEmail) {
       emailAlreadyExist(email, connectID);
     }
   }, [formik.values.email, edit, userData]);

@@ -123,7 +123,7 @@ const Chat = ({ params }) => {
         setCanShowQuizButton(true);
       });
     }
-  }, [socket, userLogin, chatId, receiverId]);
+  }, [socket]);
 
   const sendMessage = (e) => {
     e.preventDefault();

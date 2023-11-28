@@ -4,7 +4,6 @@ import jwtDecode from "jwt-decode";
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import io from "socket.io-client";
 import person from "@/assets/images/icons/person.png";
-import Image from "next/image";
 import Message from "@/components/Message/Message";
 import { ChatServices } from "@/services/modules/chat";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";

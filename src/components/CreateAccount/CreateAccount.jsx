@@ -13,6 +13,11 @@ import { useSearchParams } from "next/navigation";
 import { object } from "@/resources/helpers/object/object";
 import "@/styles/CreateAccount/CreateAccount.scss";
 
+const backToLink = {
+  "scheduling-online": "/scheduling/online",
+  "scheduling-inPerson": "/scheduling/inPerson",
+};
+
 const CreateAccount = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get("backToLink");

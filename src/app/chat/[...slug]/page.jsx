@@ -69,8 +69,8 @@ const Chat = ({ params }) => {
 
     if (message) {
       socket.emit("chatMessage", {
-        sender_id: decodeUser ? +decodeUser.userId : connectID,
-        receiver_id: +receiverId,
+        sender_id: decodeUser.id ? decodeUser.id : connectID,
+        receiver_id: receiverId,
         chatId,
         message: message,
       });
@@ -229,7 +229,7 @@ const Chat = ({ params }) => {
                       <div
                         style={{
                           backgroundImage: `url(${
-                            userData ? userData.userphoto : person
+                            userData ? userData.userphoto : person.src
                           })`,
                         }}
                         className="chat__photo"

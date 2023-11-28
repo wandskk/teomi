@@ -1,7 +1,7 @@
 "use client";
 
 import jwtDecode from "jwt-decode";
-import React from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import io from "socket.io-client";
 import person from "@/assets/images/icons/person.png";
 import Image from "next/image";
@@ -21,42 +21,175 @@ import "./page.scss";
 const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 
 const Chat = ({ params }) => {
-  const [chatStarted, setChatStarted] = React.useState(false);
-  const { userData, setLoading } = React.useContext(UserContext);
-  const [socket, setSocket] = React.useState();
-  const [canShowQuizButton, setCanShowQuizButton] = React.useState(true);
-  const [alertMessage, setAlertMessage] = React.useState(null);
-  const [messages, setMessages] = React.useState([]);
-  const [messagesGroup, setMessagesGroup] = React.useState([]);
-  const [message, setMessage] = React.useState("");
-  const [patientData, setPatientData] = React.useState(null);
+  const [chatStarted, setChatStarted] = useState(false);
+  const { userData, setLoading } = useContext(UserContext);
+  const [socket, setSocket] = useState(null);
+  const [canShowQuizButton, setCanShowQuizButton] = useState(true);
+  const [alertMessage, setAlertMessage] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [messagesGroup, setMessagesGroup] = useState([]);
+  const [message, setMessage] = useState("");
+  const [patientData, setPatientData] = useState(null);
   const connectID = getCookie("connectID");
   const userLogin = getCookie("userLogin");
-  const [showMenu, setShowMenu] = React.useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const chatId = params.slug[0];
   const receiverId = params.slug[1];
 
-  const getPatientData = React.useCallback(async (receiverId, connectID) => {
-    setLoading(true);
-    try {
-      const data = await PatientServices.getPatientDataById(
-        receiverId,
-        connectID
-      );
-      setPatientData(data[0]);
-    } catch (error) {
-      setPatientData(false);
-    } finally {
-      setLoading(false);
-    }
+  const getPatientData = useCallback(
+    async (receiverId, connectID) => {
+      setLoading(true);
+      try {
+        const data = await PatientServices.getPatientDataById(
+          receiverId,
+          connectID
+        );
+        setPatientData(data[0] || null);
+      } catch (error) {
+        setPatientData(null);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [setLoading]
+  );
+
+  const getAllMessages = useCallback(
+    async (chatId) => {
+      try {
+        const allMessages = await ChatServices.getAllMessages(
+          chatId,
+          connectID
+        );
+        setMessages(allMessages || []);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [connectID]
+  );
+
+  useEffect(() => {
+    getAllMessages(chatId);
+  }, [getAllMessages, chatId]);
+
+  useEffect(() => {
+    const newSocket = io(SOCKET_API_URL);
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.disconnect();
+    };
   }, []);
 
-  const getAllMessages = React.useCallback(async (chatId) => {
-    try {
-      const allMessages = await ChatServices.getAllMessages(chatId, connectID);
-      setMessages(allMessages);
-    } catch (error) {}
-  }, []);
+  useEffect(() => {
+    let decodeUser = { id: null };
+    if (userLogin) decodeUser = jwtDecode(userLogin);
+
+    if (socket) {
+      socket.on("chatMessages", (message) => {
+        if (message.chatId === chatId) {
+          setMessages((messages) => [...messages, message]);
+        }
+      });
+
+      socket.on("finishedChat", (data) => {
+        if (data.chatId === chatId) {
+          window.location.href = "/";
+        }
+      });
+
+      socket.on("finishedService", (data) => {
+        if (data.chatId === chatId) {
+          window.location.href = "/";
+        }
+      });
+
+      socket.on("quizResultCallback", (data) => {
+        if (data.chatId === chatId) {
+          socket.emit("chatMessageWithService", {
+            messageReceiver: decodeUser.userId,
+            messageContent: `Quiz finalizado! A pontuação foi de ${data.finalPoints} pontos`,
+            chatId,
+          });
+
+          socket.emit("chatMessageWithService", {
+            messageReceiver: receiverId,
+            messageContent: "Quiz finalizado!",
+            chatId,
+          });
+        }
+
+        setCanShowQuizButton(true);
+      });
+    }
+  }, [socket, userLogin, chatId, receiverId]);
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    let decodeUser = jwtDecode(userLogin);
+
+    socket.emit("chatMessage", {
+      sender_id: decodeUser.userId,
+      receiver_id: receiverId,
+      chatId,
+      message: message,
+    });
+    setMessage("");
+  };
+
+  const sendQuiz = () => {
+    let decodeUser = { id: null };
+    if (userLogin) decodeUser = jwtDecode(userLogin);
+    const messageContent = "O quiz foi iniciado!";
+
+    if (socket) {
+      socket.emit("attendantSendQuiz", {
+        attendantId: decodeUser.userId,
+        patientId: receiverId,
+        chatId,
+      });
+
+      socket.emit("chatMessageWithService", {
+        messageReceiver: decodeUser.userId,
+        messageContent,
+        chatId,
+      });
+
+      socket.emit("chatMessageWithService", {
+        messageReceiver: receiverId,
+        messageContent,
+        chatId,
+      });
+
+      setCanShowQuizButton(false);
+      setShowMenu(false);
+    }
+  };
+
+  const finishChat = () => {
+    socket.emit("finishChat", {
+      chatId,
+    });
+  };
+
+  const sendPatientToHome = () => {
+    socket.emit("finishService", {
+      chatId,
+    });
+  };
+
+  useEffect(() => {
+    if (receiverId && connectID) {
+      getPatientData(receiverId, connectID);
+    }
+  }, [getPatientData, receiverId, connectID]);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      divideMessagesBySenderId(messages);
+    }
+  }, [messages]);
 
   function divideMessagesBySenderId(messages) {
     const dividedMessages = [];
@@ -78,117 +211,6 @@ const Chat = ({ params }) => {
     setMessagesGroup(dividedMessages);
   }
 
-  React.useEffect(() => {
-    getAllMessages(chatId);
-  }, [getAllMessages]);
-
-  React.useEffect(() => {
-    const newSocket = io(SOCKET_API_URL);
-    setSocket(newSocket);
-    let decodeUser = { id: null };
-    if (userLogin) decodeUser = jwtDecode(userLogin);
-
-    newSocket.on("chatMessages", (message) => {
-      if (message.chatId == chatId)
-        setMessages((messages) => [...messages, message]);
-    });
-
-    newSocket.on("finishedChat", (data) => {
-      if (data.chatId == chatId) window.location.href = "/";
-    });
-
-    newSocket.on("finishedService", (data) => {
-      if (data.chatId == chatId) window.location.href = "/";
-    });
-
-    newSocket.on("quizResultCallback", (data) => {
-      if (data.chatId == chatId) {
-        newSocket.emit("chatMessageWithService", {
-          messageReceiver: +decodeUser.userId,
-          messageContent: `Quiz finalizado! A pontuação foi de ${data.finalPoints} pontos`,
-          chatId,
-        });
-
-        newSocket.emit("chatMessageWithService", {
-          messageReceiver: +receiverId,
-          messageContent: "Quiz finalizado!",
-          chatId,
-        });
-      }
-
-      setCanShowQuizButton(true);
-    });
-
-    return () => {
-      newSocket.disconnect();
-    };
-  }, []);
-
-  const sendMessage = (e) => {
-    e.preventDefault();
-
-    let decodeUser = { id: null };
-    if (userLogin) decodeUser = jwtDecode(userLogin);
-
-    if (message) {
-      socket.emit("chatMessage", {
-        sender_id: decodeUser.userId ? decodeUser.userId : connectID,
-        receiver_id: receiverId,
-        chatId,
-        message: message,
-      });
-      setMessage("");
-    }
-  };
-
-  const sendQuiz = () => {
-    let decodeUser = { id: null };
-    if (userLogin) decodeUser = jwtDecode(userLogin);
-    const messageContent = "O quiz foi iniciado!";
-
-    socket.emit("attendantSendQuiz", {
-      attendantId: +decodeUser.userId,
-      patientId: +receiverId,
-      chatId,
-    });
-
-    socket.emit("chatMessageWithService", {
-      messageReceiver: +decodeUser.userId,
-      messageContent,
-      chatId,
-    });
-
-    socket.emit("chatMessageWithService", {
-      messageReceiver: +receiverId,
-      messageContent,
-      chatId,
-    });
-
-    setCanShowQuizButton(false);
-
-    setShowMenu(false);
-  };
-
-  const finishChat = () => {
-    socket.emit("finishChat", {
-      chatId,
-    });
-  };
-
-  const sendPatientToHome = () => {
-    socket.emit("finishService", {
-      chatId,
-    });
-  };
-
-  React.useEffect(() => {
-    if ((receiverId, connectID)) getPatientData(+receiverId, connectID);
-  }, [getPatientData, receiverId, connectID]);
-
-  React.useEffect(() => {
-    if (messages.length > 0) divideMessagesBySenderId(messages);
-  }, [messages]);
-
   return (
     <div className="container">
       {alertMessage && (
@@ -199,29 +221,26 @@ const Chat = ({ params }) => {
         />
       )}
       <div className="chat">
-        {patientData != null && (
-          <div className="chat__info">
-            <div className="chat__info__text">
-              <small>Paciente</small>
-              <p>{patientData ? patientData.patientName : "Anônimo"}</p>
-              {patientData && (
-                <small>
-                  {patientData.patientCity} / {patientData.patientStateTag}
-                </small>
-              )}
-            </div>
-            <div
-              style={{
-                backgroundImage: `url(${
-                  patientData ? patientData.patientPhoto : person.src
-                })`,
-              }}
-              className="chat__info__photo"
-            />
+        <div className="chat__info">
+          <div className="chat__info__text">
+            <small>Paciente</small>
+            <p>{patientData ? patientData.patientName : "Anônimo"}</p>
+            {patientData && (
+              <small>
+                {patientData.patientCity} / {patientData.patientStateTag}
+              </small>
+            )}
           </div>
-        )}
-
-        {messagesGroup.length > 0 && (
+          <div
+            style={{
+              backgroundImage: `url(${
+                patientData ? patientData.patientPhoto : person.src
+              })`,
+            }}
+            className="chat__info__photo"
+          />
+        </div>
+        {messagesGroup?.length > 0 && (
           <div className="chat__messages">
             {messagesGroup &&
               messagesGroup.map((msg, index) => {
@@ -247,12 +266,14 @@ const Chat = ({ params }) => {
                 }
                 return (
                   <div key={index} className={`chat__box ${messageClass}`}>
-                    {msg[0]?.sender_id == receiverId ? (
+                    {!isReciver ? (
                       patientData ? (
                         <div
                           className="chat__photo"
                           style={{
-                            backgroundImage: `url(${patientData.patientPhoto})`,
+                            backgroundImage: `url(${
+                              patientData.patientPhoto || person.src
+                            })`,
                           }}
                         />
                       ) : (
@@ -262,12 +283,13 @@ const Chat = ({ params }) => {
                         />
                       )
                     ) : (
-                      <Image
-                        src={userData ? userData.userphoto : person}
+                      <div
                         className="chat__photo"
-                        width={42}
-                        height={42}
-                        alt="profile"
+                        style={{
+                          backgroundImage: `url(${
+                            userData ? userData.userphoto : person
+                          })`,
+                        }}
                       />
                     )}
                     <ul className={`chat__message ${messageClass}`}>
@@ -304,12 +326,12 @@ const Chat = ({ params }) => {
               </ul>
             </div>
           )}
-          <button
+          <div
             className="chat__form__button"
             onClick={() => setShowMenu(!showMenu)}
           >
             <GrAdd />
-          </button>
+          </div>
           <input
             className="chat__form__input"
             type="text"

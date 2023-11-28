@@ -75,7 +75,7 @@ const AttendantAccount = () => {
   const updateUserLocation = async (values, userUniqueId) => {
     const locationBody = { ...values, userUniqueId };
     const isValid = !object.hasEmptyAttributes(locationBody);
-    
+
     if (isValid) {
       setMessage(null);
       setLoading(true);
@@ -112,35 +112,33 @@ const AttendantAccount = () => {
 
   const updateUserPhoto = async (pictureBlob, userUniqueId) => {
     const photoBody = { pictureBlob, userUniqueId };
-    const isValid = !object.hasEmptyAttributes(photoBody);
-    if (isValid) {
-      setMessage(null);
-      setLoading(true);
-      const { success, error } = messages;
+    const { success, error } = messages;
 
-      try {
-        const updateUserPhoto = await UsersServices.updateUserPhoto(
-          photoBody,
-          authToken
-        );
-        setMessage({ text: success.updatePhoto, type: "success" });
-      } catch (err) {
-        const { message } = err.response.data;
-        setMessage({ text: message ?? error.updatePhoto, type: "error" });
-      } finally {
-        setLoading(false);
-      }
+    setMessage(null);
+    setLoading(true);
+    try {
+      const updateUserPhoto = await UsersServices.updateUserPhoto(
+        photoBody,
+        authToken
+      );
+      setMessage({ text: success.updatePhoto, type: "success" });
+    } catch (err) {
+      const { message } = err.response.data;
+      setMessage({ text: message ?? error.updatePhoto, type: "error" });
+    } finally {
+      setLoading(false);
     }
   };
 
   function handleSubmit(step) {
     const { userUniqueId } = decode(getCookie("userLogin"));
 
-    if (step === 1 || step === 2) {
+    if (step === 1 || step === 2)
       updateUserData({ ...stepOne, ...stepTwo }, userUniqueId);
-    }
-    step === 3 && updateUserLocation(stepThree, userUniqueId);
-    step === 4 && updateUserPhoto(stepFour, userUniqueId);
+
+    if (step === 3) updateUserLocation(stepThree, userUniqueId);
+
+    if (step === 4) updateUserPhoto(stepFour, userUniqueId);
   }
 
   return (
@@ -221,12 +219,6 @@ const AttendantAccount = () => {
           className={`createAccount__footer__button ${
             step === 3 ? "createAccount__footer__button--submit" : ""
           }`}
-          disabled={
-            (step === 1 && !stepOne) ||
-            (step === 2 && !stepTwo) ||
-            (step === 3 && !stepThree) ||
-            (step === 4 && !stepFour)
-          }
           onClick={() => handleSubmit(step)}
         >
           Salvar

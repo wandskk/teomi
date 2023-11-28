@@ -11,64 +11,64 @@ export const quests = [
     id: 1,
     question: "Com que frequência você se sentiu cansado sem um bom motivo?",
     options,
-    selectedOption: "3",
+    selectedOption: "",
   },
   {
     id: 2,
     question: "Com que frequência você se sentiu nervoso?",
     options,
-    selectedOption: "3",
+    selectedOption: "",
   },
   {
     id: 3,
     question:
       "Com que frequência você se sentiu tão nervoso que nada poderia acalmá-lo?",
     options,
-    selectedOption: "3",
+    selectedOption: "",
   },
   {
     id: 4,
     question: "Com que frequência você se sentiu sem esperança?",
     options,
-    selectedOption: "3",
+    selectedOption: "",
   },
   {
     id: 5,
     question: "Com que frequência você se sentiu inquieto ou inquieto?",
     options,
-    selectedOption: "3",
+    selectedOption: "",
   },
   {
     id: 6,
     question:
       "Com que frequência você se sentiu tão inquieto que não conseguia ficar parado?",
     options,
-    selectedOption: "3",
+    selectedOption: "",
   },
   {
     id: 7,
     question: "Com que frequência você se sentiu deprimido?",
     options,
-    selectedOption: "3",
+    selectedOption: "",
   },
   {
     id: 8,
     question: "Com que frequência você sentiu que tudo é um esforço?",
     options,
-    selectedOption: "3",
+    selectedOption: "",
   },
   {
     id: 9,
     question:
       "Com que frequência você se sentiu tão triste que nada poderia animá-lo?",
     options,
-    selectedOption: "3",
+    selectedOption: "",
   },
   {
     id: 10,
     question: "Com que frequência você se sentiu inútil?",
     options,
-    selectedOption: "3",
+    selectedOption: "",
   },
 ];
 

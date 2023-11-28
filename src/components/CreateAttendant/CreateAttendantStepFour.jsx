@@ -5,6 +5,7 @@ import Image from "next/image";
 import { AiFillCamera } from "react-icons/ai";
 import { UserContext } from "@/context/UserContext";
 import "@/styles/CreateAttendant/CreateAttendantSteps.scss";
+import { ImageBBServices } from "@/services/modules/imagebb";
 
 const CreateAttendantStepFour = ({ gender, stepValues, setStepValues }) => {
   const { userData, setLoading } = React.useContext(UserContext);

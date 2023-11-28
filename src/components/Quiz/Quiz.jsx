@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { quests } from "@/resources/utils/k10/k10";
 import "@/styles/Quiz/Quiz.scss";
 
@@ -6,6 +6,13 @@ const Quiz = ({ result }) => {
   const [questions, setQuestions] = React.useState(quests);
   const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0);
   const currentQuestion = questions[currentQuestionIndex];
+
+  useEffect(() => {
+    // Autoselecionar a opção com ID 3
+    const updatedQuestions = [...questions];
+    updatedQuestions[currentQuestionIndex].selectedOption = 3;
+    setQuestions(updatedQuestions);
+  }, [currentQuestionIndex]);
 
   const handleOptionChange = ({ target }) => {
     const { value } = target;
@@ -27,7 +34,7 @@ const Quiz = ({ result }) => {
         (acumulator, item) => acumulator + item.selectedOption,
         0
       );
-      setSum(sum);
+      result(sum);
     } else if (questions[currentQuestionIndex].selectedOption !== "") {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }

@@ -174,6 +174,7 @@ const Chat = ({ params }) => {
                 {attendantData.attendantStateTag}
               </small>
             </div>
+            
             <div className="chat__info__photo">
               <div
                 className="chat__info__photo"

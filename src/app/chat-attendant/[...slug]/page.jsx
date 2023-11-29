@@ -82,37 +82,40 @@ const Chat = ({ params }) => {
   }, []);
 
   useEffect(() => {
+    const newSocket = io(SOCKET_API_URL);
+    setSocket(newSocket);
+
     let decodeUser = { id: null };
     if (userLogin) decodeUser = jwtDecode(userLogin);
 
-    if (socket) {
-      socket.on("chatMessages", (message) => {
+    if (newSocket) {
+      newSocket.on("chatMessages", (message) => {
         if (message.chatId === chatId) {
           setMessages((messages) => [...messages, message]);
         }
       });
 
-      socket.on("finishedChat", (data) => {
+      newSocket.on("finishedChat", (data) => {
         if (data.chatId === chatId) {
           window.location.href = "/";
         }
       });
 
-      socket.on("finishedService", (data) => {
+      newSocket.on("finishedService", (data) => {
         if (data.chatId === chatId) {
           window.location.href = "/";
         }
       });
 
-      socket.on("quizResultCallback", (data) => {
+      newSocket.on("quizResultCallback", (data) => {
         if (data.chatId === chatId) {
-          socket.emit("chatMessageWithService", {
+          newSocket.emit("chatMessageWithService", {
             messageReceiver: decodeUser.userId,
             messageContent: `Quiz finalizado! A pontuação foi de ${data.finalPoints} pontos`,
             chatId,
           });
 
-          socket.emit("chatMessageWithService", {
+          newSocket.emit("chatMessageWithService", {
             messageReceiver: receiverId,
             messageContent: "Quiz finalizado!",
             chatId,
@@ -122,7 +125,11 @@ const Chat = ({ params }) => {
         setCanShowQuizButton(true);
       });
     }
-  }, [socket]);
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   const sendMessage = (e) => {
     e.preventDefault();

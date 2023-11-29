@@ -128,4 +128,16 @@ export const AttendantServices = {
     });
     return result.data;
   },
+  updateScheduleMeetLink: async (scheduleId, meetUrl, token) => {
+    const result = await api.patch(
+      `${basePath}/schedules/meet/update`,
+      { scheduleId, meetUrl },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return result.data;
+  },
 };

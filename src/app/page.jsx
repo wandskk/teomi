@@ -25,15 +25,13 @@ import "./page.scss";
 const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 
 const Page = () => {
-  const { userDataDecode, userData, loading, setLoading, setIntervalHome } =
+  const { userDataDecode, userData, loading, setLoading } =
     React.useContext(UserContext);
   const [professionalStatus, setProfessionalStatus] = React.useState(null);
   const [schedulesAttendant, setSchedulesAttendant] = React.useState(null);
   const [message, setMessage] = React.useState(null);
   const [categories, setCategories] = React.useState(null);
   const [queueList, setQueueList] = React.useState(null);
-  const [queueListWithScheduled, setQueueListWithScheduled] =
-    React.useState(null);
   const pathname = usePathname();
   const connectID = getCookie("connectID");
   const userLogin = getCookie("userLogin");
@@ -43,12 +41,12 @@ const Page = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get("queueEnd");
 
-  const getCategories = React.useCallback(async (token) => {
+  async function getCategories(token) {
     try {
       const categories = await ChatServices.getCategories(token);
       setCategories(categories);
     } catch (error) {}
-  }, []);
+  }
 
   async function getQueueList(attendantId, token) {
     try {
@@ -58,16 +56,6 @@ const Page = () => {
       );
 
       setQueueList(queueList);
-    } catch (error) {}
-  }
-
-  async function getQueueListWithScheduled(attendantId, token) {
-    try {
-      const queueList = await AttendantServices.getQueueListWithScheduled(
-        attendantId,
-        token
-      );
-      setQueueListWithScheduled(queueList);
     } catch (error) {}
   }
 
@@ -147,38 +135,48 @@ const Page = () => {
   }
 
   React.useEffect(() => {
+    const socket = io(SOCKET_API_URL);
+
+    // Sockets para professionais ou atendentes
+    if (userDataDecode && isProfessionalOrAttedant) {
+      socket.on("chatReadyAttendant", (data) => {
+        if (data.attendantId == userDataDecode.userId) {
+          window.location.href = `/chat-attendant/${data.chatId}/${data.patientId}`;
+        }
+      });
+
+      socket.on("attendantSchedulesQuantity", (data) => {
+        if (data.attendantId == userDataDecode.userId) {
+          setSchedulesAttendant(data);
+        }
+      });
+
+      socket.on("attendantQueue", (data) => {
+        if (data.attendantId == userDataDecode.userId) {
+          setQueueList(data.users);
+        }
+      });
+    }
+
+    // Sockets para pacientes logados ou deslogados
+    if (!isProfessionalOrAttedant) {
+      socket.on("attendantStatus", (data) => {
+        setProfessionalStatus(data.isAvailable);
+      });
+    }
+
+    return () => socket.disconnect();
+  }, []);
+
+  React.useEffect(() => {
     if (connectID) getCategories(connectID);
   }, [connectID, getCategories]);
 
   React.useEffect(() => {
     if (isProfessionalOrAttedant) {
       getQueueList(userDataDecode.userId, connectID);
-      getQueueListWithScheduled(userDataDecode.userId, connectID);
-
-      const interval = setInterval(() => {
-        getQueueList(userDataDecode.userId, connectID);
-        getQueueListWithScheduled(userDataDecode.userId, connectID);
-      }, 5000);
-      setIntervalHome(interval);
     }
   }, [pathname, isProfessionalOrAttedant]);
-
-  React.useEffect(() => {
-    const socket = io(SOCKET_API_URL, {
-      rejectUnauthorized: false,
-    });
-
-    socket.on("chatReadyAttendant", (data) => {
-      let decodeUser = { id: null };
-      if (userLogin) decodeUser = jwtDecode(userLogin);
-
-      if (data.attendantId == decodeUser.userId) {
-        window.location.href = `/chat-attendant/${data.chatId}/${data.patientId}`;
-      }
-    });
-
-    return () => socket.disconnect();
-  }, []);
 
   React.useEffect(() => {
     if (isProfessionalOrAttedant) {
@@ -297,39 +295,12 @@ const Page = () => {
                             onClick={() => goToChat(userData.id, queue.userId)}
                           >
                             <div
-                            className="home__pacientsQueueList__item__photo"
+                              className="home__pacientsQueueList__item__photo"
                               style={{
                                 backgroundImage: `url(${
                                   queue.userphoto ?? person.src
                                 })`,
-                              }}                              
-                            />
-                          </li>
-                        );
-                      })}
-                  </ul>
-                </div>
-              </>
-            )}
-
-            {queueListWithScheduled && (
-              <>
-                <h3 className="home__text">Atendimento na fila agendado</h3>
-                <div className="home__pacientsQueueList">
-                  <ul className="home__pacientsQueueList__container">
-                    {queueListWithScheduled &&
-                      queueListWithScheduled.map((queue) => {
-                        return (
-                          <li
-                            key={queue.userId}
-                            className="home__pacientsQueueList__item"
-                            onClick={() => goToChat(userData.id, queue.userId)}
-                          >
-                            <Image
-                              src={queue.userphoto ?? person}
-                              width={75}
-                              height={75}
-                              alt="paciente da fila"
+                              }}
                             />
                           </li>
                         );

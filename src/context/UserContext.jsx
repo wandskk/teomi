@@ -8,6 +8,7 @@ import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import { setCookie } from "@/resources/helpers/cookies/setCookie";
 import { removeCookie } from "@/resources/helpers/cookies/removeCookie";
 import { usePathname } from "next/navigation";
+import { AttendantServices } from "@/services/modules/attendant";
 
 export const UserContext = React.createContext();
 
@@ -16,7 +17,6 @@ export const UserStorage = ({ children }) => {
   const [userToken, setUserToken] = React.useState(null);
   const [userData, setUserData] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
-  const [intervalHome, setIntervalHome] = React.useState(null);
   const [splashScreen, setSplashScreen] = React.useState(true);
   const tokenAuth = process.env.NEXT_PUBLIC_SECRET_KEY;
   const userDataCookie = getCookie("userLogin");
@@ -43,7 +43,18 @@ export const UserStorage = ({ children }) => {
     else setUserToken(cookie);
   }
 
-  async function logout() {
+  async function logout(userId = null) {
+    if (userId) {
+      try {
+        const logout = await AttendantServices.changeAttendantStatus(
+          userId,
+          0,
+          connectID
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
     removeCookie("userLogin");
     removeCookie("connectID");
     window.location.reload();
@@ -103,9 +114,6 @@ export const UserStorage = ({ children }) => {
     if (pathname) setSplashScreen(false);
   }, [pathname]);
 
-  React.useEffect(() => {
-    if (pathname !== "/" && intervalHome) clearInterval(intervalHome);
-  }, [intervalHome, pathname]);
   return (
     <UserContext.Provider
       value={{
@@ -118,7 +126,6 @@ export const UserStorage = ({ children }) => {
         setLoading,
         userLogin,
         logout,
-        setIntervalHome,
       }}
     >
       {children}

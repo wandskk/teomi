@@ -10,6 +10,7 @@ import "./page.scss";
 const Page = ({ params }) => {
   const { connectID, setLoading, userDataDecode } =
     React.useContext(UserContext);
+  const [scheduleType, setScheduleType] = React.useState(params.type);
   const [patientsList, setPatientsList] = React.useState(null);
   const [search, setSearch] = React.useState("");
 
@@ -58,8 +59,23 @@ const Page = ({ params }) => {
     } catch (error) {}
   }
 
+  async function handleUpdateMeetLink(scheduleId, link) {
+    setLoading(true);
+    try {
+      const updateMeetLink = await AttendantServices.updateScheduleMeetLink(
+        scheduleId,
+        link,
+        connectID
+      );
+      getConfirmedSchedules(userDataDecode.userId);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  }
+
   React.useEffect(() => {
-    if (params.type === "waiting") getPendingSchedules();
+    if (scheduleType === "waiting") getPendingSchedules();
     else getConfirmedSchedules(userDataDecode.userId);
   }, [connectID]);
 
@@ -68,16 +84,16 @@ const Page = ({ params }) => {
       <Search setSearch={setSearch} noFilter={true} />
 
       <div className="patients__actions">
-        {params.type === "waiting" && (
+        {scheduleType === "waiting" && (
           <a href="/schedules-attendant/scheduled">Agendamentos confirmados</a>
         )}
-        {params.type === "scheduled" && (
+        {scheduleType === "scheduled" && (
           <a href="/schedules-attendant/waiting">Aguardando agendamento</a>
         )}
       </div>
 
       <h1 className="patients__title">
-        {params.type === "waiting" ? "Aguardando agendamento " : "Agendados "}
+        {scheduleType === "waiting" ? "Aguardando agendamento " : "Agendados "}
       </h1>
 
       <ul className="patients__list">
@@ -92,18 +108,19 @@ const Page = ({ params }) => {
               return patient;
             })
             .map((patient) => (
-              <li key={patient.patientId}>
+              <li key={patient.scheduleId}>
                 <PatientCard
                   patientData={patient}
-                  type={params.type}
+                  type={scheduleType}
                   onClick={handleAcceptSchedule}
+                  handleUpdateMeetLink={handleUpdateMeetLink}
                 />
               </li>
             ))}
       </ul>
       {patientsList && patientsList.length === 0 && (
         <p className="patients__noPatients">
-          {params.type === "waiting"
+          {scheduleType === "waiting"
             ? "Não há pacientes aguardando confirmação até o momento"
             : "Não há pacientes confirmados até o momento"}
         </p>

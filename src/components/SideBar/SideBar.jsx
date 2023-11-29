@@ -64,7 +64,7 @@ const Sidebar = () => {
             <div className="sidebar__header__profile">
               {userData && (
                 <div
-                  className="sidebar__header__profile__photo"                  
+                  className="sidebar__header__profile__photo"
                   style={{
                     backgroundImage: `url(${
                       userData.userphoto === null ? person : userData.userphoto
@@ -75,7 +75,10 @@ const Sidebar = () => {
               <p>{userData ? name.getFirstName(userData.name) : ""}</p>
 
               {userData && (
-                <div className="sidebar__header__exit" onClick={logout}>
+                <div
+                  className="sidebar__header__exit"
+                  onClick={() => logout(userData.id ?? null)}
+                >
                   Sair <VscSignOut />
                 </div>
               )}

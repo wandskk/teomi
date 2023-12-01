@@ -14,7 +14,7 @@ const navigationLinks = {
   agendaInPerson: "/attendant-agenda/inPerson",
 };
 
-const page = ({ params }) => {
+const Page = ({ params }) => {
   const { userData } = React.useContext(UserContext);
   const [selectedDate, setSelectedDate] = React.useState(null);
   const [attendantPlaces, setAttendantPlaces] = React.useState(null);
@@ -144,4 +144,4 @@ const page = ({ params }) => {
     );
 };
 
-export default page;
+export default Page;

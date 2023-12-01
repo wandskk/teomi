@@ -16,14 +16,14 @@ import { IoMdClose } from "react-icons/io";
 import { UserContext } from "@/context/UserContext";
 import { PatientServices } from "@/services/modules/patient";
 import "./page.scss";
+import { separateTextAndProcessYouTubeLink } from "@/resources/helpers/chat/separateTextAndProcessYouTubeLink";
+import Link from "next/link";
 
 const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 
 const Chat = ({ params }) => {
-  const [chatStarted, setChatStarted] = useState(false);
-  const { userData, setLoading } = useContext(UserContext);
+  const { userData, setLoading, userDataDecode } = useContext(UserContext);
   const [socket, setSocket] = useState(null);
-  const [canShowQuizButton, setCanShowQuizButton] = useState(true);
   const [alertMessage, setAlertMessage] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messagesGroup, setMessagesGroup] = useState([]);
@@ -53,20 +53,23 @@ const Chat = ({ params }) => {
     [setLoading]
   );
 
-  const getAllMessages = useCallback(
-    async (chatId) => {
-      try {
-        const allMessages = await ChatServices.getAllMessages(
-          chatId,
-          connectID
-        );
-        setMessages(allMessages || []);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [connectID]
-  );
+  const getAllMessages = React.useCallback(async (chatId) => {
+    try {
+      const userId = userDataDecode?.userId ?? connectID;
+
+      const allMessages = await ChatServices.getAllMessages(
+        +chatId,
+        userId,
+        connectID
+      );
+
+      setMessages(allMessages);
+    } catch (error) {
+      const status = error.response?.status;
+      if (status === 400 || status === 404 || status === 409)
+        window.location.href = "/";
+    }
+  }, []);
 
   useEffect(() => {
     getAllMessages(chatId);
@@ -96,13 +99,13 @@ const Chat = ({ params }) => {
       });
 
       newSocket.on("finishedChat", (data) => {
-        if (data.chatId === chatId) {
+        if (data.chatId === +chatId) {
           window.location.href = "/";
         }
       });
 
       newSocket.on("finishedService", (data) => {
-        if (data.chatId === chatId) {
+        if (data.chatId === +chatId) {
           window.location.href = "/";
         }
       });
@@ -121,8 +124,6 @@ const Chat = ({ params }) => {
             chatId,
           });
         }
-
-        setCanShowQuizButton(true);
       });
     }
 
@@ -175,13 +176,13 @@ const Chat = ({ params }) => {
 
   const finishChat = () => {
     socket.emit("finishChat", {
-      chatId,
+      chatId: +chatId,
     });
   };
 
   const sendPatientToHome = () => {
     socket.emit("finishService", {
-      chatId,
+      chatId: +chatId,
     });
   };
 
@@ -301,8 +302,48 @@ const Chat = ({ params }) => {
                     <ul className={`chat__message ${messageClass}`}>
                       {msg &&
                         msg.map((message) => {
+                          const messageObject =
+                            separateTextAndProcessYouTubeLink(message.message);
                           return (
-                            <li key={message.messageId}>{message.message}</li>
+                            <li key={message.messageId}>
+                              {/* Mensagem com link */}
+                              {messageObject.link &&
+                                !messageObject.isYouTubeLink && (
+                                  <>
+                                    <p>{messageObject.text}</p>
+                                    <Link
+                                      target="_blank"
+                                      href={messageObject.link}
+                                    >
+                                      <p>{messageObject.link}</p>
+                                    </Link>
+                                  </>
+                                )}
+
+                              {/* Mensagem com youtube */}
+                              {messageObject.isYouTubeLink && (
+                                <>
+                                  {messageObject.text && (
+                                    <p>{messageObject.text}</p>
+                                  )}
+                                  <iframe
+                                    src={messageObject.link}
+                                    title="YouTube video player"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen
+                                  ></iframe>
+                                </>
+                              )}
+
+                              {/* Mensagem normal */}
+                              {!messageObject.link &&
+                                !messageObject.isYouTubeLink && (
+                                  <>
+                                    <p>{messageObject.text}</p>
+                                  </>
+                                )}
+                            </li>
                           );
                         })}
                     </ul>

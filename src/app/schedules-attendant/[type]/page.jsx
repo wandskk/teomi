@@ -10,9 +10,9 @@ import "./page.scss";
 const Page = ({ params }) => {
   const { connectID, setLoading, userDataDecode } =
     React.useContext(UserContext);
-  const [scheduleType, setScheduleType] = React.useState(params.type);
   const [patientsList, setPatientsList] = React.useState(null);
   const [search, setSearch] = React.useState("");
+  const scheduleType = params.type;
 
   async function getPendingSchedules() {
     setLoading(true);

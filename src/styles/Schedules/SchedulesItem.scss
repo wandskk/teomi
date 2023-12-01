@@ -14,8 +14,20 @@
     border-bottom: 1px solid #0000001a;
 
     &__photo {
-      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: 2rem;
       overflow: hidden;
+      color: #fff;
+      position: relative;
+      padding: 1rem;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
     }
 
     &__details {
@@ -43,12 +55,9 @@
     border-radius: 1rem;
     font-size: 0.875rem;
 
-    &.--inPerson {
-      background-color: #774372;
-    }
-
+    &.--inPerson,
     &.--online {
-      background-color: #c49cc0;
+      background-color: $neutral-darker;
     }
   }
 
@@ -118,9 +127,14 @@
         color: #5f7aff;
         font-weight: 800;
 
+        &.--disabled {
+          opacity: 0.5;
+          pointer-events: none;
+        }
+
         & svg {
           font-size: 1.4rem;
-          color: #00000080 !important;
+          color: #5f7aff !important;
           margin-bottom: 0.2rem;
         }
       }

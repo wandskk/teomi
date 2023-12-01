@@ -6,7 +6,6 @@ import ReactInputMask from "react-input-mask";
 import SuccessScreen from "@/components/SuccessScreen/SuccessScreen";
 import Link from "next/link";
 import { SchedulesServices } from "@/services/modules/schedules/";
-// import { isDateBeforeCurrent } from "@/resources/helpers/date/isDateBeforeCurrent";
 import { getNext10DaysFromDate } from "@/resources/helpers/date/getNext10DaysFromDate";
 import { currentDate } from "@/resources/helpers/date/currentDate";
 import { times } from "@/resources/utils/times/times";
@@ -268,7 +267,7 @@ const Page = ({ params }) => {
                   return (
                     <li
                       key={id}
-                      style={{display: isDisabled? "none" : "block"}}
+                      style={{ display: isDisabled ? "none" : "block" }}
                       className={`scheduling__time ${isSelected} ${isDisabled}`}
                       onClick={() => handleSelectTime(time)}
                     >
@@ -292,21 +291,23 @@ const Page = ({ params }) => {
                         key={attendant.userId}
                         className="scheduling__selectAttendant__attendant"
                       >
-                        <Image
+                        <div
+                          className="scheduling__selectAttendant__attendant__photo"
+                          style={{
+                            backgroundImage: `url(${attendant.userPhoto})`,
+                          }}
+                        />
+                        {/* <Image
                           src={attendant.userPhoto}
                           width={150}
                           height={150}
                           alt=""
                           className="scheduling__selectAttendant__attendant__photo"
-                        />
+                        /> */}
                         <div className="scheduling__selectAttendant__attendant__info">
                           <p>{attendant.userName}</p>
                           <small>{attendant.userRole}</small>
                         </div>
-                        {/* <div className="scheduling__selectAttendant__attendant__about">
-                        <p>Sobre</p>
-                        <small>{attendant.about}</small>
-                      </div> */}
                       </li>
                     );
                 })}

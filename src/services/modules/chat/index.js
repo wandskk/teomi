@@ -30,10 +30,10 @@ export const ChatServices = {
     });
     return result.data;
   },
-  getAllMessages: async (chatId, token) => {
+  getAllMessages: async (chatId, userId, token) => {
     const result = await api.post(
       `${basePath}/get`,
-      { chatId },
+      { chatId, userId },
       {
         headers: {
           Authorization: "Bearer " + token,

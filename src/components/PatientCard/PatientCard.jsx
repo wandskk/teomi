@@ -5,6 +5,8 @@ import { validateGoogleMeetLink } from "@/resources/helpers/googleMeet/validateG
 import { CiCalendar } from "react-icons/ci";
 import { IoMdVideocam } from "react-icons/io";
 import "@/styles/PatientCard/PatientCard.scss";
+import { FaRegBuilding } from "react-icons/fa";
+import { SlLocationPin } from "react-icons/sl";
 
 const PatientCard = ({
   patientData,
@@ -15,6 +17,9 @@ const PatientCard = ({
   const [patientMeetLink, setPatientMeetLink] = React.useState(null);
   const [editMeetLink, setEditMeetLink] = React.useState(false);
   const [patientMeetLinkError, setPatientMeetLinkError] = React.useState("");
+  const [patientAddressSchedule, setPatientAddressSchedule] = React.useState(
+    patientData.locationInfo[0] ?? null
+  );
 
   const handleEditMeetLink = () => setEditMeetLink(!editMeetLink);
 
@@ -83,6 +88,26 @@ const PatientCard = ({
           </button>
         )}
       </div>
+
+      {type === "scheduled" && patientAddressSchedule && (
+        <div className="patientCard__footer">
+          <ul className="patientCard__footer__list">
+            <li className="patientCard__footer__list__item">
+              <FaRegBuilding />
+              <p>
+                {`${patientAddressSchedule.locationName} - ${patientAddressSchedule.locationAddress} / ${patientAddressSchedule.locationNumber}`}
+              </p>
+            </li>
+            <li className="patientCard__footer__list__item">
+              <SlLocationPin />
+              <p>
+                {`${patientAddressSchedule.locationCity} / ${patientAddressSchedule.locationState}`}
+              </p>
+            </li>
+          </ul>
+        </div>
+      )}
+
       {type === "scheduled" && patientData.scheduleIsOnline === 1 && (
         <div className="patientCard__footer">
           <div className="patientCard__footer__actions">

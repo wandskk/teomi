@@ -1,4 +1,4 @@
-@import '../vars';
+@import "../vars";
 
 .footer {
   position: fixed;
@@ -6,7 +6,6 @@
   background-color: $neutral;
   max-width: 721px;
   width: 100%;
-  overflow: hidden;
 
   &__nav {
     position: relative;
@@ -17,7 +16,7 @@
       align-items: center;
       justify-content: space-between;
       list-style: none;
-      padding: 1rem 1.5rem;
+      padding: 1.5rem 2rem;
 
       &__item {
         display: flex;
@@ -43,20 +42,26 @@
             }
           }
         }
-
-        &--marker {
-          position: absolute;
-          right: -1rem;
-          bottom: -0.4rem;
-        }
       }
     }
   }
 
+  &__flower {
+    position: absolute;
+    z-index: 2;
+    top: -2.55rem;
+    right: 0;
+  }
+
   &__marker {
     position: absolute;
-    top: 18%;
-    left: 50.5%;
-    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    top: 0;
+    height: 100%;
+    width: 100%;   
+    overflow: hidden; 
   }
 }

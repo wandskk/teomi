@@ -5,12 +5,12 @@ import { formatDate } from "@/resources/helpers/date/formatDate";
 import { isDateInRange } from "@/resources/helpers/date/isDateInRange";
 import { AiOutlineSchedule } from "react-icons/ai";
 import { MdOutlineSchedule } from "react-icons/md";
-import { IoIosChatbubbles, IoLocationOutline } from "react-icons/io";
+import { IoMdVideocam } from "react-icons/io";
 import { UserContext } from "@/context/UserContext";
 import { PatientServices } from "@/services/modules/patient";
-import "@/styles/Schedules/SchedulesItem.scss";
 import { FaRegBuilding } from "react-icons/fa";
 import { SlLocationPin } from "react-icons/sl";
+import "@/styles/Schedules/SchedulesItem.scss";
 
 const SchedulesItem = ({ schedule, getSchedules }) => {
   const { userDataDecode, setLoading, connectID } =
@@ -22,6 +22,7 @@ const SchedulesItem = ({ schedule, getSchedules }) => {
   async function handleCancelSchedule() {
     setDisableButton(true);
     setLoading(true);
+
     try {
       const patientId = userDataDecode.userId;
       const { scheduleId } = schedule;
@@ -59,12 +60,9 @@ const SchedulesItem = ({ schedule, getSchedules }) => {
         >
           {isInPerson ? "Presencial" : "Online"}
         </div>
-        <Image
+        <div
           className="schedulesItem__header__photo"
-          src={schedule.professionalPhoto}
-          alt="Foto do profissional"
-          width={45}
-          height={45}
+          style={{ backgroundImage: `url(${schedule.professionalPhoto})` }}
         />
         <div className="schedulesItem__header__details">
           <h2 className="schedulesItem__header__details__name">
@@ -85,6 +83,7 @@ const SchedulesItem = ({ schedule, getSchedules }) => {
             {schedule.scheduleStartTime} - {schedule.scheduleEndTime}
           </p>
         </div>
+
         {isInPerson && (
           <div className="schedulesItem__content__place">
             <p className="schedulesItem__content__place__item">
@@ -99,6 +98,7 @@ const SchedulesItem = ({ schedule, getSchedules }) => {
             </p>
           </div>
         )}
+
         <div className="schedulesItem__content__actions">
           <button
             className="schedulesItem__content__actions__cancel"
@@ -107,12 +107,15 @@ const SchedulesItem = ({ schedule, getSchedules }) => {
           >
             Cancelar
           </button>
-          {!isInPerson && canEnterChat && (
+          {!isInPerson && (
             <Link
-              href={`/queue/${schedule.professionalId}?isScheduled=1`}
-              className="schedulesItem__content__actions__enter"
+              href={schedule.scheduleMeetUrl || ""}
+              target="_blank"
+              className={`schedulesItem__content__actions__enter ${
+                !canEnterChat || !schedule.scheduleMeetUrl ? "--disabled" : ""
+              }`}
             >
-              <IoIosChatbubbles />
+              <IoMdVideocam />
               Entrar
             </Link>
           )}

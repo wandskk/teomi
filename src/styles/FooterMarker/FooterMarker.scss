@@ -1,0 +1,33 @@
+$layerOneBackgroundColor: #caa6c6;
+$layerTwoBackgroundColor: #ceaecb;
+$layerThreeBackgroundColor: #d2b4cf;
+
+.footerMarker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.--layerOne,
+  &.--layerTwo,
+  &.--layerThree {
+    border-radius: 50%;
+  }
+
+  &.--layerOne {
+    background-color: $layerOneBackgroundColor;
+    width: 12rem;
+    height: 12rem;
+  }
+
+  &.--layerTwo {
+    background-color: $layerTwoBackgroundColor;
+    width: 8rem;
+    height: 8rem;
+  }
+
+  &.--layerThree {
+    background-color: $layerThreeBackgroundColor;
+    width: 4rem;
+    height: 4rem;
+  }
+}

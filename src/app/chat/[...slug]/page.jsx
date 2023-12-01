@@ -3,18 +3,18 @@
 import jwtDecode from "jwt-decode";
 import React from "react";
 import io from "socket.io-client";
-import person from "@/assets/images/icons/person.png";
-import Image from "next/image";
-import Quiz from "../../../components/Quiz/Quiz";
 import Link from "next/link";
+import person from "@/assets/images/icons/person.png";
+import Quiz from "@/components/Quiz/Quiz";
 import { ChatServices } from "@/services/modules/chat";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";
-import { LuSendHorizonal } from "react-icons/lu";
+import { AttendantServices } from "@/services/modules/attendant";
+import { separateTextAndProcessYouTubeLink } from "@/resources/helpers/chat/separateTextAndProcessYouTubeLink";
+import { UserContext } from "@/context/UserContext";
 import { GrAdd } from "react-icons/gr";
 import { FiAlertOctagon } from "react-icons/fi";
+import { LuSendHorizonal } from "react-icons/lu";
 import { MdOutlineCalendarMonth } from "react-icons/md";
-import { AttendantServices } from "@/services/modules/attendant";
-import { UserContext } from "@/context/UserContext";
 import "./page.scss";
 
 const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
@@ -47,10 +47,18 @@ const Chat = ({ params }) => {
 
   const getAllMessages = React.useCallback(async (chatId) => {
     try {
-      const allMessages = await ChatServices.getAllMessages(chatId, connectID);
+      const userId = userDataDecode?.userId ?? connectID;
+
+      const allMessages = await ChatServices.getAllMessages(
+        +chatId,
+        userId,
+        connectID
+      );
       setMessages(allMessages);
     } catch (error) {
-      if (error.response.status === 409) setFinishChat(true);
+      const status = error.response?.status;
+      if (status === 400 || status === 404 || status === 409)
+        window.location.href = "/";
     }
   }, []);
 
@@ -174,7 +182,7 @@ const Chat = ({ params }) => {
                 {attendantData.attendantStateTag}
               </small>
             </div>
-            
+
             <div className="chat__info__photo">
               <div
                 className="chat__info__photo"
@@ -238,8 +246,48 @@ const Chat = ({ params }) => {
                     <ul className={`chat__message ${messageClass}`}>
                       {msg &&
                         msg.map((message) => {
+                          const messageObject =
+                            separateTextAndProcessYouTubeLink(message.message);
                           return (
-                            <li key={message.messageId}>{message.message}</li>
+                            <li key={message.messageId}>
+                              {/* Mensagem com link */}
+                              {messageObject.link &&
+                                !messageObject.isYouTubeLink && (
+                                  <>
+                                    <p>{messageObject.text}</p>
+                                    <Link
+                                      target="_blank"
+                                      href={messageObject.link}
+                                    >
+                                      <p>{messageObject.link}</p>
+                                    </Link>
+                                  </>
+                                )}
+
+                              {/* Mensagem com youtube */}
+                              {messageObject.isYouTubeLink && (
+                                <>
+                                  {messageObject.text && (
+                                    <p>{messageObject.text}</p>
+                                  )}
+                                  <iframe
+                                    src={messageObject.link}
+                                    title="YouTube video player"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen
+                                  ></iframe>
+                                </>
+                              )}
+
+                              {/* Mensagem normal */}
+                              {!messageObject.link &&
+                                !messageObject.isYouTubeLink && (
+                                  <>
+                                    <p>{messageObject.text}</p>
+                                  </>
+                                )}
+                            </li>
                           );
                         })}
                     </ul>

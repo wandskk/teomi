@@ -2,15 +2,15 @@
 
 import React from "react";
 import Image from "next/image";
-import marker from "@/assets/images/marker.svg";
+import Link from "next/link";
 import home from "@/assets/images/icons/home.svg";
 import homeShadow from "@/assets/images/icons/homeShadow.svg";
 import calendar from "@/assets/images/icons/calendar.svg";
 import calendarShadow from "@/assets/images/icons/calendarShadow.svg";
 import maps from "@/assets/images/icons/maps.svg";
 import mapsShadow from "@/assets/images/icons/mapsShadow.svg";
-import Link from "next/link";
-import Flower from "@/components/Flower/Flower";
+import flower from "@/assets/images/flower.png";
+import FooterMarker from "@/components/FooterMarker/FooterMarker";
 import { usePathname } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import "@/styles/Footer/Footer.scss";
@@ -23,21 +23,28 @@ const noFooterRoutes = [
 const Footer = () => {
   const [showFooter, setShowFooter] = React.useState(true);
   const { userData } = React.useContext(UserContext);
-  const pathname = usePathname();  
+  const pathname = usePathname();
+
+  const canShowFooter = noFooterRoutes.find((route) =>
+    pathname.includes(route.path)
+  );
 
   React.useEffect(() => {
-    const canShowFooter = noFooterRoutes.find((route) =>
-      pathname.includes(route.path)
-    );
     if (canShowFooter) setShowFooter(false);
     else setShowFooter(true);
-  }, [noFooterRoutes, pathname]);
+  }, [noFooterRoutes]);
 
   if (showFooter)
     return (
       <footer className="footer">
         <nav className="footer__nav">
-          <Flower />
+          <div className="footer__flower">
+            <img
+              className="footer__flower__image"
+              src={flower.src}
+              alt="florzinha"
+            />
+          </div>
           <ul className="footer__nav__list">
             <li className="footer__nav__list__item">
               <Link className="footer__nav__list__item__link" href="/">
@@ -74,7 +81,7 @@ const Footer = () => {
           </ul>
         </nav>
         <div className="footer__marker">
-          <Image src={marker} alt="" />
+          <FooterMarker />
         </div>
       </footer>
     );

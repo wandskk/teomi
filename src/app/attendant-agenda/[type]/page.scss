@@ -1,0 +1,93 @@
+@import "../../../styles/vars";
+
+.attendantAgenda {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 5rem 0;
+  padding: 2rem;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &__navigation {
+      display: flex;
+      justify-content: flex-end;
+
+      &__link {
+        display: flex;
+        gap: 1rem;
+        background-color: $neutral-darker;
+        padding: 1rem;
+        color: #fff;
+        border-radius: 1rem;
+        text-decoration: none;
+        font-size: 0.875rem;
+      }
+    }
+
+    &__title {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    &__subtitle {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+  }
+
+  &__daysList {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    list-style: none;
+  }
+
+  &__day {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    background-color: $neutral;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    color: #fff;
+
+    &__text {
+      font-weight: 500;
+    }
+
+    &__number {
+      font-weight: 700;
+    }
+
+    &.--selected {
+      background-color: $neutral-darker;
+    }
+  }
+
+  &__timesOptions {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &__timeField {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__submit {
+    background-color: $neutral-darker;
+    border: none;
+    padding: 1rem;
+    border-radius: 1rem;
+    color: #fff;
+  }
+}

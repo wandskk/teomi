@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import flower from "@/assets/images/flower.svg";
+import flower from "@/assets/images/flower.png";
 import homeBanner from "@/assets/images/homeBanner.svg";
 import homeBallon from "@/assets/images/homeBallon.svg";
 import teomi from "@/assets/images/teomi.png";
@@ -11,7 +11,6 @@ import schedulesBanner from "@/assets/images/schedulesBanner.png";
 import scheduledBanner from "@/assets/images/scheduledBanner.png";
 import Message from "@/components/Message/Message";
 import Link from "next/link";
-import jwtDecode from "jwt-decode";
 import { UserContext } from "@/context/UserContext";
 import { name } from "@/resources/helpers/name/name";
 import { ChatServices } from "@/services/modules/chat";
@@ -25,7 +24,7 @@ import "./page.scss";
 const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 
 const Page = () => {
-  const { userDataDecode, userData, loading, setLoading } =
+  const { userDataDecode, userData, loading, setLoading, connectID } =
     React.useContext(UserContext);
   const [professionalStatus, setProfessionalStatus] = React.useState(null);
   const [schedulesAttendant, setSchedulesAttendant] = React.useState(null);
@@ -33,20 +32,18 @@ const Page = () => {
   const [categories, setCategories] = React.useState(null);
   const [queueList, setQueueList] = React.useState(null);
   const pathname = usePathname();
-  const connectID = getCookie("connectID");
-  const userLogin = getCookie("userLogin");
   const isProfessionalOrAttedant =
     userDataDecode &&
     (userDataDecode.userType === 2 || userDataDecode.userType === 3);
   const searchParams = useSearchParams();
   const search = searchParams.get("queueEnd");
 
-  async function getCategories(token) {
+  const getCategories = React.useCallback(async (token) => {
     try {
       const categories = await ChatServices.getCategories(token);
       setCategories(categories);
     } catch (error) {}
-  }
+  }, []);
 
   async function getQueueList(attendantId, token) {
     try {
@@ -145,23 +142,20 @@ const Page = () => {
         }
       });
 
-      socket.on("attendantSchedulesQuantity", (data) => {
-        if (data.attendantId == userDataDecode.userId) {
-          setSchedulesAttendant(data);
-        }
-      });
-
       socket.on("attendantQueue", (data) => {
-        if (data.attendantId == userDataDecode.userId) {
-          setQueueList(data.users);
-        }
+        setQueueList(null);
+        data.map((attendant) => {
+          if (attendant.attendantId === userDataDecode.userId) {
+            setQueueList(attendant.users);
+          }
+        });
       });
     }
 
     // Sockets para pacientes logados ou deslogados
     if (!isProfessionalOrAttedant) {
-      socket.on("attendantStatus", (data) => {
-        setProfessionalStatus(data.isAvailable);
+      socket.on("categoriesWithAttendantsAvailable", (data) => {
+        setCategories(data);
       });
     }
 
@@ -169,8 +163,8 @@ const Page = () => {
   }, []);
 
   React.useEffect(() => {
-    if (connectID) getCategories(connectID);
-  }, [connectID, getCategories]);
+    if (!isProfessionalOrAttedant) getCategories(connectID);
+  }, [isProfessionalOrAttedant, getCategories]);
 
   React.useEffect(() => {
     if (isProfessionalOrAttedant) {

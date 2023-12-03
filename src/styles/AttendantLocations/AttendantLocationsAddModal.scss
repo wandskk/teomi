@@ -1,0 +1,72 @@
+@import "../_vars";
+
+.modal {
+  width: 90%;
+}
+
+.attendantLocationsAddModal {
+  position: relative;
+  width: 100%;
+
+  &__title {
+    font-size: 1.3rem;
+    padding-top: 2.5rem;
+  }
+
+  &__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: transparent;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    min-height: 20rem;
+    overflow: hidden;
+  }
+
+  &__input {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid $neutral;
+    width: 100%;
+    font-size: 0.875rem;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    max-height: 18rem;
+    overflow-y: scroll;
+    border-bottom: .5rem solid $neutral-darker    
+  }
+
+  &__location {
+    padding: 0.5rem;
+    border-bottom: 1px solid $neutral;
+    font-size: 0.75rem;
+    font-weight: 400;
+    cursor: pointer;
+
+    &:hover {
+        color: #fff;
+      background-color: $neutral;
+      border-radius: 0.5rem;
+    }
+
+    &__name {
+      font-weight: 500;
+      font-size: 0.875rem;
+      margin-bottom: 0.2rem;
+    }
+  }
+}

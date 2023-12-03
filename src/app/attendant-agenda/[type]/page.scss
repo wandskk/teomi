@@ -1,4 +1,4 @@
-@import "../../../styles/vars";
+@import "../../../styles/_vars";
 
 .attendantAgenda {
   display: flex;
@@ -36,6 +36,21 @@
     &__subtitle {
       font-size: 1rem;
       font-weight: 500;
+    }
+  }
+
+  &__selectLocation {
+    &__select {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      width: 100%;
+      font-size: 0.875rem;
+    }
+
+    &__link {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: .5rem;
     }
   }
 

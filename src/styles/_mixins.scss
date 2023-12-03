@@ -1,0 +1,42 @@
+// Mixins
+@mixin for-phone-only {
+  @media (max-width: 576px) {
+    @content;
+  }
+}
+
+@mixin for-tablet-portrait-up {
+  @media (max-width: 576px) {
+    @content;
+  }
+}
+
+@mixin for-tablet-landscape-up {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin for-desktop-up {
+  @media (max-width: 992px) {
+    @content;
+  }
+}
+
+@mixin for-biggest-desktop-up {
+  @media (max-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin for-biggest-desktop-up {
+  @media (max-width: 1400px) {
+    @content;
+  }
+}
+
+@mixin for-generic-screen($value) {
+    @media (max-width: $value) {
+        @content;
+    }
+}

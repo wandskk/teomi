@@ -1,7 +1,7 @@
 "use client";
 
 import jwtDecode from "jwt-decode";
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React from "react";
 import io from "socket.io-client";
 import person from "@/assets/images/icons/person.png";
 import Message from "@/components/Message/Message";
@@ -22,20 +22,21 @@ import Link from "next/link";
 const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 
 const Chat = ({ params }) => {
-  const { userData, setLoading, userDataDecode } = useContext(UserContext);
-  const [socket, setSocket] = useState(null);
-  const [alertMessage, setAlertMessage] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [messagesGroup, setMessagesGroup] = useState([]);
-  const [message, setMessage] = useState("");
-  const [patientData, setPatientData] = useState(null);
+  const { userData, setLoading, userDataDecode } =
+    React.useContext(UserContext);
+  const [socket, setSocket] = React.useState(null);
+  const [alertMessage, setAlertMessage] = React.useState(null);
+  const [messages, setMessages] = React.useState([]);
+  const [messagesGroup, setMessagesGroup] = React.useState([]);
+  const [message, setMessage] = React.useState("");
+  const [patientData, setPatientData] = React.useState(null);
+  const [showMenu, setShowMenu] = React.useState(false);
   const connectID = getCookie("connectID");
   const userLogin = getCookie("userLogin");
-  const [showMenu, setShowMenu] = useState(false);
   const chatId = params.slug[0];
   const receiverId = params.slug[1];
 
-  const getPatientData = useCallback(
+  const getPatientData = React.useCallback(
     async (receiverId, connectID) => {
       setLoading(true);
       try {
@@ -71,11 +72,31 @@ const Chat = ({ params }) => {
     }
   }, []);
 
-  useEffect(() => {
+  function divideMessagesBySenderId(messages) {
+    const dividedMessages = [];
+    let currentGroup = [];
+
+    for (let i = 0; i < messages.length; i++) {
+      const message = messages[i];
+
+      if (i === 0 || message.sender_id === messages[i - 1].sender_id) {
+        currentGroup.push(message);
+      } else {
+        dividedMessages.push(currentGroup);
+        currentGroup = [message];
+      }
+    }
+
+    dividedMessages.push(currentGroup);
+
+    setMessagesGroup(dividedMessages);
+  }
+
+  React.useEffect(() => {
     getAllMessages(chatId);
   }, [getAllMessages, chatId]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const newSocket = io(SOCKET_API_URL);
     setSocket(newSocket);
 
@@ -84,7 +105,7 @@ const Chat = ({ params }) => {
     };
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const newSocket = io(SOCKET_API_URL);
     setSocket(newSocket);
 
@@ -186,37 +207,17 @@ const Chat = ({ params }) => {
     });
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (receiverId && connectID) {
       getPatientData(receiverId, connectID);
     }
   }, [getPatientData, receiverId, connectID]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (messages.length > 0) {
       divideMessagesBySenderId(messages);
     }
   }, [messages]);
-
-  function divideMessagesBySenderId(messages) {
-    const dividedMessages = [];
-    let currentGroup = [];
-
-    for (let i = 0; i < messages.length; i++) {
-      const message = messages[i];
-
-      if (i === 0 || message.sender_id === messages[i - 1].sender_id) {
-        currentGroup.push(message);
-      } else {
-        dividedMessages.push(currentGroup);
-        currentGroup = [message];
-      }
-    }
-
-    dividedMessages.push(currentGroup);
-
-    setMessagesGroup(dividedMessages);
-  }
 
   return (
     <div className="container">

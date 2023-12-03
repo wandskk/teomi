@@ -85,6 +85,7 @@ const Sidebar = () => {
                     Agenda presencial
                   </Link>
                   <Link href="/attendant-agenda/online">Agenda online</Link>
+                  <Link href="/attendant-locations">Meus locais</Link>
                 </>
               )}
 

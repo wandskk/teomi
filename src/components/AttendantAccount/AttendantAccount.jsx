@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
+import decode from "jwt-decode";
 import CreateAttendantStepOne from "@/components/CreateAttendant/CreateAttendantStepOne";
 import CreateAttendantStepTwo from "@/components/CreateAttendant/CreateAttendantStepTwo";
 import CreateAttendantStepThree from "@/components/CreateAttendant/CreateAttendantStepThree";
 import CreateAttendantStepFour from "@/components/CreateAttendant/CreateAttendantStepFour";
 import Message from "@/components/Message/Message";
-import decode from "jwt-decode";
 import { UserContext } from "@/context/UserContext";
 import { UsersServices } from "@/services/modules/users";
 import { object } from "@/resources/helpers/object/object";
@@ -13,8 +13,8 @@ import { messages } from "@/resources/utils/messages/messages";
 import { statesList } from "@/resources/utils/states/statesList";
 import { SystemServices } from "@/services/modules/system";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";
-import "@/styles/CreateAccount/CreateAccount.scss";
 import { AttendantServices } from "@/services/modules/attendant";
+import "@/styles/CreateAccount/CreateAccount.scss";
 
 const AttendantAccount = () => {
   const { connectID: authToken, setLoading } = React.useContext(UserContext);

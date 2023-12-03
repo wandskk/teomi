@@ -54,6 +54,18 @@ export const SchedulesServices = {
     });
     return result.data;
   },
+  getLocationsByName: async (locationName, token) => {
+    const result = await api.post(
+      `${basePath}/location/name/get`,
+      { locationName },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return result.data;
+  },
   createSchedule: async (body, token) => {
     const result = await api.post(`${basePath}/create`, body, {
       headers: {

@@ -7,7 +7,7 @@ import "@/styles/Message/Message.scss";
 const Message = ({ message, type, resetMessage }) => {
   const [showMessage, setShowMessage] = React.useState(true);
 
-  const handleShowMessage = () => setTimeout(() => handleHideMessage(), 5000);
+  const handleShowMessage = () => setTimeout(() => handleHideMessage(), 120000);
 
   const handleHideMessage = () => setShowMessage(false);
 

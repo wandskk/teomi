@@ -1,0 +1,101 @@
+@import "../../styles/_vars";
+
+.attendantLocations {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 5rem 0;
+  padding: 2rem;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &__navigation {
+      display: flex;
+      justify-content: flex-end;
+
+      &__link {
+        display: flex;
+        gap: 1rem;
+        background-color: $neutral-darker;
+        padding: 1rem;
+        color: #fff;
+        border-radius: 1rem;
+        text-decoration: none;
+        font-size: 0.875rem;
+      }
+    }
+
+    &__title {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    &__subtitle {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    &__modalButton {
+      padding: 1rem;
+      background-color: $neutral-darker;
+      color: #fff;
+      border-radius: 5rem;
+      border: none;
+      cursor: pointer;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__card {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 1rem;
+    overflow: hidden;
+    position: relative;
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      background-color: rgb(0 0 0 / 50%);
+      color: #fff;
+      padding: 1rem;
+      width: 100%;
+      min-height: 10rem;
+    }
+
+    &__name {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    &__address {
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    &__delete {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      background-color: #cc0000;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 5rem;
+      color: #fff;
+      font-size: 1.5rem;
+    }
+  }
+}

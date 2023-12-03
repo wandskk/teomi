@@ -16,6 +16,36 @@ export const AttendantServices = {
       },
     });
   },
+  updateAttedantOnlineAgenda: async (body, token) => {
+    return await api.put(`${basePath}/schedules/availability/insert`, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+  updateAttedantInPersonAgenda: async (body, token) => {
+    return await api.put(
+      `${basePath}/schedules/availability/inPerson/insert`,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  },
+  getAttendantAgenda: async (body, token) => {
+    const result = await api.post(
+      `${basePath}/schedules/availability/get`,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return result.data;
+  },
   getAttendantData: async (attendantId, token) => {
     const result = await api.post(
       `${basePath}/get`,
@@ -92,6 +122,42 @@ export const AttendantServices = {
     const result = await api.post(
       `${basePath}/status/get`,
       { attendantId },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return result.data;
+  },
+  getAttendantLocationsById: async (attendantId, token) => {
+    const result = await api.post(
+      `${basePath}/schedules/location/get`,
+      { attendantId },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return result.data;
+  },
+  addAttendantLocation: async (attendantId, locationId, token) => {
+    const result = await api.put(
+      `${basePath}/schedules/location/add`,
+      { attendantId, locationId },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return result.data;
+  },
+  removeAttendantLocation: async (attendantId, locationId, token) => {
+    const result = await api.post(
+      `${basePath}/schedules/location/remove`,
+      { attendantId, locationId },
       {
         headers: {
           Authorization: "Bearer " + token,

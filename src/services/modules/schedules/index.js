@@ -26,6 +26,18 @@ export const SchedulesServices = {
     );
     return result.data;
   },
+  getSchedulesByDateAndLocationId: async (locationId, date, token) => {
+    const result = await api.post(
+      `${basePath}/date/location/get`,
+      { locationId, date },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return result.data;
+  },
   getAttendantByTimeAndDate: async (date, startTime, token) => {
     const result = await api.post(
       `${basePath}/professional/get`,

@@ -27,7 +27,7 @@ const Page = ({ params }) => {
   );
   const [placesList, setPlacesList] = React.useState(null);
   const [selectedPlace, setSelectedPlace] = React.useState(null);
-  const [selectedDate, setSelectedDate] = React.useState(currentDate());
+  const [selectedDate, setSelectedDate] = React.useState(null);
   const [selectedTime, setSelectedTime] = React.useState(null);
   const [attendantList, setAttendantList] = React.useState(null);
   const [finishScheduling, setFinishScheduling] = React.useState(false);
@@ -36,6 +36,8 @@ const Page = ({ params }) => {
   const [currentAttedantIndex, setCurrentAttendantIndex] = React.useState(0);
   const [step, setStep] = React.useState(pageType[params.type]);
   const weekdays = getNext10DaysFromDate(currentDate());
+  const isOnline = params.type === "online";
+  const isInPerson = params.type === "inPerson";
 
   const getAttendantList = React.useCallback(async (date, time, connectID) => {
     setLoading(true);
@@ -74,18 +76,29 @@ const Page = ({ params }) => {
   };
 
   const getIndiponiblesTimesInDate = async (date) => {
-    setLoading(true);
     const arrayIndiponiblesTimes = [];
     const userBody = {
       date,
       patientId: userDataDecode.userId,
     };
+    setLoading(true);
 
     try {
-      const indisponiblesTimes = await SchedulesServices.getSchedulesByDate(
-        date,
-        connectID
-      );
+      let indisponiblesTimes;
+      if (isInPerson) {
+        indisponiblesTimes =
+          await SchedulesServices.getSchedulesByDateAndLocationId(
+            selectedPlace,
+            selectedDate,
+            connectID
+          );
+      } else {
+        indisponiblesTimes = await SchedulesServices.getSchedulesByDate(
+          date,
+          connectID
+        );
+      }
+
       arrayIndiponiblesTimes.push(...indisponiblesTimes);
 
       const indisponiblesTimesUser =
@@ -140,6 +153,14 @@ const Page = ({ params }) => {
       setLoading(false);
     }
   };
+
+  React.useEffect(() => {
+    if (isInPerson && !selectedPlace) {
+      setSelectedDate(null);
+    } else {
+      setSelectedDate(currentDate());
+    }
+  }, [selectedPlace]);
 
   React.useEffect(() => {
     if (step === 3) getAttendantList(selectedDate, selectedTime, connectID);
@@ -236,7 +257,7 @@ const Page = ({ params }) => {
               {weekdays &&
                 weekdays.map((day) => {
                   const { dayOfWeek, date } = day;
-                  const isSelected = selectedDate === date && "--selected";
+                  const isSelected = selectedDate === date ? "--selected" : "";
                   const currentDay = date.split("/")[0];
 
                   return (

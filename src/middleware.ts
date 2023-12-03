@@ -32,5 +32,6 @@ export const config = {
     "/schedules",
     "/scheduling/:path*",
     "/schedules-attendant/:path*",
+    "/attendant-agenda/:path*",
   ],
 };

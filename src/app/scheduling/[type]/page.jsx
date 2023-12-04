@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import ReactInputMask from "react-input-mask";
-import SuccessScreen from "@/components/SuccessScreen/SuccessScreen";
 import Link from "next/link";
+import SuccessScreen from "@/components/SuccessScreen/SuccessScreen";
 import { SchedulesServices } from "@/services/modules/schedules/";
 import { getNext10DaysFromDate } from "@/resources/helpers/date/getNext10DaysFromDate";
 import { currentDate } from "@/resources/helpers/date/currentDate";

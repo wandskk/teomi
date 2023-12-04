@@ -1,6 +1,7 @@
 @import "../_vars";
 
 .modal {
+  max-width: 721px;
   width: 90%;
 }
 
@@ -39,6 +40,14 @@
     border: 1px solid $neutral;
     width: 100%;
     font-size: 0.875rem;
+
+    &.--error {
+      border: 1px solid red;
+    }
+
+    &:focus {
+      outline: none;
+    }
   }
 
   &__list {
@@ -47,7 +56,13 @@
     list-style: none;
     max-height: 18rem;
     overflow-y: scroll;
-    border-bottom: .5rem solid $neutral-darker    
+    border-bottom: 0.5rem solid $neutral-darker;
+
+    &__error {
+      font-size: .75rem;
+      color: red;
+      padding: 1rem 0;
+    }
   }
 
   &__location {
@@ -58,7 +73,7 @@
     cursor: pointer;
 
     &:hover {
-        color: #fff;
+      color: #fff;
       background-color: $neutral;
       border-radius: 0.5rem;
     }

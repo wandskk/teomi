@@ -15,12 +15,14 @@ const AttendantLocationsAddModal = ({
 }) => {
   const [locationName, setLocationName] = React.useState("");
   const [locations, setLocations] = React.useState(null);
+  const [fieldError, setFieldError] = React.useState(false);
   const { userDataDecode, connectID, setLoading } =
     React.useContext(UserContext);
 
   const handleCloseModal = () => {
     setLocationName("");
     setLocations(null);
+    setFieldError(false);
     onClose();
   };
 
@@ -46,12 +48,16 @@ const AttendantLocationsAddModal = ({
   };
 
   async function getLocationsByName(locationName) {
+    setFieldError(false);
     try {
       const locations = await SchedulesServices.getLocationsByName(
         locationName,
         connectID
       );
       setLocations(locations);
+      if (locations.length === 0) {
+        setFieldError(true);
+      }
     } catch (error) {}
   }
 
@@ -82,7 +88,9 @@ const AttendantLocationsAddModal = ({
 
         <div className="attendantLocationsAddModal__content">
           <input
-            className="attendantLocationsAddModal__input"
+            className={`attendantLocationsAddModal__input ${
+              fieldError ? "--error" : ""
+            }`}
             type="text"
             placeholder="Digite o nome da unidade"
             value={locationName}
@@ -90,6 +98,11 @@ const AttendantLocationsAddModal = ({
           />
           {locations && (
             <ul className="attendantLocationsAddModal__list">
+              {fieldError && (
+                <li className="attendantLocationsAddModal__list__error">
+                  Não foi possível encontrar a unidade
+                </li>
+              )}
               {locations &&
                 locations.map((location, index) => (
                   <li

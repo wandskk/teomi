@@ -4,9 +4,9 @@ import Link from "next/link";
 import { validateGoogleMeetLink } from "@/resources/helpers/googleMeet/validateGoogleMeetLink";
 import { CiCalendar } from "react-icons/ci";
 import { IoMdVideocam } from "react-icons/io";
-import "@/styles/PatientCard/PatientCard.scss";
 import { FaRegBuilding } from "react-icons/fa";
 import { SlLocationPin } from "react-icons/sl";
+import "@/styles/PatientCard/PatientCard.scss";
 
 const PatientCard = ({
   patientData,
@@ -17,9 +17,7 @@ const PatientCard = ({
   const [patientMeetLink, setPatientMeetLink] = React.useState(null);
   const [editMeetLink, setEditMeetLink] = React.useState(false);
   const [patientMeetLinkError, setPatientMeetLinkError] = React.useState("");
-  const [patientAddressSchedule, setPatientAddressSchedule] = React.useState(
-    patientData.locationInfo[0] ?? null
-  );
+  const patientAddressSchedule = patientData.locationInfo[0] ?? null;
 
   const handleEditMeetLink = () => setEditMeetLink(!editMeetLink);
 

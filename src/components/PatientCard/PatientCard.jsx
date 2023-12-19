@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import person from "@/assets/images/icons/person.png";
 import { validateGoogleMeetLink } from "@/resources/helpers/googleMeet/validateGoogleMeetLink";
 import { CiCalendar } from "react-icons/ci";
 import { IoMdVideocam } from "react-icons/io";
@@ -18,6 +19,8 @@ const PatientCard = ({
   const [editMeetLink, setEditMeetLink] = React.useState(false);
   const [patientMeetLinkError, setPatientMeetLinkError] = React.useState("");
   const patientAddressSchedule = patientData.locationInfo[0] ?? null;
+  const patientPhoto =
+    patientData.patientPhoto != "null" ? patientData.patientPhoto : person;
 
   const handleEditMeetLink = () => setEditMeetLink(!editMeetLink);
 
@@ -43,7 +46,7 @@ const PatientCard = ({
       <div className="patientCard__content">
         <div className="patientCard__image">
           <Image
-            src={patientData.patientPhoto}
+            src={patientPhoto}
             alt="perfil do paciente"
             width={64}
             height={64}
@@ -116,8 +119,8 @@ const PatientCard = ({
               {editMeetLink
                 ? "Cancelar"
                 : patientData.scheduleMeetUrl
-                ? "Editar link da conversa"
-                : "Adicionar link da conversa"}
+                ? "Editar link"
+                : "Adicionar link"}
             </button>
 
             {patientData.scheduleMeetUrl && (

@@ -21,7 +21,7 @@ const ProfessionalCard = ({ data }) => {
       );
       window.location.href = `/queue/${attendantId}`;
     } catch (error) {
-      setOpenModal(true)
+      setOpenModal(true);
       setIsAvailable(0);
     }
   }
@@ -34,23 +34,27 @@ const ProfessionalCard = ({ data }) => {
           onClose={handleCloseModal}
         />
       )}
-      <div
-        className={`professionalCard__image ${isAvailable === 1 && "--online"}`}
-      >
-        <Image
-          src={data.attendantPhoto}
-          alt="perfil do profissional"
-          width={64}
-          height={64}
-        />
-      </div>
-      <div className="professionalCard__text">
-        <p className="professionalCard__text__name">
-          <strong>{data.attendantName}</strong>
-        </p>
-        <small className="professionalCard__text__profession">
-          {data.attendantRole}
-        </small>
+      <div className="professionalCard__content">
+        <div
+          className={`professionalCard__image ${
+            isAvailable === 1 && "--online"
+          }`}
+        >
+          <Image
+            src={data.attendantPhoto}
+            alt="perfil do profissional"
+            width={64}
+            height={64}
+          />
+        </div>
+        <div className="professionalCard__text">
+          <p className="professionalCard__text__name">
+            <strong>{data.attendantName}</strong>
+          </p>
+          <small className="professionalCard__text__profession">
+            {data.attendantRole}
+          </small>
+        </div>
       </div>
       <button
         className={`professionalCard__button ${

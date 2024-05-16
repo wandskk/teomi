@@ -5,6 +5,7 @@ import React from "react";
 import io from "socket.io-client";
 import person from "@/assets/images/icons/person.png";
 import Message from "@/components/Message/Message";
+import Link from "next/link";
 import { ChatServices } from "@/services/modules/chat";
 import { getCookie } from "@/resources/helpers/cookies/getCookie";
 import { LuSendHorizonal } from "react-icons/lu";
@@ -15,9 +16,8 @@ import { SlChemistry } from "react-icons/sl";
 import { IoMdClose } from "react-icons/io";
 import { UserContext } from "@/context/UserContext";
 import { PatientServices } from "@/services/modules/patient";
-import "./page.scss";
 import { separateTextAndProcessYouTubeLink } from "@/resources/helpers/chat/separateTextAndProcessYouTubeLink";
-import Link from "next/link";
+import "./page.scss";
 
 const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 

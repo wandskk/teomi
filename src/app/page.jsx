@@ -89,13 +89,13 @@ const Page = () => {
         patientId,
         connectID
       );
-      window.location.href = `/queue/${randomAttendantId.attendantId}`;
+      window.location.href = `/general-queue/`;
     } catch (error) {
       const { status } = error.response;
 
       if (status === 400) {
         const { chatData } = error.response.data;
-        window.location.href = `/chat/${chatData.chatId}/${chatData.attendantId}`;
+        window.location.href = `/general-queue/`;
       } else {
         setMessage({
           text: "Não há atendentes disponíveis no momento, tente novamente mais tarde!",

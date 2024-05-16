@@ -2,48 +2,21 @@
 
 import React from "react";
 import io from "socket.io-client";
-import jwtDecode from "jwt-decode";
-import { ChatServices } from "@/services/modules/chat";
-import { getCookie } from "@/resources/helpers/cookies/getCookie";
-import { useSearchParams } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import "./page.scss";
 
 const SOCKET_API_URL = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 
 const Page = ({ params }) => {
-  const userLogin = getCookie("userLogin");
-  const searchParams = useSearchParams();
-  const search = searchParams.get("isScheduled");
   const { userDataDecode, connectID } = React.useContext(UserContext);
-
-  const postUserInQueue = React.useCallback(
-    async (data, attendantId, connectID) => {
-      try {
-        const isScheduled = search ? 1 : null;
-        const queue = await ChatServices.postUserInQueue(
-          { ...data, attendantId: +attendantId, isScheduled },
-          connectID
-        );
-      } catch (error) {
-        const { status } = error.response;
-
-        if (status === 400) {
-          const { chatData } = error.response.data;
-          window.location.href = `/chat/${chatData.chatId}/${chatData.attendantId}`;
-        }
-      }
-    },
-    []
-  );
 
   React.useEffect(() => {
     const socket = io(SOCKET_API_URL);
-
+    
     socket.on("chatReady", (data) => {
       const userId = userDataDecode ? userDataDecode.userId : connectID;
 
-      if (data.attendantId == params.id && data.patientId === userId) {
+      if (data.patientId === userId) {
         const messageContent = "Chat iniciado com sucesso!";
 
         socket.emit("chatMessageWithService", {
@@ -73,27 +46,11 @@ const Page = ({ params }) => {
     return () => socket.disconnect();
   }, []);
 
-  React.useEffect(() => {
-    if (connectID) {
-      if (userLogin) {
-        const decodeUser = jwtDecode(userLogin);
-
-        postUserInQueue(
-          { userData: decodeUser.userUniqueId },
-          params.id,
-          connectID
-        );
-      } else {
-        postUserInQueue({ userData: connectID }, params.id, connectID);
-      }
-    }
-  }, [postUserInQueue]);
-
   return (
     <div className="queue">
       <h1 className="queue__title">Aguarde</h1>
       <div className="queue__loader"></div>
-      <p className="queue__text">estamos contactando o profissional</p>
+      <p className="queue__text">estamos contactando um profissional</p>
     </div>
   );
 };

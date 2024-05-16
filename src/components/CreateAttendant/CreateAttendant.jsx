@@ -24,31 +24,31 @@ const CreateAttendant = () => {
   const [step, setStep] = React.useState(1);
 
   const [stepOne, setStepOne] = React.useState({
-    name: "Wanderson Kenedy Soares de Oliveira",
-    email: randomEmail(),
-    password: "wandsk13",
-    confirmPassword: "wandsk13",
-    phone: "84994873510",
-    birthdate: "11/01/1997",
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    phone: "",
+    birthdate: "",
     gender: 1,
   });
 
   const [stepTwo, setStepTwo] = React.useState({
-    cpf: "12167857403",
-    rg: "245040894",
-    role: "Doutor cuzinho",
-    registerNumber: "123456789",
-    occupationArea: "Nenhuma",
+    cpf: "",
+    rg: "",
+    role: "",
+    registerNumber: "",
+    occupationArea: "",
   });
 
   const [stepThree, setStepThree] = React.useState({
-    postalCode: "59695000",
-    address: "Rua de São Paulo",
-    number: "108",
-    complement: "Prox a casa do carai",
-    neighborhood: "Centro",
-    city: "Baraúna",
-    state: "RN",
+    postalCode: "",
+    address: "",
+    number: "",
+    complement: "",
+    neighborhood: "",
+    city: "",
+    state: "",
   });
   const [stepFour, setStepFour] = React.useState(null);
 

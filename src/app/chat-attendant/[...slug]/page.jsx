@@ -190,7 +190,6 @@ const Chat = ({ params }) => {
         chatId,
       });
 
-      setCanShowQuizButton(false);
       setShowMenu(false);
     }
   };

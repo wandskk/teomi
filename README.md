@@ -1,34 +1,56 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Teomi
 
-## Getting Started
+Teomi é um webapp desenvolvido com Next.js para auxiliar pessoas com depressão, oferecendo atendimento online via chat ao vivo, suporte de profissionais e agendamentos de consultas presenciais ou online.
 
-First, run the development server:
+## 🚀 Funcionalidades
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+- 💬 Atendimento online via chat ao vivo com suporte a Socket.io.
+- 🏥 Módulos separados para pacientes e profissionais/atendentes.
+- 📅 Agendamento de consultas presenciais ou online.
+- 🔐 Autenticação segura e gerenciamento de sessões.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🌐 Demonstração
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Acesse a versão em produção: [Teomi](https://teomi.vercel.app/)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 🛠️ Tecnologias Utilizadas
 
-## Learn More
+- **Next.js** 13.5.4
+- **React** 18.2.0
+- **Socket.io** 4.7.2
+- **Formik** para formulários
+- **Yup** para validação
+- **Axios** para requisições HTTP
+- **React-Modal**, **React-Icons**, **React-Datepicker**, **React-Scroll** e mais!
 
-To learn more about Next.js, take a look at the following resources:
+## 📦 Instalação e Uso
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone este repositório:
+   ```sh
+   git clone https://github.com/seu-usuario/teomi.git
+   cd teomi
+   ```
+2. Instale as dependências:
+   ```sh
+   npm install
+   ```
+3. Inicie o ambiente de desenvolvimento:
+   ```sh
+   npm run dev
+   ```
+   O aplicativo rodará em `http://localhost:5000`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 📜 Scripts Disponíveis
 
-## Deploy on Vercel
+- `npm run dev` - Inicia o ambiente de desenvolvimento.
+- `npm run build` - Compila o projeto para produção.
+- `npm run start` - Inicia a versão de produção.
+- `npm run lint` - Executa o linter.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📖 Licença
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Este projeto é de código fechado.
+
+---
+
+Se tiver sugestões ou quiser contribuir, fique à vontade para entrar em contato!
